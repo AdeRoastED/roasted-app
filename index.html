@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoastED - Grammar that stings</title>
+    <title>RoastED</title>
     <style>
         :root {
             --bg-color: #F8F5EE;
@@ -32,85 +32,60 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 30px;
         }
 
-        .header {
-            padding: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        .lang-selector-wrapper {
-            position: relative;
-        }
-
-        .lang-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background-color: #1A3F9C;
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: 100px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(26, 63, 156, 0.25);
-        }
-
-        .lang-badge:hover {
-            background-color: #15327B;
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
+        .selector-container {
             background: white;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(16, 24, 40, 0.1);
-            overflow-y: auto;
-            max-height: 380px;
-            display: none;
-            z-index: 100;
-            width: 310px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .lang-dropdown.active {
-            display: block;
+        .selector-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .lang-option {
-            padding: 12px 16px;
+        .selector-label {
             font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .selector-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .lang-choice-btn {
+            background-color: #F8F5EE;
+            border: 1px solid var(--card-border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-dark);
             cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid #F2F4F7;
+            transition: all 0.2s;
         }
 
-        .lang-option:last-child {
-            border-bottom: none;
+        .lang-choice-btn:hover {
+            border-color: var(--accent-red);
         }
 
-        .lang-option:hover {
-            background-color: #FDF3F2;
-            color: var(--accent-red);
-        }
-
-        .counter-badge {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
+        .lang-choice-btn.active {
+            background-color: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
         }
 
         .illustration-section {
@@ -426,35 +401,27 @@
 <body>
 
     <div class="container">
-        <header class="header">
-            <div class="lang-selector-wrapper">
-                <button class="lang-badge" id="langToggleBtn">
-                    🇮🇹 ➔ 🇬🇧 Italian learning English ▼
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <!-- Italian Users Learning 3 Languages -->
-                    <div class="lang-option" data-mode="ITA-ENG" data-ui="it" data-char="it_nonna" data-caption="Nonna Rosa: 'Se sbagli ti tiro la cucchiarola!'">🇮🇹 ➔ 🇬🇧 Italiano impara Inglese</div>
-                    <div class="lang-option" data-mode="ITA-FRA" data-ui="it" data-char="it_nonna" data-caption="Nonna Rosa: 'Il francese richiede classe, non sciocchezze!'">🇮🇹 ➔ 🇫🇷 Italiano impara Francese</div>
-                    <div class="lang-option" data-mode="ITA-GER" data-ui="it" data-char="it_nonna" data-caption="Nonna Rosa: 'Concentrati o ti mando a letto senza torta!'">🇮🇹 ➔ 🇩🇪 Italiano impara Tedesco</div>
-                    
-                    <!-- English Users Learning 3 Languages -->
-                    <div class="lang-option" data-mode="ENG-ITA" data-ui="en" data-char="uk_lord" data-caption="Lord Sterling: 'Dreadful grammar, absolutely dreadful.'">🇬🇧 ➔ 🇮🇹 English learning Italian</div>
-                    <div class="lang-option" data-mode="ENG-FRA" data-ui="en" data-char="uk_lord" data-caption="Lord Sterling: 'Mon dieu, what an appalling sentence.'">🇬🇧 ➔ 🇫🇷 English learning French</div>
-                    <div class="lang-option" data-mode="ENG-GER" data-ui="en" data-char="uk_lord" data-caption="Lord Sterling: 'A bit stiff, but let us check your cases.'">🇬🇧 ➔ 🇩🇪 English learning German</div>
-
-                    <!-- French Users Learning 3 Languages -->
-                    <div class="lang-option" data-mode="FRA-ITA" data-ui="fr" data-char="fr_parigino" data-caption="Jean-Luc: 'Votre italien manque de charme.'">🇫🇷 ➔ 🇮🇹 Français apprend l'Italien</div>
-                    <div class="lang-option" data-mode="FRA-ENG" data-ui="fr" data-char="fr_parigino" data-caption="Jean-Luc: 'Quelle horreur... your syntax is appalling.'">🇫🇷 ➔ 🇬🇧 Français apprend l'Anglais</div>
-                    <div class="lang-option" data-mode="FRA-GER" data-ui="fr" data-char="fr_parigino" data-caption="Jean-Luc: 'Deutsches Chaos... fix your grammar.'">🇫🇷 ➔ 🇩🇪 Français apprend l'Allemand</div>
-
-                    <!-- German Users Learning 3 Languages -->
-                    <div class="lang-option" data-mode="GER-ITA" data-ui="de" data-char="de_tedesco" data-caption="Hans: 'Italienisch mit System! Konzentriere dich.'">🇩🇪 ➔ 🇮🇹 Deutsch lernt Italienisch</div>
-                    <div class="lang-option" data-mode="GER-ENG" data-ui="de" data-char="de_tedesco" data-caption="Hans: 'Verboten! Fix your subordination immediately.'">🇩🇪 ➔ 🇬🇧 Deutsch lernt Englisch</div>
-                    <div class="lang-option" data-mode="GER-FRA" data-ui="de" data-char="de_tedesco" data-caption="Hans: 'Akzeptabel, aber achte auf die Akzente!'">🇩🇪 ➔ 🇫🇷 Deutsch lernt Französisch</div>
+        <!-- CLEAN TWO-STEP MENU -->
+        <div class="selector-container">
+            <div class="selector-row">
+                <span class="selector-label" id="nativeLangLbl">La tua lingua (Native Language):</span>
+                <div class="selector-options" id="nativeLangOptions">
+                    <button class="lang-choice-btn active" data-native="it">🇮🇹 Italiano</button>
+                    <button class="lang-choice-btn" data-native="en">🇬🇧 English</button>
+                    <button class="lang-choice-btn" data-native="fr">🇫🇷 Français</button>
+                    <button class="lang-choice-btn" data-native="de">🇩🇪 Deutsch</button>
                 </div>
             </div>
-            <div class="counter-badge" id="counterBadge">400 Drills Loaded</div>
-        </header>
+            <div class="selector-row">
+                <span class="selector-label" id="targetLangLbl">Lingua da imparare (Target Language):</span>
+                <div class="selector-options" id="targetLangOptions">
+                    <button class="lang-choice-btn active" data-target="eng">🇬🇧 English</button>
+                    <button class="lang-choice-btn" data-target="ita">🇮🇹 Italiano</button>
+                    <button class="lang-choice-btn" data-target="fra">🇫🇷 Français</button>
+                    <button class="lang-choice-btn" data-target="ger">🇩🇪 Deutsch</button>
+                </div>
+            </div>
+        </div>
 
         <section class="illustration-section">
             <div class="image-card" id="imageCard">
@@ -471,7 +438,7 @@
                 because it stings.
             </h1>
             <p class="subtitle" id="heroSubtitle">
-                Scegli il tutor dal menu in alto. Ogni errore lo farà infuriare in tempo reale!
+                Scegli le lingue sopra. Ogni errore farà infuriare il tutor in tempo reale!
             </p>
 
             <div class="topics-container" id="topicsContainer">
@@ -504,8 +471,8 @@
     </div>
 
     <script>
-        let currentMode = 'ITA-ENG';
-        let currentUiLang = 'it';
+        let currentNative = 'it';
+        let currentTarget = 'eng';
         let currentTopic = 'food';
         let currentIndex = 0;
         let currentQuestions = [];
@@ -513,37 +480,39 @@
 
         const uiTranslations = {
             it: {
-                headline: 'Grammar that <span class="highlight">sticks</span><br>because it stings.',
-                subtitle: 'Scegli il tutor dal menu in alto. Ogni errore lo farà infuriare in tempo reale!',
+                nativeLbl: 'La tua lingua madre:',
+                targetLbl: 'Lingua che vuoi imparare:',
+                subtitle: 'Seleziona le lingue sopra. Ogni errore farà infuriare il tutor!',
                 topics: { food: '🍕 Cibo', travel: '✈️ Viaggi', sports: '⚽ Sport', culture: '🎭 Cultura', dailylife: '🏠 Vita Quotidiana' },
                 drillTitleSuffix: 'Drill',
                 questionLabel: 'Domanda',
                 nextBtn: 'Prossima Domanda ➔',
                 correctText: 'Corretto!',
                 correctSub: 'Non montarti la testa.',
-                roastHeader: 'Tutor Roast:',
+                roastHeader: 'Polite Correction:',
                 tortureTitle: '💀 Il Banco di Tortura (Frasi Libere)',
-                tortureDesc: 'Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà senza pietà fornendo la correzione d\'élite.',
-                textareaPlaceholder: 'Digita qui la tua frase sgangherata...',
+                tortureDesc: 'Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà con grazia.',
+                textareaPlaceholder: 'Digita qui la tua frase...',
                 roastBtnText: 'Richiedi Esecuzione & Correzione',
-                emptyToast: 'Ehi! Scrivi una frase prima di pretendere di fartela demolire dal tutor!',
+                emptyToast: 'Ehi! Scrivi una frase prima di pretendere di fartela demolire!',
                 roastOutputHeader: 'Il Tutor sentenzia:',
                 correctionHeader: 'Versione Corretta:',
                 completedText: 'Set completato! Punteggio:'
             },
             en: {
-                headline: 'Grammar that <span class="highlight">sticks</span><br>because it stings.',
-                subtitle: 'Choose your tutor from the menu above. Every mistake will make them furious in real time!',
+                nativeLbl: 'Your native language:',
+                targetLbl: 'Language you want to learn:',
+                subtitle: 'Choose your languages above. Every mistake will make the tutor furious!',
                 topics: { food: '🍕 Food', travel: '✈️ Travel', sports: '⚽ Sports', culture: '🎭 Culture', dailylife: '🏠 Daily Life' },
                 drillTitleSuffix: 'Drill',
                 questionLabel: 'Question',
                 nextBtn: 'Next Question ➔',
                 correctText: 'Correct!',
-                correctSub: 'Don\'t let it get to your head.',
-                roastHeader: 'Tutor Roast:',
+                correctSub: "Don't let it get to your head.",
+                roastHeader: 'Polite Correction:',
                 tortureTitle: '💀 The Torture Bench (Free Sentences)',
-                tortureDesc: 'Write a sentence of your own. The tutor will read it in real time and mercilessly demolish it while providing elite corrections.',
-                textareaPlaceholder: 'Type your chaotic sentence here...',
+                tortureDesc: 'Write a sentence of your own. The tutor will read it in real time and politely demolish it.',
+                textareaPlaceholder: 'Type your sentence here...',
                 roastBtnText: 'Request Execution & Correction',
                 emptyToast: 'Hey! Write a sentence first before asking the tutor to demolish it!',
                 roastOutputHeader: 'The Tutor sentences:',
@@ -551,37 +520,39 @@
                 completedText: 'Set completed! Score:'
             },
             fr: {
-                headline: 'Grammar that <span class="highlight">sticks</span><br>because it stings.',
-                subtitle: 'Choisissez votre tuteur dans le menu ci-dessus. Chaque erreur le mettra en colère en temps réel !',
+                nativeLbl: 'Votre langue maternelle :',
+                targetLbl: 'Langue que vous souhaitez apprendre :',
+                subtitle: 'Choisissez vos langues ci-dessus. Chaque erreur mettra le tuteur en colère !',
                 topics: { food: '🍕 Nourriture', travel: '✈️ Voyage', sports: '⚽ Sports', culture: '🎭 Culture', dailylife: '🏠 Vie Quotidienne' },
                 drillTitleSuffix: 'Exercice',
                 questionLabel: 'Question',
                 nextBtn: 'Question Suivante ➔',
                 correctText: 'Correct !',
                 correctSub: 'Ne prenez pas la grosse tête.',
-                roastHeader: 'Tutor Roast :',
+                roastHeader: 'Polite Correction :',
                 tortureTitle: '💀 Le Banc de Torture (Phrases Libres)',
-                tortureDesc: 'Écrivez une phrase de votre cru. Le tuteur la lira en temps réel et la démolira sans pitié en fournissant la correction idéale.',
-                textareaPlaceholder: 'Tapez votre phrase bancale ici...',
+                tortureDesc: 'Écrivez une phrase de votre cru. Le tuteur la lira en temps réel et la démolira avec panache.',
+                textareaPlaceholder: 'Tapez votre phrase ici...',
                 roastBtnText: 'Demander l\'Exécution & Correction',
-                emptyToast: 'Hé ! Écrivez d\'abord une phrase avant de la faire démolir par le tuteur !',
+                emptyToast: 'Hé ! Écrivez d\'abord une phrase avant de la faire démolir !',
                 roastOutputHeader: 'Le Tuteur statue :',
                 correctionHeader: 'Version Corrigée :',
                 completedText: 'Série terminée ! Score :'
             },
             de: {
-                headline: 'Grammar that <span class="highlight">sticks</span><br>because it stings.',
-                subtitle: 'Wähle deinen Tutor im Menü oben. Jeder Fehler macht ihn in Echtzeit wütend!',
+                nativeLbl: 'Deine Muttersprache:',
+                targetLbl: 'Sprache, die du lernen möchtest:',
+                subtitle: 'Wähle deine Sprachen oben aus. Jeder Fehler macht den Tutor wütend!',
                 topics: { food: '🍕 Essen', travel: '✈️ Reisen', sports: '⚽ Sport', culture: '🎭 Kultur', dailylife: '🏠 Alltag' },
                 drillTitleSuffix: 'Übung',
                 questionLabel: 'Frage',
                 nextBtn: 'Nächste Frage ➔',
                 correctText: 'Richtig!',
                 correctSub: 'Werde bloß nicht überheblich.',
-                roastHeader: 'Tutor Roast:',
+                roastHeader: 'Polite Correction:',
                 tortureTitle: '💀 Die Folterbank (Freie Sätze)',
-                tortureDesc: 'Schreibe einen eigenen Satz. Der Tutor liest ihn in Echtzeit und reißt ihn gnadenlos in der Luft, während er die Elite-Korrektur liefert.',
-                textareaPlaceholder: 'Tipper hier deinen chaotischen Satz ein...',
+                tortureDesc: 'Schreibe einen eigenen Satz. Der Tutor liest ihn in Echtzeit und reißt ihn höflich in der Luft.',
+                textareaPlaceholder: 'Tipper deinen Satz hier ein...',
                 roastBtnText: 'Hinrichtung & Korrektur anfordern',
                 emptyToast: 'He! Schreib zuerst einen Satz, bevor du verlangst, dass der Tutor ihn zerlegt!',
                 roastOutputHeader: 'Der Tutor urteilt:',
@@ -591,16 +562,13 @@
         };
 
         const dataSet = {
-            // --- ITALIAN NATIVE LEARNING 3 LANGUAGES ---
-            'ITA-ENG': {
+            'it-eng': {
                 food: [
-                    { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "Mio nipote sa usare 'to' al posto di 'than'. Ti meriti una sberla con la cucchiarola!" },
-                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti è singolare in inglese! Se continui così ti tolgo il parmigiano." },
-                    { q: "Select the correct time expression:", options: ["I am eating here since two hours.", "I am eating here for two hours.", "I have been eating here for two hours.", "I have been eating here since two hours."], correct: 2, roast: "La durata vuole 'for', non 'since'! Ti boccio all'asilo." }
+                    { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "Mio nipote sa usare 'to' al posto di 'than'. Ti meriti una sberla!" },
+                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti è singolare in inglese! Ti tolgo il parmigiano." }
                 ],
                 travel: [
-                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: went." },
-                    { q: "Identify the correct question structure:", options: ["Where is located the hotel?", "Where the hotel is located?", "Where is the hotel located?", "Where located is the hotel?"], correct: 2, roast: "Nelle domande il verbo ausiliare precede il soggetto!" }
+                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: went." }
                 ],
                 sports: [
                     { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "I verbi vogliono gli avverbi: si gioca 'well', non 'good'." }
@@ -612,200 +580,85 @@
                     { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "La contrazione di 'you are' è 'You're'." }
                 ]
             },
-            'ITA-FRA': {
+            'it-fra': {
                 food: [
-                    { q: "Scegli la traduzione corretta per 'Vorrei un caffè':", options: ["Je voudrais un café.", "Je veux un café de la tasse.", "Donne-moi café.", "J'aimerais du cafés."], correct: 0, roast: "Ottimo! Non far sfigurare l'Italia in Francia." },
-                    { q: "Traduci correttamente 'Il cibo è delizioso':", options: ["La nourriture est délicieuse.", "Le nourriture est délicieux.", "La nourriture sont délicieuse.", "Les nourritures est délicieuse."], correct: 0, roast: "'Nourriture' è femminile singolare!" }
+                    { q: "Choisissez la phrase correcte :", options: ["Je voudrais un café.", "Je veux un café de la tasse.", "Donne-moi café.", "J'aimerais du cafés."], correct: 0, roast: "Ottimo! Ma fai attenzione agli articoli partitivi." },
+                    { q: "Traduisez correctement :", options: ["La nourriture est délicieuse.", "Le nourriture est délicieux.", "La nourriture sont délicieuse.", "Les nourritures est délicieuse."], correct: 0, roast: "'Nourriture' è femminile singolare!" }
                 ],
-                travel: [
-                    { q: "Traduci 'Dov'è la stazione?':", options: ["Où est la gare?", "Où est le station?", "Où se trouve le train lieu?", "Où sont la gare?"], correct: 0, roast: "Preciso! Almeno non ti perderai a Parigi." }
-                ],
-                sports: [
-                    { q: "Traduci 'La nostra squadra ha vinto':", options: ["Notre équipe a gagné.", "Notre équipe a gagné le match.", "Sia A che B sono eccellenti.", "Notre équipe ont gagné."], correct: 2, roast: "Perfetto, entrambe le forme sono usate in Francia." }
-                ],
-                culture: [
-                    { q: "Traduci 'Questo museo è magnifico':", options: ["Ce musée est magnifique.", "Cet musée est magnifique.", "Cette musée est magnifique.", "Ce musées sont magnifiques."], correct: 0, roast: "Davanti a consonante si usa 'ce'!" }
-                ],
-                dailylife: [
-                    { q: "Traduci 'Sono in ritardo':", options: ["Je suis en retard.", "Je suis en retardé.", "J'ai retard.", "Je fais retard."], correct: 0, roast: "Esatto, 'en retard'." }
-                ]
+                travel: [{ q: "Où se trouve la gare correcte ?", options: ["Où est la gare?", "Où est le station?", "Où se trouve le train lieu?", "Où sont la gare?"], correct: 0, roast: "Preciso! Almeno non ti perderai a Parigi." }],
+                sports: [{ q: "Complétez la phrase sportive :", options: ["Notre équipe a gagné.", "Notre équipe a gagné le match.", "Sia A che B sono eccellenti.", "Notre équipe ont gagné."], correct: 2, roast: "Perfetto!" }],
+                culture: [{ q: "Identifiez la bonne formulation :", options: ["Ce musée est magnifique.", "Cet musée est magnifique.", "Cette musée est magnifique.", "Ce musées sont magnifiques."], correct: 0, roast: "Davanti a consonante si usa 'ce'!" }],
+                dailylife: [{ q: "Comment dit-on en retard ?", options: ["Je suis en retard.", "Je suis en retardé.", "J'ai retard.", "Je fais retard."], correct: 0, roast: "Esatto, 'en retard'." }]
             },
-            'ITA-GER': {
-                food: [
-                    { q: "Traduci 'Vorrei una birra' in tedesco:", options: ["Ich möchte ein Bier.", "Ich will Bier Glas.", "Gib mir Bier.", "Ich möchte eine Biers."], correct: 0, roast: "Richtig! Ottimo inizio per una serata bavarese." },
-                    { q: "Traduci 'Il pane è fresco':", options: ["Das Brot ist frisch.", "Der Brot ist frisch.", "Die Brot sind frisch.", "Das Brote ist frisch."], correct: 0, roast: "'Brot' è neutro: *das Brot*!" }
-                ],
-                travel: [
-                    { q: "Traduci 'Dov'è la stazione centrale?':", options: ["Wo ist der Hauptbahnhof?", "Wo ist das Hauptbahnhof?", "Wo ist die Hauptbahnhof?", "Wo ist Hauptbahnhof station?"], correct: 0, roast: "Perfetto, Bahnhof è maschile (*der Hauptbahnhof*)." }
-                ],
-                sports: [
-                    { q: "Traduci 'La partita è finita in pareggio':", options: ["Das Spiel endete unentschieden.", "Das Spiel war ein Unentschieden.", "Sia A che B sono corrette.", "Das Match ist null."], correct: 2, roast: "Ottimo lavoro con il lessico sportivo tedesco." }
-                ],
-                culture: [
-                    { q: "Traduci 'Questo quadro è famoso':", options: ["Dieses Bild ist berühmt.", "Dieser Bild ist berühmt.", "Dieses Bild sind berühmt.", "Dies Bild ist berühmteste."], correct: 0, roast: "Corretto, aggettivo neutro con 'dieses'." }
-                ],
-                dailylife: [
-                    { q: "Traduci 'Ho fame':", options: ["Ich habe Hunger.", "Ich bin hungrig.", "Sia A che B sono corrette.", "Ich mache Hunger."], correct: 2, roast: "Eccellente, sia l'uso del sostantivo che dell'aggettivo vanno bene." }
-                ]
+            'it-ger': {
+                food: [{ q: "Wähle den korrekten Satz:", options: ["Ich möchte ein Bier.", "Ich will Bier Glas.", "Gib mir Bier.", "Ich möchte eine Biers."], correct: 0, roast: "Richtig!" }],
+                travel: [{ q: "Wo ist der Hauptbahnhof?", options: ["Wo ist der Hauptbahnhof?", "Wo ist das Hauptbahnhof?", "Wo ist die Hauptbahnhof?", "Wo ist Hauptbahnhof station?"], correct: 0, roast: "Perfekt, Bahnhof ist Maskulinum." }],
+                sports: [{ q: "Das Fußballspiel:", options: ["Das Spiel endete unentschieden.", "Das Spiel war ein Unentschieden.", "Sia A che B sono corrette.", "Das Match ist null."], correct: 2, roast: "Sehr gut." }],
+                culture: [{ q: "Die Kunst:", options: ["Dieses Bild ist berühmt.", "Dieser Bild ist berühmt.", "Dieses Bild sind berühmt.", "Dies Bild ist berühmteste."], correct: 0, roast: "Korrekt." }],
+                dailylife: [{ q: "Der Alltag:", options: ["Ich habe Hunger.", "Ich bin hungrig.", "Sia A che B sono corrette.", "Ich mache Hunger."], correct: 2, roast: "Ausgezeichnet." }]
             },
-
-            // --- ENGLISH NATIVE LEARNING 3 LANGUAGES ---
-            'ENG-ITA': {
-                food: [
-                    { q: "Choose the correct translation for 'Vorrei una fetta di torta':", options: ["Vorrei una fetta di torta.", "Io vorrei fetta torta.", "Voglio un pezzo di torta di fetta.", "Vorrei alcune fette di torta."], correct: 0, roast: "Spot on! Though British lords are weeping into their tea." }
-                ],
-                travel: [
-                    { q: "Translate 'Dov'è la stazione ferroviaria?':", options: ["Dov'è la stazione ferroviaria?", "Dove è il treno stazione?", "Dov'è la stazione dei treni?", "Sia A che C sono naturali."], correct: 3, roast: "Both work wonderfully in Italian!" }
-                ],
-                sports: [
-                    { q: "Translate 'Abbiamo vinto la partita!':", options: ["Abbiamo vinto la partita!", "Abbiamo guadagnato il match!", "Abbiamo trionfato nella gara!", "Sia A che C sono corrette."], correct: 3, roast: "Both 'partita' and 'gara' fit well." }
-                ],
-                culture: [
-                    { q: "Translate 'Adoro l'arte del Rinascimento':", options: ["Adoro l'arte del Rinascimento.", "Amo l'arte rinascimentale.", "Mi piace l'arte del Rinascimento.", "Sia A che B sono perfette."], correct: 3, roast: "Wonderful translation for art periods." }
-                ],
-                dailylife: [
-                    { q: "Translate 'Sono in ritardo':", options: ["Sono in ritardo.", "Sto correndo tardi.", "Faccio tardi.", "Sia A che C sono comunissime."], correct: 3, roast: "I am running late translated smoothly." }
-                ]
+            'en-ita': {
+                food: [{ q: "Scegli la frase corretta:", options: ["Vorrei una fetta di torta.", "Io vorrei fetta torta.", "Voglio un pezzo di torta di fetta.", "Vorrei alcune fette di torta."], correct: 0, roast: "Spot on!" }],
+                travel: [{ q: "Dov'è la stazione?", options: ["Dov'è la stazione ferroviaria?", "Dove è il treno stazione?", "Dov'è la stazione dei treni?", "Entrambe A e C sono corrette."], correct: 3, roast: "Very natural!" }],
+                sports: [{ q: "Partita di calcio:", options: ["Abbiamo vinto la partita!", "Abbiamo guadagnato il match!", "Abbiamo trionfato nella gara!", "Entrambe A e C sono corrette."], correct: 3, roast: "Great!" }],
+                culture: [{ q: "Arte e cultura:", options: ["Adoro l'arte del Rinascimento.", "Amo l'arte rinascimentale.", "Mi piace l'arte del Rinascimento.", "Tutte le precedenti."], correct: 3, roast: "Wonderful!" }],
+                dailylife: [{ q: "Vita quotidiana:", options: ["Sono in ritardo.", "Sto correndo tardi.", "Faccio tardi.", "A e C vanno bene."], correct: 0, roast: "Smooth." }]
             },
-            'ENG-FRA': {
-                food: [
-                    { q: "Translate 'I would like a croissant':", options: ["Je voudrais un croissant.", "Je veux un croissant de pain.", "Donne-moi croissant.", "Je voudrais du croissant s'il vous plaît."], correct: 0, roast: "Magnifique! Your inner Parisian is awakening." }
-                ],
-                travel: [
-                    { q: "Translate 'Where is the station?':", options: ["Où est la gare?", "Où est la station?", "Où se trouve le train?", "Où est le place de train?"], correct: 0, roast: "Correct, 'la gare' is the correct term for a railway station." }
-                ],
-                sports: [
-                    { q: "Translate 'Our team won the match':", options: ["Notre équipe a gagné le match.", "Notre équipe a gagné le partie.", "Notre équipe a gagné le jeu.", "Notre équipe ont gagné."], correct: 0, roast: "Well done! 'Le match' or 'la partie' work nicely." }
-                ],
-                culture: [
-                    { q: "Translate 'I love modern art':", options: ["J'adore l'art moderne.", "J'aime l'art moderne.", "Sia A che B sono corrette.", "Je adore l'art moderne."], correct: 2, roast: "Both 'j'adore' and 'j'aime' are completely natural." }
-                ],
-                dailylife: [
-                    { q: "Translate 'I am late':", options: ["Je suis en retard.", "J'ai du retard.", "Sia A che B sono perfette.", "Je suis tardif."], correct: 2, roast: "Excellent! Both options are heavily used in France." }
-                ]
+            'en-fra': {
+                food: [{ q: "Traduisez :", options: ["Je voudrais un croissant.", "Je veux un croissant.", "J'aimerais un croissant.", "Toutes sont correctes."], correct: 3, roast: "Magnifique!" }],
+                travel: [{ q: "Où est la gare ?", options: ["Où est la gare?", "Où se trouve la gare?", "Les deux sont correctes.", "Où est le train?"], correct: 2, roast: "Correct." }],
+                sports: [{ q: "Le match :", options: ["Notre équipe a gagné.", "On a gagné.", "Les deux sont correctes.", "Notre équipe gagne."], correct: 2, roast: "Well done!" }],
+                culture: [{ q: "L'art :", options: ["J'adore l'art moderne.", "J'aime l'art moderne.", "Les deux sont correctes.", "Je kiffe l'art."], correct: 2, roast: "Nice." }],
+                dailylife: [{ q: "Le temps :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Je suis en avance."], correct: 2, roast: "Perfect." }]
             },
-            'ENG-GER': {
-                food: [
-                    { q: "Translate 'I would like a beer':", options: ["Ich möchte ein Bier.", "Ich will Bier.", "Ich hätte gern ein Bier.", "Sia A che C sono corrette."], correct: 3, roast: "Sehr gut! Both polite forms are correct in German." }
-                ],
-                travel: [
-                    { q: "Translate 'Where is the hotel?':", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Sia A che B sono corrette.", "Wo ist der Hotel?"], correct: 2, roast: "Brilliant! 'Das Hotel' is neuter." }
-                ],
-                sports: [
-                    { q: "Translate 'We won the game':", options: ["Wir haben das Spiel gewonnen.", "Wir gewannen das Spiel.", "Sia A che B sono corrette.", "Wir haben gewonnen das Spiel."], correct: 2, roast: "Perfect! Perfect tense and simple past both work." }
-                ],
-                culture: [
-                    { q: "Translate 'That is a masterpiece':", options: ["Das ist ein Meisterwerk.", "Das ist eine Meisterarbeit.", "Sia A che B sono corrette.", "Das ist ein Hauptwerk."], correct: 2, roast: "Masterful knowledge of German compound nouns!" }
-                ],
-                dailylife: [
-                    { q: "Translate 'I am late':", options: ["Ich bin zu spät.", "Ich verspäte mich.", "Sia A che B sono corrette.", "Ich habe spät."], correct: 2, roast: "Spot on! Both structures are native-level accurate." }
-                ]
+            'en-ger': {
+                food: [{ q: "Wählen Sie:", options: ["Ich möchte ein Bier.", "Ich hätte gern ein Bier.", "Beide sind korrekt.", "Ich will Bier."], correct: 2, roast: "Sehr gut!" }],
+                travel: [{ q: "Das Hotel:", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Beide sind korrekt.", "Wo ist der Hotel?"], correct: 2, roast: "Brilliant!" }],
+                sports: [{ q: "Das Spiel:", options: ["Wir haben das Spiel gewonnen.", "Wir gewannen das Spiel.", "Beide sind korrekt.", "Wir haben gewonnen."], correct: 2, roast: "Perfect!" }],
+                culture: [{ q: "Meisterwerk:", options: ["Das ist ein Meisterwerk.", "Das ist eine Meisterarbeit.", "Beide sind korrekt.", "Das ist gut."], correct: 0, roast: "Masterful!"}],
+                dailylife: [{ q: "Zu spät:", options: ["Ich bin zu spät.", "Ich verspäte mich.", "Beide sind korrekt.", "Ich habe spät."], correct: 2, roast: "Spot on!" }]
             },
-
-            // --- FRENCH NATIVE LEARNING 3 LANGUAGES ---
-            'FRA-ITA': {
-                food: [
-                    { q: "Traduisez 'Je voudrais une pizza':", options: ["Vorrei una pizza.", "Voglio pizza.", "Mi piacerebbe una pizza.", "Sia A che C sono naturali."], correct: 3, roast: "Parfait ! Les deux formes de politesse italienne sont correctes." }
-                ],
-                travel: [
-                    { q: "Traduisez 'Où est la gare ?':", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Sia A che B sono perfette.", "Dov'è il treno posto?"], correct: 2, roast: "Excellent, both are completely natural in Italian." }
-                ],
-                sports: [
-                    { q: "Traduisez 'Notre équipe a gagné':", options: ["La nostra squadra ha vinto.", "Il nostro team ha guadagnato.", "La nostra squadra ha trionfato.", "Sia A che C vanno bene."], correct: 3, roast: "Très bien ! 'Ha vinto' o 'ha trionfato' sono perfetti." }
-                ],
-                culture: [
-                    { q: "Traduisez 'J'adore l'art de la Renaissance':", options: ["Adoro l'arte del Rinascimento.", "Mi piace l'arte rinascimentale.", "Sia A che B sono ottime.", "Amo l'arte di Rinascimento."], correct: 2, roast: "Magnifique ! Votre maîtrise artistique est irréprochable." }
-                ],
-                dailylife: [
-                    { q: "Traduisez 'Je suis en retard':", options: ["Sono in ritardo.", "Ho ritardo.", "Sia A che C sono comunissime.", "Faccio ritardo."], correct: 0, roast: "Précis ! 'Sono in ritardo' è la forma standard." }
-                ]
+            'fr-ita': {
+                food: [{ q: "Scegli la frase:", options: ["Vorrei una pizza.", "Voglio una pizza.", "Mi piacerebbe una pizza.", "Tutte sono corrette."], correct: 3, roast: "Parfait !" }],
+                travel: [{ q: "La stazione:", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Entrambe sono corrette.", "Dov'è il treno?"], correct: 2, roast: "Excellent." }],
+                sports: [{ q: "La squadra:", options: ["La nostra squadra ha vinto.", "La nostra squadra ha trionfato.", "Entrambe sono corrette.", "Il team ha vinto."], correct: 2, roast: "Très bien !" }],
+                culture: [{ q: "Il Rinascimento:", options: ["Adoro l'arte del Rinascimento.", "Mi piace l'arte rinascimentale.", "Entrambe sono corrette.", "Amo l'arte."], correct: 2, roast: "Magnifique !" }],
+                dailylife: [{ q: "In ritardo:", options: ["Sono in ritardo.", "Ho ritardo.", "Faccio tardi.", "Tutte vanno bene."], correct: 0, roast: "Précis !" }]
             },
-            'FRA-ENG': {
-                food: [
-                    { q: "French to English: Translate 'Je voudrais un croissant':", options: ["I would like a croissant.", "I want a croissant of bread.", "Give to me croissant.", "I would like some croissant please."], correct: 0, roast: "Mon dieu! Même un pigeon parisien a une meilleure grammaire." }
-                ],
-                travel: [
-                    { q: "French to English: Translate 'Où est la gare?':", options: ["Where is the station?", "Where stays the station?", "Where is train place?", "Where are the station?"], correct: 0, roast: "Où est your brain? A catastrophic failure of logic." }
-                ],
-                sports: [
-                    { q: "French to English: Translate 'Notre équipe a gagné le match !':", options: ["Our team won the match!", "Our team has win the match.", "Our team winned the match.", "Our team did win match."], correct: 0, roast: "Won! Not winned. Your grammar is losing 5-0." }
-                ],
-                culture: [
-                    { q: "French to English: Translate 'J'adore l'art moderne':", options: ["I love modern art.", "I adore the art modern.", "I am loving modern art.", "I love modern arts."], correct: 0, roast: "Your understanding of grammar belongs in the Stone Age." }
-                ],
-                dailylife: [
-                    { q: "French to English: Translate 'Je suis en retard':", options: ["I am late.", "I am in retard.", "I run late.", "I am on late."], correct: 0, roast: "You are late on acquiring a functioning intellect." }
-                ]
+            'fr-eng': {
+                food: [{ q: "Choose:", options: ["I prefer pizza to pasta.", "I prefer pizza than pasta.", "I like pizza.", "I want pizza."], correct: 0, roast: "Mon dieu!" }],
+                travel: [{ q: "Travel:", options: ["I went to Rome last summer.", "I have went to Rome.", "I go to Rome.", "I was in Rome."], correct: 0, roast: "Catastrophic logic." }],
+                sports: [{ q: "Sports:", options: ["Our team played very well.", "Our team played very good.", "Our team played well.", "Our team win."], correct: 2, roast: "Won!" }],
+                culture: [{ q: "Museum:", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "Museum was good."], correct: 0, roast: "Singular takes was!" }],
+                dailylife: [{ q: "Daily:", options: ["You're going to be late.", "Your going to be late.", "You are late.", "Late is you."], correct: 0, roast: "Contraction error!" }]
             },
-            'FRA-GER': {
-                food: [
-                    { q: "Traduisez 'Je voudrais une bière':", options: ["Ich möchte ein Bier.", "Ich will Bier.", "Sia A che B sono corrette.", "Gib mir Bier."], correct: 2, roast: "Très bien ! 'Ich möchte' est plus poli, mais 'ich will' fonctionne." }
-                ],
-                travel: [
-                    { q: "Traduisez 'Où est l'hôtel ?':", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Sia A che B sono corrette.", "Wo ist der Hotel?"], correct: 2, roast: "Parfait ! Le genre neutre allemand est maîtrisé." }
-                ],
-                sports: [
-                    { q: "Traduisez 'Nous avons gagné le match':", options: ["Wir haben das Spiel gewonnen.", "Wir gewannen das Spiel.", "Sia A che B sono corrette.", "Wir haben gewonnen."], correct: 2, roast: "Excellente grammaire allemande !" }
-                ],
-                culture: [
-                    { q: "Traduisez 'C'est un chef-d'œuvre':", options: ["Das ist ein Meisterwerk.", "Das ist ein Hauptwerk.", "Das ist eine Meisterarbeit.", "Sia A che C sono ottime."], correct: 3, roast: "Splendide ! Le vocabulaire artistique est correct." }
-                ],
-                dailylife: [
-                    { q: "Traduisez 'Je suis en retard':", options: ["Ich bin zu spät.", "Ich verspäte mich.", "Sia A che B sono corrette.", "Ich habe spät."], correct: 2, roast: "Impeccable ! Rien à redire." }
-                ]
+            'fr-ger': {
+                food: [{ q: "Wählen Sie:", options: ["Ich möchte ein Bier.", "Ich will Bier.", "Beide sind korrekt.", "Bier bitte."], correct: 2, roast: "Sehr gut!" }],
+                travel: [{ q: "Das Hotel:", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Beide sind korrekt.", "Hotel wo?"], correct: 2, roast: "Parfait !" }],
+                sports: [{ q: "Das Spiel:", options: ["Wir haben das Spiel gewonnen.", "On a gagné.", "Les deux sont correctes.", "Sieg."], correct: 2, roast: "Excellente !" }],
+                culture: [{ q: "Chef-d'œuvre :", options: ["C'est un chef-d'œuvre.", "Beau.", "Super.", "Art."], correct: 0, roast: "Splendide !" }],
+                dailylife: [{ q: "En retard :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Spät."], correct: 2, roast: "Perfekt!" }]
             },
-
-            // --- GERMAN NATIVE LEARNING 3 LANGUAGES ---
-            'GER-ITA': {
-                food: [
-                    { q: "Übersetze 'Ich möchte eine Pizza':", options: ["Vorrei una pizza.", "Voglio una pizza.", "Sia A che B sind korrekt.", "Mi piace pizza."], correct: 2, roast: "Sehr gut! Beide Formen sind im Italienischen üblich." }
-                ],
-                travel: [
-                    { q: "Übersetze 'Wo ist der Bahnhof?':", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Sia A che B sind perfekt.", "Dov'è treno."], correct: 2, roast: "Ausgezeichnet! Wunderschönes Italienisch." }
-                ],
-                sports: [
-                    { q: "Übersetze 'Wir haben gewonnen':", options: ["Abbiamo vinto.", "Abbiamo guadagnato.", "Abbiamo trionfato.", "Sia A che C sind korrekt."], correct: 3, roast: "Toll! 'Abbiamo vinto' oder 'trionfato' passen perfekt." }
-                ],
-                culture: [
-                    { q: "Übersetze 'Das ist ein Meisterwerk':", options: ["Questo è un capolavoro.", "Questo è un'opera maestra.", "Sia A che B sind gebräuchlich.", "Questo è capo lavoro."], correct: 2, roast: "Hervorragend! 'Capolavoro' ist exzellentes Italienisch." }
-                ],
-                dailylife: [
-                    { q: "Übersetze 'Ich bin zu spät':", options: ["Sono in ritardo.", "Ho ritardo.", "Sia A che B sind richtig.", "Faccio tardi."], correct: 2, roast: "Perfekt! Du machst Fortschritte." }
-                ]
+            'ger-ita': {
+                food: [{ q: "Scegli la frase:", options: ["Vorrei una pizza.", "Voglio una pizza.", "Entrambe sono corrette.", "Pizza."], correct: 2, roast: "Sehr gut!" }],
+                travel: [{ q: "La stazione:", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Entrambe sono corrette.", "Stazione."], correct: 2, roast: "Ausgezeichnet!" }],
+                sports: [{ q: "La squadra:", options: ["Abbiamo vinto.", "Abbiamo trionfato.", "Entrambe sono corrette.", "Vittoria."], correct: 2, roast: "Toll!" }],
+                culture: [{ q: "Capolavoro:", options: ["Questo è un capolavoro.", "Opera stupenda.", "Bello.", "Capolavoro."], correct: 0, roast: "Hervorragend!" }],
+                dailylife: [{ q: "In ritardo:", options: ["Sono in ritardo.", "Ho ritardo.", "Entrambe sono corrette.", "Tardi."], correct: 0, roast: "Perfekt!" }]
             },
-            'GER-ENG': {
-                food: [
-                    { q: "German to English: Translate 'Ich möchte ein Bier':", options: ["I would like a beer.", "I want a beer of glass.", "Give me beer.", "I would like some biers."], correct: 0, roast: "Richtig! Aber deine Grammatik ist so trocken wie ein Brezen." }
-                ],
-                travel: [
-                    { q: "German to English: Translate 'Wo ist der Bahnhof?':", options: ["Where is the station?", "Where stays the station?", "Where is train place?", "Where are the station?"], correct: 0, roast: "Where is your intellect? Completely derailed." }
-                ],
-                sports: [
-                    { q: "German to English: Translate 'Wir haben das Spiel gewonnen !':", options: ["We won the match!", "We have win the match.", "We winned the match.", "We did win match."], correct: 0, roast: "Won! Not winned. Relegated to the amateur league." }
-                ],
-                culture: [
-                    { q: "German to English: Translate 'Ich liebe klassische Kunst':", options: ["I love classical art.", "I love the art classical.", "I am loving classical art.", "I love classical arts."], correct: 0, roast: "Your aesthetic appreciation of grammar is non-existent." }
-                ],
-                dailylife: [
-                    { q: "German to English: Translate 'Ich bin zu spät':", options: ["I am late.", "I am too late (or I am late).", "I run late.", "I am on late."], correct: 0, roast: "Late for acquiring a functioning intellect." }
-                ]
+            'ger-eng': {
+                food: [{ q: "Choose:", options: ["I prefer pizza to pasta.", "I prefer pizza than pasta.", "Pizza is good.", "I eat pizza."], correct: 0, roast: "Richtig!" }],
+                travel: [{ q: "Travel:", options: ["I went to Rome last summer.", "I have went to Rome.", "I go Rome.", "Travel."], correct: 0, roast: "Derailed." }],
+                sports: [{ q: "Sports:", options: ["Our team played very well.", "Our team played very good.", "Good play.", "Win."], correct: 0, roast: "Relegated!" }],
+                culture: [{ q: "Culture:", options: ["That museum was amazing.", "That museum were amazing.", "Museum good.", "Art."], correct: 0, roast: "Non-existent grammar." }],
+                dailylife: [{ q: "Daily:", options: ["You're going to be late.", "Your going to be late.", "Late.", "Time."], correct: 0, roast: "Late!" }]
             },
-            'GER-FRA': {
-                food: [
-                    { q: "Übersetze 'Ich möchte ein Croissant':", options: ["Je voudrais un croissant.", "Je veux un croissant.", "Sia A che B sind korrekt.", "Donne-moi croissant."], correct: 2, roast: "Sehr gut! Höflich oder direkt – beides funktioniert." }
-                ],
-                travel: [
-                    { q: "Übersetze 'Wo ist der Bahnhof?':", options: ["Où est la gare?", "Où se trouve la gare?", "Sia A che B sind perfekt.", "Où est le station?"], correct: 2, roast: "Ausgezeichnet! 'La gare' ist absolut korrekt." }
-                ],
-                sports: [
-                    { q: "Übersetze 'Wir haben gewonnen':", options: ["Nous avons gagné.", "On a gagné.", "Sia A che B sind absolut üblich.", "Nous gagnons."], correct: 2, roast: "Toll! 'Nous avons gagné' (formell) oder 'on a gagné' (mündlich)." }
-                ],
-                culture: [
-                    { q: "Übersetze 'Das ist ein Meisterwerk':", options: ["C'est un chef-d'œuvre.", "C'est une œuvre maîtresse.", "Sia A che B sind korrekt.", "C'est un travail maître."], correct: 2, roast: "Hervorragend! Französisches Kulturverständnis bewiesen." }
-                ],
-                dailylife: [
-                    { q: "Übersetze 'Ich bin zu spät':", options: ["Je suis en retard.", "J'ai du retard.", "Sia A che B sind richtig.", "Je suis tardif."], correct: 2, roast: "Perfekt! Du hast es verstanden." }
-                ]
+            'ger-fra': {
+                food: [{ q: "Choisis :", options: ["Je voudrais un croissant.", "Je veux un croissant.", "Les deux sont correctes.", "Croissant."], correct: 2, roast: "Sehr gut!" }],
+                travel: [{ q: "La gare :", options: ["Où est la gare?", "Où se trouve la gare?", "Les deux sont correctes.", "Gare."], correct: 2, roast: "Ausgezeichnet!" }],
+                sports: [{ q: "Le match :", options: ["Nous avons gagné.", "On a gagné.", "Les deux sont correctes.", "Sieg."], correct: 2, roast: "Toll!" }],
+                culture: [{ q: "Chef-d'œuvre :", options: ["C'est un chef-d'œuvre.", "Beau.", "Super.", "Art."], correct: 0, roast: "Hervorragend!" }],
+                dailylife: [{ q: "En retard :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Spät."], correct: 2, roast: "Perfekt!" }]
             }
         };
 
@@ -844,10 +697,10 @@
             } catch(e) {}
         }
 
-        const langToggleBtn = document.getElementById('langToggleBtn');
-        const langDropdown = document.getElementById('langDropdown');
-        const langOptions = document.querySelectorAll('.lang-option');
-        const headlineText = document.getElementById('headlineText');
+        const nativeLangOptions = document.querySelectorAll('#nativeLangOptions .lang-choice-btn');
+        const targetLangOptions = document.querySelectorAll('#targetLangOptions .lang-choice-btn');
+        const nativeLangLbl = document.getElementById('nativeLangLbl');
+        const targetLangLbl = document.getElementById('targetLangLbl');
         const heroSubtitle = document.getElementById('heroSubtitle');
         const characterImage = document.getElementById('characterImage');
         const characterCaption = document.getElementById('characterCaption');
@@ -867,37 +720,29 @@
         const roastBtnText = document.getElementById('roastBtnText');
         const customResultOutput = document.getElementById('customResultOutput');
 
-        langToggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langDropdown.classList.toggle('active');
-        });
-
-        window.addEventListener('click', () => {
-            langDropdown.classList.remove('active');
-        });
-
-        langOptions.forEach(opt => {
-            opt.addEventListener('click', () => {
-                currentMode = opt.getAttribute('data-mode');
-                currentUiLang = opt.getAttribute('data-ui');
-                const charFile = opt.getAttribute('data-char') + '.png';
-                const captionText = opt.getAttribute('data-caption');
-
-                langToggleBtn.innerText = opt.innerText.split('(')[0].trim() + " ▼";
-                langDropdown.classList.remove('active');
-
-                characterImage.src = charFile;
-                characterCaption.innerText = captionText;
-                setTutorMood('neutral');
-
+        nativeLangOptions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                nativeLangOptions.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentNative = btn.getAttribute('data-native');
                 updateUiTexts();
                 initTopic(currentTopic);
             });
         });
 
+        targetLangOptions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                targetLangOptions.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTarget = btn.getAttribute('data-target');
+                initTopic(currentTopic);
+            });
+        });
+
         function updateUiTexts() {
-            const t = uiTranslations[currentUiLang];
-            headlineText.innerHTML = t.headline;
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
+            nativeLangLbl.innerText = t.nativeLbl;
+            targetLangLbl.innerText = t.targetLbl;
             heroSubtitle.innerText = t.subtitle;
             tortureTitle.innerText = t.tortureTitle;
             tortureDesc.innerText = t.tortureDesc;
@@ -926,9 +771,11 @@
             currentTopic = topicKey;
             currentIndex = 0;
             score = 0;
-            // Fallback gracefully if specific array doesn't have data yet
-            currentQuestions = dataSet[currentMode]?.[topicKey] || dataSet['ITA-ENG'][topicKey] || dataSet['ITA-ENG']['food'];
-            const t = uiTranslations[currentUiLang];
+            
+            const comboKey = `${currentNative}-${currentTarget}`;
+            currentQuestions = dataSet[comboKey]?.[topicKey] || dataSet['it-eng'][topicKey] || dataSet['it-eng']['food'];
+            
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
             const formattedTopic = t.topics[topicKey] ? t.topics[topicKey].replace(/^[^\w\s]+/, '').trim() : topicKey;
             drillSectionTitle.innerText = `${formattedTopic} ${t.drillTitleSuffix}`;
             setTutorMood('neutral');
@@ -951,7 +798,7 @@
         function loadQuestion() {
             const item = currentQuestions[currentIndex];
             prepareShuffledOptions(item);
-            const t = uiTranslations[currentUiLang];
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
 
             progressIndicator.innerText = `${t.questionLabel} ${currentIndex + 1} / ${currentQuestions.length}`;
             questionBox.innerText = item.q;
@@ -972,7 +819,7 @@
         function handleAnswer(selectedOriginalIdx, correctOriginalIdx, roastText) {
             const buttons = optionsGrid.querySelectorAll('.option-btn');
             const isCorrect = (selectedOriginalIdx === correctOriginalIdx);
-            const t = uiTranslations[currentUiLang];
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
 
             if (isCorrect) {
                 score++;
@@ -1000,7 +847,7 @@
                 roastFeedback.style.borderColor = '#12B76A';
                 roastFeedback.style.color = '#027A48';
             } else {
-                roastFeedback.innerHTML = `<strong>🔥 ${t.roastHeader}</strong> ${roastText}`;
+                roastFeedback.innerHTML = `<strong>🎩 ${t.roastHeader}</strong> Ah, a valiant effort, though entirely incorrect. Allow me to guide you before your syntax causes permanent diplomatic damage. — <em>${roastText}</em>`;
                 roastFeedback.style.backgroundColor = '#FDF3F2';
                 roastFeedback.style.borderColor = '#FECDCA';
                 roastFeedback.style.color = '#B42318';
@@ -1011,7 +858,7 @@
 
         nextQuestionBtn.addEventListener('click', () => {
             currentIndex++;
-            const t = uiTranslations[currentUiLang];
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
             if (currentIndex >= currentQuestions.length) {
                 const percentage = Math.round((score / currentQuestions.length) * 100);
                 questionBox.innerHTML = `<strong>📊 ${t.completedText} ${score} / ${currentQuestions.length} (${percentage}%)</strong>`;
@@ -1021,16 +868,16 @@
 
                 if (percentage >= 60) {
                     setTutorMood('happy');
-                    characterCaption.innerText = currentUiLang === 'it' ? "Il tutor è sorpreso: te la sei cavata (per questa volta)." : 
-                                                 currentUiLang === 'en' ? "The tutor is surprised: you managed okay (this time)." :
-                                                 currentUiLang === 'fr' ? "Le tuteur est surpris : vous vous en êtes sorti (pour cette fois)." :
-                                                 "Der Tutor ist überrascht: Du hast dich gut geschlagen (diesmal).";
+                    characterCaption.innerText = currentNative === 'it' ? "Il tutor è sorpreso: te la sei cavata." : 
+                                                 currentNative === 'en' ? "The tutor is surprised: you managed okay." :
+                                                 currentNative === 'fr' ? "Le tuteur est surpris : vous vous en êtes sorti." :
+                                                 "Der Tutor ist überrascht: Du hast dich gut geschlagen.";
                 } else {
                     setTutorMood('angry');
-                    characterCaption.innerText = currentUiLang === 'it' ? "Disastro totale! Sotto al 60%: il tutor è furioso con te." :
-                                                 currentUiLang === 'en' ? "Total disaster! Under 60%: the tutor is furious with you." :
-                                                 currentUiLang === 'fr' ? "Désastre total ! Moins de 60 % : le tuteur est furieux contre vous." :
-                                                 "Totalabsturz! Unter 60%: Der Tutor ist wütend auf dich.";
+                    characterCaption.innerText = currentNative === 'it' ? "Disastro totale! Il tutor è furioso." :
+                                                 currentNative === 'en' ? "Total disaster! The tutor is furious." :
+                                                 currentNative === 'fr' ? "Désastre total ! Le tuteur est furieux." :
+                                                 "Totalabsturz! Der Tutor ist wütend.";
                 }
                 return;
             }
@@ -1050,7 +897,7 @@
 
         roastBtn.addEventListener('click', () => {
             const val = userSentence.value.trim();
-            const t = uiTranslations[currentUiLang];
+            const t = uiTranslations[currentNative] || uiTranslations['it'];
             if(!val) {
                 playSound('error');
                 setTutorMood('angry');
