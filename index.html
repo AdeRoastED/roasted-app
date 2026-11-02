@@ -144,42 +144,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
         }
 
         .image-wrapper {
-            position: relative;
             width: 100%;
             max-width: 600px;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(16, 24, 40, 0.1);
             border: 1px solid var(--card-border);
+            background-color: white;
         }
 
         .image-wrapper img {
             width: 100%;
             height: auto;
             display: block;
-        }
-
-        /* Scritta RoastED posizionata esattamente sopra il fumetto dell'immagine */
-        .overlay-roasted {
-            position: absolute;
-            top: 28%;
-            left: 55%;
-            transform: translate(-50%, -50%);
-            font-family: "Georgia", serif;
-            font-size: 32px;
-            font-style: italic;
-            font-weight: 700;
-            color: var(--accent-red);
-            text-transform: lowercase;
-            letter-spacing: -1px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 4px 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -193,7 +173,7 @@
         <section class="hero-section">
             <h1 class="headline">
                 Grammar that <span class="highlight">sticks</span><br>
-                porque it stings.
+                because it stings.
             </h1>
             <p class="subtitle">
                 Forget boring conjugation tables. Write a sentence in<br>
@@ -210,10 +190,7 @@
 
         <section class="illustration-section">
             <div class="image-wrapper">
-                <!-- Immagine ufficiale caricata nel repository -->
                 <img src="illustration.png" alt="RoastED illustration">
-                <!-- Testo RoastED sopra il fumetto -->
-                <div class="overlay-roasted">RoastED</div>
             </div>
         </section>
     </main>
