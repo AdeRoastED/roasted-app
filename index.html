@@ -1,387 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>roastED - Bilingual English-Italian Drills</title>
+    <title>RoastED - Grammar that sticks</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent-color: #f43f5e;
-            --accent-hover: #e11d48;
-            --border-color: #334155;
+            --bg-color: #F8F5EE;
+            --text-dark: #101828;
+            --text-muted: #475467;
+            --accent-red: #D93025;
+            --btn-red-hover: #C22A21;
+            --card-border: #E4E7EC;
+            --card-shadow: rgba(16, 24, 40, 0.05);
         }
+
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
+
         .container {
             width: 100%;
-            max-width: 600px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 64px;
         }
-        header h1 {
-            margin: 0 0 8px 0;
-            font-size: 1.8rem;
-            color: var(--accent-color);
+
+        @media (min-width: 992px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                gap: 80px;
+            }
         }
-        header p {
-            margin: 0 0 20px 0;
-            color: #94a3b8;
-            font-size: 0.95rem;
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
         }
-        .filter-container {
-            margin-bottom: 20px;
+
+        .lang-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #E6EDFB;
+            color: #1A3F9C;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .filter-container label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #0f172a;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            font-size: 1rem;
-        }
-        .question-box {
-            font-size: 1.15rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        .options-list {
+
+        .hero-section {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 24px;
         }
-        .option-btn {
-            background-color: #0f172a;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 12px 16px;
-            border-radius: 8px;
-            text-align: left;
+
+        .headline {
+            font-size: 40px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+            letter-spacing: -1.5px;
+        }
+
+        .headline .highlight {
+            font-family: "Georgia", serif;
+            color: var(--accent-red);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        @media (min-width: 1200px) {
+            .headline {
+                font-size: 56px;
+            }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .drills-section {
+            margin-top: 24px;
+        }
+
+        .drills-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+        }
+
+        .drills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .drill-card {
+            background-color: white;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease-in-out;
         }
-        .option-btn:hover {
-            border-color: var(--accent-color);
+
+        .drill-card:hover {
+            border-color: #D0D5DD;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(16, 24, 40, 0.08);
         }
-        .roast-feedback {
-            padding: 14px;
-            border-radius: 8px;
-            background-color: #27272a;
-            border-left: 4px solid var(--accent-color);
-            margin-top: 15px;
-            font-size: 0.95rem;
-            display: none;
+
+        .drill-icon-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .next-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
+
+        .drill-icon {
+            font-size: 24px;
+        }
+
+        .drill-level {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: #475467;
+            font-weight: 500;
+        }
+
+        .drill-level-icon {
+            color: #FFC107;
+        }
+
+        .drill-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .drill-meta {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #98A2B3;
+            margin: 0;
+        }
+
+        .illustration-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: flex-end;
+        }
+
+        .illustration-container {
             width: 100%;
-            margin-top: 15px;
-            display: none;
+            max-width: 600px;
+            height: 420px;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            background-color: white;
+            box-shadow: 0 10px 15px rgba(16, 24, 40, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        .next-btn:hover {
-            background-color: var(--accent-hover);
+
+        /* --- Scena e Fumetto Centrale con RoastED --- */
+        .stage-banner {
+            position: absolute;
+            top: 40px;
+            width: 80%;
+            height: 200px;
+            background: #FFFBEB;
+            border: 3px solid #101828;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 0 #101828;
+            z-index: 5;
         }
-        .progress-indicator {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 12px;
+
+        .roasted-logo-center {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .roasted-logo-text {
+            font-family: "Georgia", serif;
+            font-size: 48px;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--accent-red);
+            text-transform: lowercase;
+            letter-spacing: -1px;
+        }
+
+        .roasted-logo-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-red);
+            border-radius: 100px;
+            margin-top: 20px;
+        }
+
+        /* --- Bottoni di Azione in basso --- */
+        .action-buttons-row {
+            position: absolute;
+            bottom: 30px;
+            display: flex;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .get-roasted-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--accent-red);
+            color: white;
+            border: 2px solid #101828;
+            padding: 14px 24px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #101828;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .get-roasted-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #101828;
+        }
+
+        .quick-drill-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: white;
+            color: var(--text-dark);
+            border: 2px solid #101828;
+            padding: 14px 24px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #101828;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .quick-drill-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #101828;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>roastED</h1>
-            <p>100 bilingual drills across your 5 core topics with per-option roasts.</p>
-        </header>
 
-        <div class="filter-container">
-            <label for="topicFilter">Filter by Topic:</label>
-            <select id="topicFilter" onchange="filterQuestions()">
-                <option value="all">All Topics (100 Questions)</option>
-                <option value="Travels">Travels (20 Questions)</option>
-                <option value="Geography">Geography (20 Questions)</option>
-                <option value="Food">Food (20 Questions)</option>
-                <option value="Sports">Sports (20 Questions)</option>
-                <option value="Culture">Culture (20 Questions)</option>
-            </select>
-        </div>
+    <header class="header">
+        <div class="lang-badge">ENGLISH GB • ITALIANO IT</div>
+    </header>
 
-        <div class="progress-indicator" id="progressIndicator">Question 1 of 100</div>
-        <div class="question-box" id="questionText">Loading question...</div>
-        <div class="options-list" id="optionsList"></div>
-        <div class="roast-feedback" id="roastFeedback"></div>
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question</button>
-    </div>
+    <main class="container">
+        <section class="hero-section">
+            <h1 class="headline">
+                Grammar that <span class="highlight">sticks</span><br>
+                because it stings.
+            </h1>
+            <p class="subtitle">
+                Forget boring conjugation tables. Write a sentence in<br>
+                English or Italian and our AI tutor corrects it — with a<br>
+                roast you’ll never forget. Mistakes you laugh at are<br>
+                mistakes you don’t repeat.
+            </p>
 
-    <script>
-        const questions = [
-            // --- TRAVELS (20) ---
-            { topic: "Travels", q: "Choose the correct Italian translation for: 'Where is the nearest train station?'", options: [
-                { text: "Dov'è la stazione ferroviaria più vicina?", correct: true, roast: "Spot on." },
-                { text: "Quanto costa questo biglietto?", correct: false, roast: "That's asking cost." },
-                { text: "Vorrei un caffè per favore.", correct: false, roast: "Coffee won't get you to the platform." }
-            ]},
-            { topic: "Travels", q: "How do you ask for a single ticket?", options: [
-                { text: "Un biglietto di sola andata.", correct: true, roast: "Correct." },
-                { text: "Un biglietto di andata e ritorno.", correct: false, roast: "That's round trip." },
-                { text: "Dov'è il bagno?", correct: false, roast: "Wrong priority." }
-            ]},
-            { topic: "Travels", q: "Translate: 'My luggage was lost at the airport.'", options: [
-                { text: "Il mio bagaglio è stato smarrito all'aeroporto.", correct: true, roast: "Correct." },
-                { text: "Il mio treno è in ritardo.", correct: false, roast: "Late train." },
-                { text: "Ho perso il passaporto.", correct: false, roast: "Passport lost." }
-            ]},
-            { topic: "Travels", q: "What does 'binario' mean?", options: [
-                { text: "Platform / Track", correct: true, roast: "Correct." },
-                { text: "Ticket counter", correct: false, roast: "Nope." },
-                { text: "Customs", correct: false, roast: "Incorrect." }
-            ]},
-            { topic: "Travels", q: "Translate: 'Do you validate your ticket?'", options: [
-                { text: "Convalidi il tuo biglietto?", correct: true, roast: "Correct." },
-                { text: "Avete camere libere?", correct: false, roast: "Hotel rooms." },
-                { text: "Quanto dura il volo?", correct: false, roast: "Flight duration." }
-            ]},
-            { topic: "Travels", q: "Translate: 'Aisle seat or window seat?'", options: [{ text: "Posto corridoio o posto finestrino?", correct: true, roast: "Correct." }, { text: "Dove si compra il passaporto?", correct: false, roast: "Nonsense." }] },
-            { topic: "Travels", q: "Translate: 'Flight delay'", options: [{ text: "Ritardo del volo", correct: true, roast: "Correct." }, { text: "Arrivo in orario", correct: false, roast: "On time." }] },
-            { topic: "Travels", q: "Translate: 'Customs declaration'", options: [{ text: "Dichiarazione doganale", correct: true, roast: "Correct." }, { text: "Controllo passaporti", correct: false, roast: "Passport control." }] },
-            { topic: "Travels", q: "Translate: 'Boarding pass'", options: [{ text: "Carta d'imbarco", correct: true, roast: "Correct." }, { text: "Carta di credito", correct: false, roast: "Credit card." }] },
-            { topic: "Travels", q: "Translate: 'Where is the hotel?'", options: [{ text: "Dov'è l'albergo?", correct: true, roast: "Correct." }, { text: "Dov'è la spiaggia?", correct: false, roast: "Beach." }] },
-            { topic: "Travels", q: "Translate: 'Passport control'", options: [{ text: "Controllo passaporti", correct: true, roast: "Correct." }, { text: "Ritiro bagagli", correct: false, roast: "Baggage claim." }] },
-            { topic: "Travels", q: "Translate: 'Exit'", options: [{ text: "Uscita", correct: true, roast: "Correct." }, { text: "Entrata", correct: false, roast: "Entrance." }] },
-            { topic: "Travels", q: "Translate: 'Tourist information'", options: [{ text: "Ufficio informazioni turistiche", correct: true, roast: "Correct." }, { text: "Stazione di polizia", correct: false, roast: "Police." }] },
-            { topic: "Travels", q: "Translate: 'Single room with shower'", options: [{ text: "Camera singola con doccia", correct: true, roast: "Correct." }, { text: "Camera doppia", correct: false, roast: "Double." }] },
-            { topic: "Travels", q: "Translate: 'Do you have a map?'", options: [{ text: "Ha una mappa?", correct: true, roast: "Correct." }, { text: "Ha una penna?", correct: false, roast: "Pen." }] },
-            { topic: "Travels", q: "Translate: 'Delayed train'", options: [{ text: "Treno in ritardo", correct: true, roast: "Correct." }, { text: "Treno soppresso", correct: false, roast: "Cancelled." }] },
-            { topic: "Travels", q: "Translate: 'Lost property'", options: [{ text: "Ufficio oggetti smarriti", correct: true, roast: "Correct." }, { text: "Ufficio postale", correct: false, roast: "Post office." }] },
-            { topic: "Travels", q: "Translate: 'Departure time'", options: [{ text: "Orario di partenza", correct: true, roast: "Correct." }, { text: "Orario di arrivo", correct: false, roast: "Arrival." }] },
-            { topic: "Travels", q: "Translate: 'Have a good trip!'", options: [{ text: "Buon viaggio!", correct: true, roast: "Correct." }, { text: "Buona notte!", correct: false, roast: "Night." }] },
-            { topic: "Travels", q: "Translate: 'Direct flight'", options: [{ text: "Volo diretto", correct: true, roast: "Correct." }, { text: "Volo charter", correct: false, roast: "Charter." }] },
+            <div class="drills-section">
+                <h2 class="drills-header">Top Current Drills:</h2>
+                <div class="drills-grid">
+                    <div class="drill-card">
+                        <div class="drill-icon-row">
+                            <span class="drill-icon">☕</span>
+                            <div class="drill-level">
+                                <span class="drill-level-icon">🔥</span> (medium)
+                            </div>
+                        </div>
+                        <h3 class="drill-title">Espresso or<br>Americano? (Bar)</h3>
+                        <p class="drill-meta">LEVEL 1 • 20 DRILLS</p>
+                    </div>
+                    <div class="drill-card">
+                        <div class="drill-icon-row">
+                            <span class="drill-icon">🚕</span>
+                            <div class="drill-level">
+                                <span class="drill-level-icon">🔥</span> (high)
+                            </div>
+                        </div>
+                        <h3 class="drill-title">Taxi Tussle (Rome)</h3>
+                        <p class="drill-meta">LEVEL 1 • 20 DRILLS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            // --- GEOGRAPHY (20) ---
-            { topic: "Geography", q: "What is the capital of Italy?", options: [
-                { text: "Roma", correct: true, roast: "Correct." },
-                { text: "Milano", correct: false, roast: "Financial capital." },
-                { text: "Firenze", correct: false, roast: "Art capital." }
-            ]},
-            { topic: "Geography", q: "Which mountain range forms the northern border?", options: [
-                { text: "Le Alpi", correct: true, roast: "Correct." },
-                { text: "Gli Appennini", correct: false, roast: "Spine of Italy." },
-                { text: "I Pirenei", correct: false, roast: "Wrong country." }
-            ]},
-            { topic: "Geography", q: "Translate: 'The Mediterranean Sea is warm.'", options: [
-                { text: "Il Mar Mediterraneo è caldo.", correct: true, roast: "Correct." },
-                { text: "Il fiume Po è lungo.", correct: false, roast: "Po river." }
-            ]},
-            { topic: "Geography", q: "What is Italy's longest river?", options: [
-                { text: "Il fiume Po", correct: true, roast: "Correct." },
-                { text: "Il Tevere", correct: false, roast: "Tiber." },
-                { text: "L'Arno", correct: false, roast: "Arno." }
-            ]},
-            { topic: "Geography", q: "Translate: 'Island'", options: [{ text: "Isola", correct: true, roast: "Correct." }, { text: "Penisola", correct: false, roast: "Peninsula." }] },
-            { topic: "Geography", q: "Translate: 'Lake Como'", options: [{ text: "Lago di Como", correct: true, roast: "Correct." }, { text: "Lago di Garda", correct: false, roast: "Garda." }] },
-            { topic: "Geography", q: "Translate: 'Active volcano'", options: [{ text: "Vulcano attivo", correct: true, roast: "Correct." }, { text: "Montagna", correct: false, roast: "Mountain." }] },
-            { topic: "Geography", q: "Translate: 'The boot of Italy'", options: [{ text: "Lo stivale d'Italia", correct: true, roast: "Correct." }, { text: "Il cappello", correct: false, roast: "Hat." }] },
-            { topic: "Geography", q: "Translate: 'Southern Italy'", options: [{ text: "Italia meridionale", correct: true, roast: "Correct." }, { text: "Italia settentrionale", correct: false, roast: "North." }] },
-            { topic: "Geography", q: "Translate: 'Northern Italy'", options: [{ text: "Italia settentrionale", correct: true, roast: "Correct." }, { text: "Italia centrale", correct: false, roast: "Center." }] },
-            { topic: "Geography", q: "Translate: 'Sicily is the largest island.'", options: [{ text: "La Sicilia è l'isola più grande.", correct: true, roast: "Correct." }, { text: "La Sardegna", correct: false, roast: "Second largest." }] },
-            { topic: "Geography", q: "Translate: 'Mount Etna'", options: [{ text: "Il Monte Etna", correct: true, roast: "Correct." }, { text: "Vesuvio", correct: false, roast: "Vesuvius." }] },
-            { topic: "Geography", q: "Translate: 'Valley'", options: [{ text: "Valle", correct: true, roast: "Correct." }, { text: "Collina", correct: false, roast: "Hill." }] },
-            { topic: "Geography", q: "Translate: 'Coastline'", options: [{ text: "Costa", correct: true, roast: "Correct." }, { text: "Deserto", correct: false, roast: "Desert." }] },
-            { topic: "Geography", q: "Translate: 'Border'", options: [{ text: "Confine", correct: true, roast: "Correct." }, { text: "Ponte", correct: false, roast: "Bridge." }] },
-            { topic: "Geography", q: "Translate: 'Gulf of Naples'", options: [{ text: "Golfo di Napoli", correct: true, roast: "Correct." }, { text: "Mar Adriatico", correct: false, roast: "Adriatic." }] },
-            { topic: "Geography", q: "Translate: 'Forest'", options: [{ text: "Foresta", correct: true, roast: "Correct." }, { text: "Prato", correct: false, roast: "Lawn." }] },
-            { topic: "Geography", q: "Translate: 'Plain'", options: [{ text: "Pianura", correct: true, roast: "Correct." }, { text: "Altopiano", correct: false, roast: "Plateau." }] },
-            { topic: "Geography", q: "Translate: 'Strait of Messina'", options: [{ text: "Stretto di Messina", correct: true, roast: "Correct." }, { text: "Canale", correct: false, roast: "Channel." }] },
-            { topic: "Geography", q: "Translate: 'Waterfall'", options: [{ text: "Cascata", correct: true, roast: "Correct." }, { text: "Fiume", correct: false, roast: "River." }] },
+        <section class="illustration-section">
+            <div class="illustration-container">
+                <!-- Fumetto centrale con la scritta RoastED -->
+                <div class="stage-banner">
+                    <div class="roasted-logo-center">
+                        <span class="roasted-logo-text">RoastED</span>
+                        <div class="roasted-logo-dot"></div>
+                    </div>
+                </div>
 
-            // --- FOOD (20) ---
-            { topic: "Food", q: "How do you order an espresso?", options: [
-                { text: "Un espresso, per favore.", correct: true, roast: "Correct." },
-                { text: "Un cappuccino dopo cena.", correct: false, roast: "Culinary felony." },
-                { text: "Caffè americano grande.", correct: false, roast: "Hot water bowl." }
-            ]},
-            { topic: "Food", q: "Translate: 'The pasta is al dente.'", options: [
-                { text: "La pasta è al dente.", correct: true, roast: "Correct." },
-                { text: "La pasta è troppo cotta.", correct: false, roast: "Overcooked mush." }
-            ]},
-            { topic: "Food", q: "What is 'prosciutto'?", options: [
-                { text: "Cured dry-cured ham", correct: true, roast: "Correct." },
-                { text: "Fresh mozzarella", correct: false, roast: "Cheese." }
-            ]},
-            { topic: "Food", q: "Translate: 'The bill please.'", options: [
-                { text: "Il conto, per favore.", correct: true, roast: "Correct." },
-                { text: "Il menu", correct: false, roast: "Menu." }
-            ]},
-            { topic: "Food", q: "Translate: 'Olive oil'", options: [{ text: "Olio d'oliva", correct: true, roast: "Correct." }, { text: "Aceto", correct: false, roast: "Vinegar." }] },
-            { topic: "Food", q: "Translate: 'Fresh fish'", options: [{ text: "Pesce fresco", correct: true, roast: "Correct." }, { text: "Carne", correct: false, roast: "Meat." }] },
-            { topic: "Food", q: "Translate: 'Garlic and oil'", options: [{ text: "Aglio e olio", correct: true, roast: "Correct." }, { text: "Pizza", correct: false, roast: "Pizza." }] },
-            { topic: "Food", q: "Translate: 'Homemade dessert'", options: [{ text: "Dolce fatto in casa", correct: true, roast: "Correct." }, { text: "Gelato confezionato", correct: false, roast: "Packaged." }] },
-            { topic: "Food", q: "Translate: 'Red wine'", options: [{ text: "Vino rosso", correct: true, roast: "Correct." }, { text: "Birra", correct: false, roast: "Beer." }] },
-            { topic: "Food", q: "Translate: 'Sparkling water'", options: [{ text: "Acqua frizzante", correct: true, roast: "Correct." }, { text: "Latte", correct: false, roast: "Milk." }] },
-            { topic: "Food", q: "Translate: 'I have a reservation'", options: [{ text: "Ho una prenotazione", correct: true, roast: "Correct." }, { text: "Ho fame", correct: false, roast: "Hungry." }] },
-            { topic: "Food", q: "Translate: 'Cover charge'", options: [{ text: "Il coperto", correct: true, roast: "Correct." }, { text: "La mancia", correct: false, roast: "Tip." }] },
-            { topic: "Food", q: "Translate: 'Enjoy your meal!'", options: [{ text: "Buon appetito!", correct: true, roast: "Correct." }, { text: "Salute!", correct: false, roast: "Cheers." }] },
-            { topic: "Food", q: "Translate: 'Breakfast'", options: [{ text: "Colazione", correct: true, roast: "Correct." }, { text: "Pranzo", correct: false, roast: "Lunch." }] },
-            { topic: "Food", q: "Translate: 'Dinner'", options: [{ text: "Cena", correct: true, roast: "Correct." }, { text: "Merenda", correct: false, roast: "Snack." }] },
-            { topic: "Food", q: "Translate: 'Cheese board'", options: [{ text: "Tagliere di formaggi", correct: true, roast: "Correct." }, { text: "Pane", correct: false, roast: "Bread." }] },
-            { topic: "Food", q: "Translate: 'Spicy salami'", options: [{ text: "Salame piccante", correct: true, roast: "Correct." }, { text: "Prosciutto cotto", correct: false, roast: "Ham." }] },
-            { topic: "Food", q: "Translate: 'Traditional recipe'", options: [{ text: "Ricetta tradizionale", correct: true, roast: "Correct." }, { text: "Fast food", correct: false, roast: "Fast food." }] },
-            { topic: "Food", q: "Translate: 'Tomato sauce'", options: [{ text: "Salsa di pomodoro", correct: true, roast: "Correct." }, { text: "Brodo", correct: false, roast: "Broth." }] },
-            { topic: "Food", q: "Translate: 'Cheers!'", options: [{ text: "Cin cin!", correct: true, roast: "Correct." }, { text: "Addio", correct: false, roast: "Farewell." }] },
+                <!-- Bottoni in basso -->
+                <div class="action-buttons-row">
+                    <button class="get-roasted-btn">
+                        <span>🔥</span> Get roasted
+                    </button>
+                    <button class="quick-drill-btn">
+                        Try a quick drill
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
 
-            // --- SPORTS (20) ---
-            { topic: "Sports", q: "What is the most popular sport in Italy?", options: [
-                { text: "Il calcio", correct: true, roast: "Correct." },
-                { text: "La pallacanestro", correct: false, roast: "Basketball." },
-                { text: "Il rugby", correct: false, roast: "Rugby." }
-            ]},
-            { topic: "Sports", q: "Translate: 'The national team won.'", options: [
-                { text: "La Nazionale ha vinto.", correct: true, roast: "Forza Azzurri!" },
-                { text: "La squadra ha perso.", correct: false, roast: "Lost." }
-            ]},
-            { topic: "Sports", q: "What does 'tifoso' mean?", options: [
-                { text: "Sports fan", correct: true, roast: "Correct." },
-                { text: "Referee", correct: false, roast: "Arbitro." }
-            ]},
-            { topic: "Sports", q: "Translate: 'Red card'", options: [
-                { text: "Cartellino rosso", correct: true, roast: "Correct." },
-                { text: "Pallone", correct: false, roast: "Ball." }
-            ]},
-            { topic: "Sports", q: "Translate: 'Stadium'", options: [{ text: "Stadio", correct: true, roast: "Correct." }, { text: "Palestra", correct: false, roast: "Gym." }] },
-            { topic: "Sports", q: "Translate: 'Cycling race'", options: [{ text: "Corsa ciclistica", correct: true, roast: "Correct." }, { text: "Maratona", correct: false, roast: "Marathon." }] },
-            { topic: "Sports", q: "Translate: 'Goal!'", options: [{ text: "Gol!", correct: true, roast: "Correct." }, { text: "Punto!", correct: false, roast: "Point." }] },
-            { topic: "Sports", q: "Translate: 'Referee'", options: [{ text: "Arbitro", correct: true, roast: "Correct." }, { text: "Allenatore", correct: false, roast: "Coach." }] },
-            { topic: "Sports", q: "Translate: 'Skiing'", options: [{ text: "Sciare", correct: true, roast: "Correct." }, { text: "Nuotare", correct: false, roast: "Swim." }] },
-            { topic: "Sports", q: "Translate: 'Grand Prix'", options: [{ text: "Gran Premio", correct: true, roast: "Correct." }, { text: "Gara", correct: false, roast: "Race." }] },
-            { topic: "Sports", q: "Translate: 'Tennis racket'", options: [{ text: "Racchetta da tennis", correct: true, roast: "Correct." }, { text: "Mazza", correct: false, roast: "Bat." }] },
-            { topic: "Sports", q: "Translate: 'Championship'", options: [{ text: "Campionato", correct: true, roast: "Correct." }, { text: "Torneo", correct: false, roast: "Tournament." }] },
-            { topic: "Sports", q: "Translate: 'Pool'", options: [{ text: "Piscina", correct: true, roast: "Correct." }, { text: "Campo", correct: false, roast: "Field." }] },
-            { topic: "Sports", q: "Translate: 'Basketball court'", options: [{ text: "Campo da basket", correct: true, roast: "Correct." }, { text: "Pista", correct: false, roast: "Track." }] },
-            { topic: "Sports", q: "Translate: 'Gold medal'", options: [{ text: "Medaglia d'oro", correct: true, roast: "Correct." }, { text: "Coppa", correct: false, roast: "Cup." }] },
-            { topic: "Sports", q: "Translate: 'Half-time'", options: [{ text: "Intervallo", correct: true, roast: "Correct." }, { text: "Supplementari", correct: false, roast: "Extra time." }] },
-            { topic: "Sports", q: "Translate: 'Training'", options: [{ text: "Allenamento", correct: true, roast: "Correct." }, { text: "Partita", correct: false, roast: "Match." }] },
-            { topic: "Sports", q: "Translate: 'Sports club'", options: [{ text: "Società sportiva", correct: true, roast: "Correct." }, { text: "Arena", correct: false, roast: "Arena." }] },
-            { topic: "Sports", q: "Translate: 'Winner'", options: [{ text: "Vincitore", correct: true, roast: "Correct." }, { text: "Perdente", correct: false, roast: "Loser." }] },
-            { topic: "Sports", q: "Translate: 'To kick'", options: [{ text: "Calciare", correct: true, roast: "Correct." }, { text: "Lanciare", correct: false, roast: "Throw." }] },
-
-            // --- CULTURE (20) ---
-            { topic: "Culture", q: "Translate: 'Renaissance art'", options: [
-                { text: "L'arte rinascimentale", correct: true, roast: "Correct." },
-                { text: "Il traffico", correct: false, roast: "Traffic." }
-            ]},
-            { topic: "Culture", q: "What is 'La Scala'?", options: [
-                { text: "A famous opera house", correct: true, roast: "Correct." },
-                { text: "A staircase", correct: false, roast: "Stairs." }
-            ]},
-            { topic: "Culture", q: "Translate: 'Italian cinema'", options: [
-                { text: "Il cinema italiano", correct: true, roast: "Correct." },
-                { text: "La cucina", correct: false, roast: "Cuisine." }
-            ]},
-            { topic: "Culture", q: "What does 'Cogli l'attimo' mean?", options: [
-                { text: "Seize the day", correct: true, roast: "Correct." },
-                { text: "Sleep all day", correct: false, roast: "Lazy." }
-            ]},
-            { topic: "Culture", q: "Translate: 'Opera singer'", options: [{ text: "Cantante lirico", correct: true, roast: "Correct." }, { text: "Rockstar", correct: false, roast: "Rock." }] },
-            { topic: "Culture", q: "Translate: 'Museum'", options: [{ text: "Museo", correct: true, roast: "Correct." }, { text: "Galleria", correct: false, roast: "Gallery." }] },
-            { topic: "Culture", q: "Translate: 'Italian literature'", options: [{ text: "Letteratura italiana", correct: true, roast: "Correct." }, { text: "Giornale", correct: false, roast: "Newspaper." }] },
-            { topic: "Culture", q: "Translate: 'The Colosseum'", options: [{ text: "Il Colosseo", correct: true, roast: "Correct." }, { text: "Torre di Pisa", correct: false, roast: "Tower." }] },
-            { topic: "Culture", q: "Translate: 'Venice Carnival'", options: [{ text: "Il Carnevale di Venezia", correct: true, roast: "Correct." }, { text: "Festa", correct: false, roast: "Party." }] },
-            { topic: "Culture", q: "Translate: 'Masterpiece'", options: [{ text: "Capolavoro", correct: true, roast: "Correct." }, { text: "quadro", correct: false, roast: "Painting." }] },
-            { topic: "Culture", q: "Translate: 'Poet Dante'", options: [{ text: "Il poeta Dante", correct: true, roast: "Correct." }, { text: "Da Vinci", correct: false, roast: "Inventor." }] },
-            { topic: "Culture", q: "Translate: 'Fashion week'", options: [{ text: "La settimana della moda", correct: true, roast: "Correct." }, { text: "Sfilata", correct: false, roast: "Parade." }] },
-            { topic: "Culture", q: "Translate: 'Duomo'", options: [{ text: "Duomo / Cattedrale", correct: true, roast: "Correct." }, { text: "Chiesa", correct: false, roast: "Church." }] },
-            { topic: "Culture", q: "Translate: 'Architecture'", options: [{ text: "Architettura", correct: true, roast: "Correct." }, { text: "Scultura", correct: false, roast: "Sculpture." }] },
-            { topic: "Culture", q: "Translate: 'Theatre'", options: [{ text: "Spettacolo teatrale", correct: true, roast: "Correct." }, { text: "Concerto", correct: false, roast: "Concert." }] },
-            { topic: "Culture", q: "Translate: 'Tradition'", options: [{ text: "Tradizione", correct: true, roast: "Correct." }, { text: "Innovazione", correct: false, roast: "Tech." }] },
-            { topic: "Culture", q: "Translate: 'Ancient ruins'", options: [{ text: "Rovine antiche", correct: true, roast: "Correct." }, { text: "Edificio moderno", correct: false, roast: "Modern." }] },
-            { topic: "Culture", q: "Translate: 'Vatican Museums'", options: [{ text: "Musei Vaticani", correct: true, roast: "Correct." }, { text: "Uffizi", correct: false, roast: "Florence." }] },
-            { topic: "Culture", q: "Translate: 'Classical music'", options: [{ text: "Musica classica", correct: true, roast: "Correct." }, { text: "Pop", correct: false, roast: "Pop." }] },
-            { topic: "Culture", q: "Translate: 'Cultural heritage'", options: [{ text: "Patrimonio culturale", correct: true, roast: "Correct." }, { text: "Monumento", correct: false, roast: "Monument." }] }
-        ];
-
-        let currentFilteredQuestions = [...questions];
-        let currentIndex = 0;
-
-        function filterQuestions() {
-            const selectedTopic = document.getElementById("topicFilter").value;
-            if (selectedTopic === "all") {
-                currentFilteredQuestions = [...questions];
-            } else {
-                currentFilteredQuestions = questions.filter(q => q.topic === selectedTopic);
-            }
-            currentIndex = 0;
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const qObj = currentFilteredQuestions[currentIndex];
-            if (!qObj) return;
-
-            document.getElementById("progressIndicator").innerText = `Question ${currentIndex + 1} of ${currentFilteredQuestions.length} (${qObj.topic})`;
-            document.getElementById("questionText").innerText = qObj.q;
-            
-            const optionsList = document.getElementById("optionsList");
-            optionsList.innerHTML = "";
-            
-            document.getElementById("roastFeedback").style.display = "none";
-            document.getElementById("nextBtn").style.display = "none";
-
-            qObj.options.forEach((opt) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn";
-                btn.innerText = opt.text;
-                btn.onclick = () => selectOption(opt);
-                optionsList.appendChild(btn);
-            });
-        }
-
-        function selectOption(opt) {
-            const feedback = document.getElementById("roastFeedback");
-            feedback.style.display = "block";
-            feedback.style.borderColor = opt.correct ? "#10b981" : "var(--accent-color)";
-            feedback.innerHTML = `<strong>${opt.correct ? 'Correct!' : 'Incorrect.'}</strong> ${opt.roast}`;
-            document.getElementById("nextBtn").style.display = "block";
-        }
-
-        function nextQuestion() {
-            currentIndex++;
-            if (currentIndex >= currentFilteredQuestions.length) {
-                currentIndex = 0;
-            }
-            loadQuestion();
-        }
-
-        window.onload = loadQuestion;
-    </script>
 </body>
 </html>
