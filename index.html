@@ -44,15 +44,9 @@
         }
 
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
             padding: 20px 40px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
         }
 
         .lang-badge {
@@ -103,191 +97,89 @@
             margin: 0;
         }
 
-        .drills-section {
-            margin-top: 24px;
-        }
-
-        .drills-header {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 24px;
-        }
-
-        .drills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        .drill-card {
-            background-color: white;
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 6px var(--card-shadow);
+        .buttons-container {
             display: flex;
-            flex-direction: column;
             gap: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            margin-top: 16px;
         }
 
-        .drill-card:hover {
-            border-color: #D0D5DD;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(16, 24, 40, 0.08);
-        }
-
-        .drill-icon-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .drill-icon {
-            font-size: 24px;
-        }
-
-        .drill-level {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 14px;
-            color: #475467;
-            font-weight: 500;
-        }
-
-        .drill-level-icon {
-            color: #FFC107;
-        }
-
-        .drill-title {
+        .btn-roasted {
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 100px;
             font-size: 16px;
             font-weight: 700;
-            margin: 0;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(217, 48, 37, 0.3);
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .drill-meta {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #98A2B3;
-            margin: 0;
+        .btn-roasted:hover {
+            background-color: var(--btn-red-hover);
+        }
+
+        .btn-drill {
+            background-color: white;
+            color: var(--text-dark);
+            border: 1px solid var(--card-border);
+            padding: 16px 28px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 4px var(--card-shadow);
+            transition: border-color 0.2s;
+        }
+
+        .btn-drill:hover {
+            border-color: #98A2B3;
         }
 
         .illustration-section {
             display: flex;
             flex-direction: column;
-            gap: 24px;
-            align-items: flex-end;
+            align-items: center;
+            position: relative;
         }
 
-        .illustration-container {
+        .image-wrapper {
+            position: relative;
             width: 100%;
             max-width: 600px;
-            height: 420px;
-            border: 1px solid var(--card-border);
             border-radius: 16px;
-            background-color: white;
-            box-shadow: 0 10px 15px rgba(16, 24, 40, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 25px rgba(16, 24, 40, 0.1);
+            border: 1px solid var(--card-border);
         }
 
-        /* --- Scena e Fumetto Centrale con RoastED --- */
-        .stage-banner {
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Scritta RoastED posizionata esattamente sopra il fumetto dell'immagine */
+        .overlay-roasted {
             position: absolute;
-            top: 40px;
-            width: 80%;
-            height: 200px;
-            background: #FFFBEB;
-            border: 3px solid #101828;
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 0 #101828;
-            z-index: 5;
-        }
-
-        .roasted-logo-center {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .roasted-logo-text {
+            top: 28%;
+            left: 55%;
+            transform: translate(-50%, -50%);
             font-family: "Georgia", serif;
-            font-size: 48px;
+            font-size: 32px;
             font-style: italic;
             font-weight: 700;
             color: var(--accent-red);
             text-transform: lowercase;
             letter-spacing: -1px;
-        }
-
-        .roasted-logo-dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent-red);
-            border-radius: 100px;
-            margin-top: 20px;
-        }
-
-        /* --- Bottoni di Azione in basso --- */
-        .action-buttons-row {
-            position: absolute;
-            bottom: 30px;
-            display: flex;
-            gap: 16px;
-            z-index: 10;
-        }
-
-        .get-roasted-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--accent-red);
-            color: white;
-            border: 2px solid #101828;
-            padding: 14px 24px;
-            border-radius: 100px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #101828;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .get-roasted-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #101828;
-        }
-
-        .quick-drill-btn {
-            display: inline-flex;
-            align-items: center;
-            background-color: white;
-            color: var(--text-dark);
-            border: 2px solid #101828;
-            padding: 14px 24px;
-            border-radius: 100px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #101828;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .quick-drill-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #101828;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 4px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -301,7 +193,7 @@
         <section class="hero-section">
             <h1 class="headline">
                 Grammar that <span class="highlight">sticks</span><br>
-                because it stings.
+                porque it stings.
             </h1>
             <p class="subtitle">
                 Forget boring conjugation tables. Write a sentence in<br>
@@ -310,52 +202,18 @@
                 mistakes you don’t repeat.
             </p>
 
-            <div class="drills-section">
-                <h2 class="drills-header">Top Current Drills:</h2>
-                <div class="drills-grid">
-                    <div class="drill-card">
-                        <div class="drill-icon-row">
-                            <span class="drill-icon">☕</span>
-                            <div class="drill-level">
-                                <span class="drill-level-icon">🔥</span> (medium)
-                            </div>
-                        </div>
-                        <h3 class="drill-title">Espresso or<br>Americano? (Bar)</h3>
-                        <p class="drill-meta">LEVEL 1 • 20 DRILLS</p>
-                    </div>
-                    <div class="drill-card">
-                        <div class="drill-icon-row">
-                            <span class="drill-icon">🚕</span>
-                            <div class="drill-level">
-                                <span class="drill-level-icon">🔥</span> (high)
-                            </div>
-                        </div>
-                        <h3 class="drill-title">Taxi Tussle (Rome)</h3>
-                        <p class="drill-meta">LEVEL 1 • 20 DRILLS</p>
-                    </div>
-                </div>
+            <div class="buttons-container">
+                <button class="btn-roasted"><span>🔥</span> Get roasted</button>
+                <button class="btn-drill">Try a quick drill</button>
             </div>
         </section>
 
         <section class="illustration-section">
-            <div class="illustration-container">
-                <!-- Fumetto centrale con la scritta RoastED -->
-                <div class="stage-banner">
-                    <div class="roasted-logo-center">
-                        <span class="roasted-logo-text">RoastED</span>
-                        <div class="roasted-logo-dot"></div>
-                    </div>
-                </div>
-
-                <!-- Bottoni in basso -->
-                <div class="action-buttons-row">
-                    <button class="get-roasted-btn">
-                        <span>🔥</span> Get roasted
-                    </button>
-                    <button class="quick-drill-btn">
-                        Try a quick drill
-                    </button>
-                </div>
+            <div class="image-wrapper">
+                <!-- Immagine ufficiale caricata nel repository -->
+                <img src="illustration.png" alt="RoastED illustration">
+                <!-- Testo RoastED sopra il fumetto -->
+                <div class="overlay-roasted">RoastED</div>
             </div>
         </section>
     </main>
