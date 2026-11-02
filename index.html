@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,6 +86,12 @@
             background-color: var(--accent-red);
             color: white;
             border-color: var(--accent-red);
+        }
+
+        .lang-choice-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background-color: #E4E7EC;
         }
 
         .illustration-section {
@@ -401,10 +407,10 @@
 <body>
 
     <div class="container">
-        <!-- CLEAN TWO-STEP MENU -->
+        <!-- MENU A DUE STEP PULITO -->
         <div class="selector-container">
             <div class="selector-row">
-                <span class="selector-label" id="nativeLangLbl">La tua lingua (Native Language):</span>
+                <span class="selector-label" id="nativeLangLbl">La tua lingua madre:</span>
                 <div class="selector-options" id="nativeLangOptions">
                     <button class="lang-choice-btn active" data-native="it">🇮🇹 Italiano</button>
                     <button class="lang-choice-btn" data-native="en">🇬🇧 English</button>
@@ -413,12 +419,12 @@
                 </div>
             </div>
             <div class="selector-row">
-                <span class="selector-label" id="targetLangLbl">Lingua da imparare (Target Language):</span>
+                <span class="selector-label" id="targetLangLbl">Lingua che vuoi imparare:</span>
                 <div class="selector-options" id="targetLangOptions">
+                    <button class="lang-choice-btn" data-target="it">🇮🇹 Italiano</button>
                     <button class="lang-choice-btn active" data-target="eng">🇬🇧 English</button>
-                    <button class="lang-choice-btn" data-target="ita">🇮🇹 Italiano</button>
-                    <button class="lang-choice-btn" data-target="fra">🇫🇷 Français</button>
-                    <button class="lang-choice-btn" data-target="ger">🇩🇪 Deutsch</button>
+                    <button class="lang-choice-btn" data-target="fr">🇫🇷 Français</button>
+                    <button class="lang-choice-btn" data-target="de">🇩🇪 Deutsch</button>
                 </div>
             </div>
         </div>
@@ -452,19 +458,19 @@
 
         <section class="drill-section">
             <div class="drill-header">
-                <h3 class="section-title" id="drillSectionTitle">Food Drill</h3>
-                <span class="progress-indicator" id="progressIndicator">Question 1 / 20</span>
+                <h3 class="section-title" id="drillSectionTitle">Food</h3>
+                <span class="progress-indicator" id="progressIndicator">Domanda 1 / 20</span>
             </div>
-            <div class="question-box" id="questionBox">Loading...</div>
+            <div class="question-box" id="questionBox">Caricamento...</div>
             <div class="options-grid" id="optionsGrid"></div>
             <div class="roast-feedback" id="roastFeedback"></div>
-            <button class="next-question-btn" id="nextQuestionBtn">Next Question ➔</button>
+            <button class="next-question-btn" id="nextQuestionBtn">Prossima Domanda ➔</button>
         </section>
 
         <section class="custom-roast-section">
             <h3 class="section-title" id="tortureTitle">💀 Il Banco di Tortura (Frasi Libere)</h3>
-            <p class="custom-desc" id="tortureDesc">Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà senza pietà fornendo la correzione d'élite.</p>
-            <textarea id="userSentence" placeholder="Digita qui la tua frase sgangherata..."></textarea>
+            <p class="custom-desc" id="tortureDesc">Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà con eleganza.</p>
+            <textarea id="userSentence" placeholder="Digita qui la tua frase..."></textarea>
             <button class="btn-roasted" id="roastBtn"><span id="roastBtnIcon">🔥</span> <span id="roastBtnText">Richiedi Esecuzione & Correzione</span></button>
             <div class="custom-result-output" id="customResultOutput"></div>
         </section>
@@ -478,20 +484,27 @@
         let currentQuestions = [];
         let score = 0;
 
+        // Tutor Profiles per Native Language
+        const tutorProfiles = {
+            it: { file: 'it_nonna.png', caption: "Nonna Rosa: 'Se sbagli ti tiro la cucchiarola!'" },
+            en: { file: 'uk_lord.png', caption: "Lord Sterling: 'Dreadful grammar, absolutely dreadful.'" },
+            fr: { file: 'fr_parigino.png', caption: "Jean-Luc: 'Votre grammaire manque de raffinement.'" },
+            de: { file: 'de_tedesco.png', caption: "Hans: 'Präzision bitte! Keine Fehler erlaubten.'" }
+        };
+
         const uiTranslations = {
             it: {
                 nativeLbl: 'La tua lingua madre:',
                 targetLbl: 'Lingua che vuoi imparare:',
                 subtitle: 'Seleziona le lingue sopra. Ogni errore farà infuriare il tutor!',
                 topics: { food: '🍕 Cibo', travel: '✈️ Viaggi', sports: '⚽ Sport', culture: '🎭 Cultura', dailylife: '🏠 Vita Quotidiana' },
-                drillTitleSuffix: 'Drill',
                 questionLabel: 'Domanda',
                 nextBtn: 'Prossima Domanda ➔',
                 correctText: 'Corretto!',
                 correctSub: 'Non montarti la testa.',
                 roastHeader: 'Polite Correction:',
                 tortureTitle: '💀 Il Banco di Tortura (Frasi Libere)',
-                tortureDesc: 'Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà con grazia.',
+                tortureDesc: 'Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà con eleganza.',
                 textareaPlaceholder: 'Digita qui la tua frase...',
                 roastBtnText: 'Richiedi Esecuzione & Correzione',
                 emptyToast: 'Ehi! Scrivi una frase prima di pretendere di fartela demolire!',
@@ -504,7 +517,6 @@
                 targetLbl: 'Language you want to learn:',
                 subtitle: 'Choose your languages above. Every mistake will make the tutor furious!',
                 topics: { food: '🍕 Food', travel: '✈️ Travel', sports: '⚽ Sports', culture: '🎭 Culture', dailylife: '🏠 Daily Life' },
-                drillTitleSuffix: 'Drill',
                 questionLabel: 'Question',
                 nextBtn: 'Next Question ➔',
                 correctText: 'Correct!',
@@ -524,7 +536,6 @@
                 targetLbl: 'Langue que vous souhaitez apprendre :',
                 subtitle: 'Choisissez vos langues ci-dessus. Chaque erreur mettra le tuteur en colère !',
                 topics: { food: '🍕 Nourriture', travel: '✈️ Voyage', sports: '⚽ Sports', culture: '🎭 Culture', dailylife: '🏠 Vie Quotidienne' },
-                drillTitleSuffix: 'Exercice',
                 questionLabel: 'Question',
                 nextBtn: 'Question Suivante ➔',
                 correctText: 'Correct !',
@@ -544,7 +555,6 @@
                 targetLbl: 'Sprache, die du lernen möchtest:',
                 subtitle: 'Wähle deine Sprachen oben aus. Jeder Fehler macht den Tutor wütend!',
                 topics: { food: '🍕 Essen', travel: '✈️ Reisen', sports: '⚽ Sport', culture: '🎭 Kultur', dailylife: '🏠 Alltag' },
-                drillTitleSuffix: 'Übung',
                 questionLabel: 'Frage',
                 nextBtn: 'Nächste Frage ➔',
                 correctText: 'Richtig!',
@@ -561,107 +571,370 @@
             }
         };
 
+        // 20 domande complete per ogni combinazione nativa-target e topic
         const dataSet = {
             'it-eng': {
                 food: [
                     { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "Mio nipote sa usare 'to' al posto di 'than'. Ti meriti una sberla!" },
-                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti è singolare in inglese! Ti tolgo il parmigiano." }
+                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti è singolare in inglese! Ti tolgo il parmigiano." },
+                    { q: "Choose the correct way to order coffee:", options: ["I want a coffee please.", "Can I have a coffee, please?", "Give me coffee now.", "I would like of coffee."], correct: 1, roast: "La cortesia non è un optional in inglese." },
+                    { q: "Which sentence is correct?", options: ["I am having a breakfast.", "I have breakfast every day.", "I am eat breakfast.", "I do breakfast."], correct: 1, roast: "I pasti regolari usano il Simple Present senza articolo." },
+                    { q: "Choose the correct expression for being full:", options: ["I am full.", "I am stuffed like a turkey.", "I have full.", "I am filled."], correct: 0, roast: "'I am full' è la base. Non esagerare con i tacchini." },
+                    { q: "Correct uncountable noun usage:", options: ["Can you give me three waters?", "Can you give me three glasses of water?", "Can you give me waters?", "I want wateres."], correct: 1, roast: "L'acqua è incontarbiile, servono i contenitori!" },
+                    { q: "Choose the correct sentence for food taste:", options: ["This soup is too much salty.", "This soup is too salty.", "This soup has much salt.", "This soup is salt."], correct: 1, roast: "'Too much' va prima dei sostantivi, non degli aggettivi." },
+                    { q: "Select the correct past tense:", options: ["I have ate lunch an hour ago.", "I ate lunch an hour ago.", "I eaten lunch an hour ago.", "I eated lunch."], correct: 1, roast: "Passato specifico richiede il Simple Past: 'ate'." },
+                    { q: "Choose the correct question format:", options: ["Do you like apples?", "Are you like apples?", "Like you apples?", "You like apples?"], correct: 0, roast: "I verbi regolari d'opinione vogliono l'ausiliare 'Do'." },
+                    { q: "Correct adjective position:", options: ["I ate a red apple.", "I ate an apple red.", "I ate red an apple.", "Apple red I ate."], correct: 0, roast: "In inglese l'aggettivo precede sempre il nome." },
+                    { q: "Choose the correct modal for permission:", options: ["Can I have the menu?", "May I have the menu?", "Both A and B are correct.", "Am I allowed to menu?"], correct: 2, roast: "Sia 'Can' che 'May' funzionano egregiamente." },
+                    { q: "Correct plural form:", options: ["Three box of chocolates.", "Three boxes of chocolates.", "Three boxs of chocolates.", "Three boxies of chocolates."], correct: 1, roast: "I nomi che finiscono in -x aggiungono -es." },
+                    { q: "Choose the correct option:", options: ["There is some milks left.", "There are some milk left.", "There is some milk left.", "There be milk."], correct: 2, roast: "Il latte è uncountable, vuole il verbo singolare." },
+                    { q: "Correct sentence:", options: ["I am allergic to nuts.", "I have allergy to nuts.", "I am allergy nuts.", "I do allergic to nuts."], correct: 0, roast: "Si dice 'to be allergic to'." },
+                    { q: "Select the correct comparison:", options: ["This wine is more good than that.", "This wine is better than that.", "This wine is gooder than that.", "This wine is best than that."], correct: 1, roast: "Good è un irregolare: better." },
+                    { q: "Choose the correct sentence:", options: ["He cooked dinner himself.", "He cooked dinner heself.", "He cooked dinner hisself.", "He cooked dinner him."], correct: 0, roast: "Il pronome riflessivo per 'he' è 'himself'." },
+                    { q: "Correct restaurant expression:", options: ["The bill please.", "Check please.", "Both A and B are correct.", "Give me money paper."], correct: 2, roast: "British o American? Entrambi validi." },
+                    { q: "Select the correct sentence:", options: ["She cut herself with the knife.", "She cut she with the knife.", "She cut her with the knife.", "She cut herself knife."], correct: 0, roast: "Riflessivo corretto." },
+                    { q: "Choose the correct statement:", options: ["I am craving for pizza.", "I am craving pizza.", "I craving pizza.", "I do crave for pizza."], correct: 1, roast: "To crave regge direttamente l'oggetto." },
+                    { q: "Final food grammar check:", options: ["Let's eat!", "Let us to eat!", "Let eating!", "Lets us eat!"], correct: 0, roast: "Ottimo, formula imperativa corretta." }
                 ],
                 travel: [
-                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: went." }
+                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: went." },
+                    { q: "Choose the correct preposition for transport:", options: ["I am in the bus.", "I am on the bus.", "I am at the bus.", "I am into the bus."], correct: 1, roast: "Sui mezzi pubblici grandi si usa 'on'." },
+                    { q: "Correct airport phrase:", options: ["Where is the luggage claim?", "Where is the baggage claims?", "Where are luggage claim?", "Where is luggage claiming?"], correct: 0, roast: "Baggage/luggage claim è singolare." },
+                    { q: "Choose the correct hotel inquiry:", options: ["I want a room with a view.", "I would like a room with a view.", "Give me a view room.", "Room with view I want."], correct: 1, roast: "La cortesia vince sempre in albergo." },
+                    { q: "Correct flight sentence:", options: ["My flight was delayed.", "My flight delayed was.", "My flight has delay.", "My flight is delay."], correct: 0, roast: "Forma passiva corretta." },
+                    { q: "Choose the correct direction question:", options: ["How can I get to the station?", "How can I reach to the station?", "How I get station?", "Where is go to station?"], correct: 0, roast: "Get to + luogo." },
+                    { q: "Correct ticket sentence:", options: ["I need a return ticket.", "I need a come-back ticket.", "I need a back ticket.", "I need a return tickets."], correct: 0, roast: "Biglietto di ritorno si dice 'return ticket'." },
+                    { q: "Choose the correct time expression:", options: ["We arrived in time for the train.", "We arrived on time for the train.", "We arrived at time for the train.", "We arrived by time."], correct: 1, roast: "Puntuali sull'orario: 'on time'." },
+                    { q: "Correct luggage sentence:", options: ["My bags are heavy.", "My bags is heavy.", "My bag are heavy.", "My bag heavy is."], correct: 0, roast: "Soggetto plurale, verbo plurale." },
+                    { q: "Choose the correct booking phrase:", options: ["I booked a room online.", "I bookated a room online.", "I have book a room online.", "I booking a room online."], correct: 0, roast: "Verbo regolare al passato: booked." },
+                    { q: "Correct custom sentence:", options: ["Nothing to declare.", "Nothing for declare.", "Not anything declare.", "Zero declare."], correct: 0, roast: "Espressione doganale standard." },
+                    { q: "Choose the correct modal for advice:", options: ["You should visit the museum.", "You must to visit the museum.", "You ought visit the museum.", "You visiting the museum."], correct: 0, roast: "'Should' non vuole il 'to'." },
+                    { q: "Correct passport check:", options: ["Here is my passport.", "Here are my passport.", "This is my passports.", "Here my passport is."], correct: 0, roast: "Passaporto singolare." },
+                    { q: "Choose the correct sentence:", options: ["The plane took off smoothly.", "The plane tooked off smoothly.", "The plane taked off smoothly.", "The plane take off smoothly."], correct: 0, roast: "Il phrasal verb 'take off' fa al passato 'took off'." },
+                    { q: "Correct delay sentence:", options: ["We waited for two hours.", "We waited two hours for.", "We wait for two hours.", "We waiting for two hours."], correct: 0, roast: "Passato semplice per un'azione conclusa." },
+                    { q: "Choose the correct stay expression:", options: ["I am staying at a hotel.", "I am staying in hotel.", "I staying at hotel.", "I am stay at hotel."], correct: 0, roast: "Albergo specifico richiede 'at a hotel'." },
+                    { q: "Correct map sentence:", options: ["Look at the map.", "Look the map.", "Look to the map.", "See the map."], correct: 0, roast: "Il verbo guardare richiede la preposizione 'at'." },
+                    { q: "Choose the correct destination phrasing:", options: ["We arrived in Paris.", "We arrived at Paris.", "We arrived to Paris.", "We arrived on Paris."], correct: 0, roast: "Arrivare in una grande città richiede 'in'." },
+                    { q: "Correct ticket check:", options: ["Show me your ticket.", "Show your ticket to me.", "Both A and B are correct.", "Show ticket me."], correct: 2, roast: "Entrambe le costruzioni dative sono corrette." },
+                    { q: "Final travel check:", options: ["Have a safe trip!", "Have a safe journey!", "Both A and B are correct.", "Have safe traveling!"], correct: 2, roast: "Ottimo lavoro con gli auguri di buon viaggio." }
                 ],
                 sports: [
-                    { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "I verbi vogliono gli avverbi: si gioca 'well', non 'good'." }
+                    { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "I verbi vogliono gli avverbi: si gioca 'well', non 'good'." },
+                    { q: "Correct match result phrase:", options: ["We won the match 2 to 1.", "We winned the match 2 to 1.", "We won the match 2 for 1.", "We win the match 2-1."], correct: 0, roast: "Il passato di 'win' è 'won'." },
+                    { q: "Choose the correct equipment sentence:", options: ["He forgot his football boots.", "He forgot his football boots shoes.", "He forgot his football bootses.", "He forgot football boot."], correct: 0, roast: "Scarpini da calcio si dice 'football boots'." },
+                    { q: "Correct referee phrasing:", options: ["The referee blew the whistle.", "The referee blowed the whistle.", "The referee blew whistle.", "The referee did blow whistle."], correct: 0, roast: "Il passato di 'blow' è 'blew'." },
+                    { q: "Choose the correct training sentence:", options: ["She trains hard every day.", "She train hard every day.", "She training hard every day.", "She does train hard everyday."], correct: 0, roast: "Terza persona singolare richiede la -s." },
+                    { q: "Correct score sentence:", options: ["The score is tied.", "The score is tie.", "The score is tying.", "The score tie is."], correct: 0, roast: "Participio passato come aggettivo: 'tied'." },
+                    { q: "Choose the correct championship phrase:", options: ["We won the championship.", "We winned the championship.", "We have win the championship.", "We winning championship."], correct: 0, roast: "Passato semplice perfetto." },
+                    { q: "Correct foul sentence:", options: ["That was a clear foul.", "That was a clear foul play.", "That was clear foul.", "That foul was clearly."], correct: 0, roast: "Articolo determinativo corretto." },
+                    { q: "Choose the correct stadium sentence:", options: ["The stadium was packed with fans.", "The stadium were packed with fans.", "The stadium packed with fans.", "Stadium was packed."], correct: 0, roast: "Stadium è singolare, vuole 'was'." },
+                    { q: "Correct coach sentence:", options: /The coach gave a great speech./, options: ["The coach gave a great speech.", "The coach gived a great speech.", "The coach give a great speech.", "The coach given a great speech."], correct: 0, roast: "Il passato di 'give' è 'gave'." },
+                    { q: "Choose the correct running sentence:", options: ["He ran faster than everyone.", "He runned faster than everyone.", "He ran more fast than everyone.", "He fast ran."], correct: 0, roast: "Irregolare: run -> ran." },
+                    { q: "Correct penalty sentence:", options: ["He scored the penalty kick.", "He scored penalty.", "He score penalty.", "He scoring penalty."], correct: 0, roast: "Costruzione perfetta." },
+                    { q: "Choose the correct team sentence:", options: ["Our team is the best.", "Our team are the best.", "Our team best is.", "Our team be best."], correct: 0, roast: "In inglese americano/britannico il collective noun può reggere il singolare." },
+                    { q: "Correct warm-up phrase:", options: ["The players are warming up.", "The players warm up.", "Both A and B are correct.", "The players is warming up."], correct: 2, roast: "Present continuous o simple present a seconda del contesto." },
+                    { q: "Choose the correct medal sentence:", options: ["She won a gold medal.", "She won gold medal.", "She won a golden medal.", "She winned gold medal."], correct: 0, roast: "Articolo indeterminativo prima del sostantivo numerabile." },
+                    { q: "Correct defense sentence:", options: ["Their defense is impenetrable.", "Their defense are impenetrable.", "Their defenses is impenetrable.", "Defense is impenetrable."], correct: 0, roast: "Difesa come blocco unico singolare." },
+                    { q: "Choose the correct supporter phrase:", options: ["The fans cheered loudly.", "The fans cheered loud.", "The fans cheer loudly.", "Both A and C are correct."], correct: 3, roast: "Passato o presente vanno bene." },
+                    { q: "Correct tournament sentence:", options: ["It is an international tournament.", "It is a international tournament.", "It is international tournament.", "It international tournament is."], correct: 0, roast: "Davanti a vocale si usa 'an'." },
+                    { q: "Choose the correct victory phrase:", options: ["Victory is ours!", "Victory is our!", "Victory ours is!", "We victory!"], correct: 0, roast: "Pronome possessivo corretto: ours." },
+                    { q: "Final sports check:", options: ["Game, set, match!", "Game, set and match!", "Both A and B are correct.", "Match is finish!"], correct: 2, roast: "Ottimo lavoro con il lessico tennistico e sportivo." }
                 ],
                 culture: [
-                    { q: "Choose the correct past tense verb 'to be' for a singular museum:", options: ["That museum were amazing.", "That museum was amazing.", "That museum is amazing.", "That museum been amazing."], correct: 1, roast: "'Museum' è singolare, vuole il passato 'was'." }
+                    { q: "Choose the correct past tense verb 'to be' for a singular museum:", options: ["That museum were amazing.", "That museum was amazing.", "That museum is amazing.", "That museum been amazing."], correct: 1, roast: "'Museum' è singolare, vuole il passato 'was'." },
+                    { q: "Correct art sentence:", options: ["Leonardo da Vinci painted the Mona Lisa.", "Leonardo da Vinci paint the Mona Lisa.", "Leonardo da Vinci has painted Mona Lisa.", "Leonardo painted Mona Lisa."], correct: 0, roast: "Azione storica conclusa richiede il Simple Past." },
+                    { q: "Choose the correct plural noun:", options: ["The exhibition featured many paintings.", "The exhibition featured many painting.", "The exhibition featured many paintes.", "The exhibition featured much paintings."], correct: 0, roast: "Molti dipendenti numerabili richiedono 'many paintings'." },
+                    { q: "Correct theater sentence:", options: ["Shakespeare wrote brilliant plays.", "Shakespeare writed brilliant plays.", "Shakespeare written brilliant plays.", "Shakespeare write brilliant plays."], correct: 0, roast: "Irregolare: write -> wrote." },
+                    { q: "Choose the correct architectural sentence:", options: ["The cathedral is a masterpiece.", "The cathedral is an masterpiece.", "The cathedral are a masterpiece.", "Cathedral is masterpiece."], correct: 0, roast: "Masterpiece inizia per consonante, vuole 'a'." },
+                    { q: "Correct literature phrasing:", options: ["Have you read Dante's Inferno?", "Did you read Dante's Inferno?", "Both A and B are correct.", "You read Inferno?"], correct: 2, roast: "Present perfect o simple past sono entrambi accettabili." },
+                    { q: "Choose the correct sculpture sentence:", options: ["Michelangelo carved David from marble.", "Michelangelo carved David of marble.", "Michelangelo carved David with marble.", "Michelangelo carve David."], correct: 0, roast: "La preposizione corretta per il materiale ricavato è 'from'." },
+                    { q: "Correct gallery sentence:", options: ["The gallery opens at 10 AM.", "The gallery open at 10 AM.", "The gallery is open at 10 AM.", "Gallery open 10 AM."], correct: 0, roast: "Terza persona singolare al presente: opens." },
+                    { q: "Choose the correct heritage sentence:", options: ["Rome has a rich cultural heritage.", "Rome have a rich cultural heritage.", "Rome is rich cultural heritage.", "Rome has rich cultural heritage."], correct: 0, roast: "Rome richiede l'ausiliare 'has' e l'articolo indeterminativo." },
+                    { q: "Correct concert sentence:", options: ["The orchestra played wonderfully.", "The orchestra played wonderful.", "The orchestra played wonderfuller.", "Orchestra played good."], correct: 0, roast: "Avverbio corretto per descrivere l'esecuzione: wonderfully." },
+                    { q: "Choose the correct historical phrasing:", options: ["The Renaissance changed European history.", "The Renaissance changes European history.", "Renaissance has changed history.", "Both A and C are correct."], correct: 3, roast: "Ottima padronanza dei tempi storici." },
+                    { q: "Correct poetry sentence:", options: ["Keats wrote exquisite poetry.", "Keats writed exquisite poetry.", "Keats write exquisite poetry.", "Keats was write poetry."], correct: 0, roast: "Write diventa wrote al passato." },
+                    { q: "Choose the correct festival sentence:", options: ["The film festival attracts global directors.", "The film festival attract global directors.", "Film festival attracting directors.", "The film festival attracted global."], correct: 0, roast: "Soggetto singolare, verbo con la -s." },
+                    { q: "Correct heritage site sentence:", options: ["It is a UNESCO World Heritage site.", "It is an UNESCO World Heritage site.", "It is UNESCO site.", "It are a UNESCO site."], correct: 0, roast: "UNESCO si pronuncia con suono consonantico iniziale (/ju.../), quindi vuole 'a'." },
+                    { q: "Choose the correct classical sentence:", options: ["She plays the violin brilliantly.", "She plays violin brilliantly.", "She play the violin brilliantly.", "She is play violin."], correct: 0, roast: "Gli strumenti musicali vogliono l'articolo determinativo 'the'." },
+                    { q: "Correct exhibition phrase:", options: ["Photography exhibition was stunning.", "The photography exhibition was stunning.", "Photography exhibitions stunning.", "A photography exhibition stunning."], correct: 1, roast: "Articolo determinativo richiesto." },
+                    { q: "Choose the correct author sentence:", options: ["Jane Austen is a beloved author.", "Jane Austen is an beloved author.", "Jane Austen am a beloved author.", "Jane Austen beloved author."], correct: 0, roast: "Beloved inizia per consonante." },
+                    { q: "Correct philosophy phrase:", options: ["Ancient philosophy remains influential.", "Ancient philosophy remain influential.", "Ancient philosophy is remain influential.", "Ancient philosophies remains."], correct: 0, roast: "Soggetto singolare 'philosophy'." },
+                    { q: "Choose the correct monument sentence:", options: ["We visited the ancient colosseum.", "We visit the ancient colosseum.", "We have visit the colosseum.", "We visiting colosseum."], correct: 0, roast: "Passato semplice per una visita conclusa." },
+                    { q: "Final culture check:", options: ["Culture broadens the mind.", "Culture broaden the mind.", "Culture is broaden the mind.", "Culture does broaden mind."], correct: 0, roast: "Proverbio/verità generale al Simple Present." }
                 ],
                 dailylife: [
-                    { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "La contrazione di 'you are' è 'You're'." }
+                    { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "La contrazione di 'you are' è 'You're'." },
+                    { q: "Correct routine sentence:", options: ["I wake up early every morning.", "I wakes up early every morning.", "I am wake up early.", "I waking up early."], correct: 0, roast: "Prima persona singolare usa la forma base del verbo." },
+                    { q: "Choose the correct frequency adverb placement:", options: ["I always drink coffee in the morning.", "I drink always coffee in the morning.", "Always I drink coffee.", "I drink coffee always in morning."], correct: 0, roast: "L'avverbio di frequenza va prima del verbo principale." },
+                    { q: "Correct shopping sentence:", options: ["How much does this cost?", "How much do this cost?", "How much is cost this?", "How many costs this?"], correct: 0, roast: "Soggetto singolare 'this' richiede 'does'." },
+                    { q: "Choose the correct household phrase:", options: ["I need to do the laundry.", "I need to make the laundry.", "I need doing laundry.", "I need laundry."], correct: 0, roast: "Le faccende di casa usano il verbo 'do'." },
+                    { q: "Correct work sentence:", options: ["I work from 9 to 5.", "I work since 9 to 5.", "I work during 9 to 5.", "I am work 9 to 5."], correct: 0, roast: "Intervallo di tempo espresso con 'from... to...'." },
+                    { q: "Choose the correct phone phrase:", options: ["Can I take a message?", "Can I make a message?", "Can I do a message?", "Can I write message?"], correct: 0, roast: "Espressione telefonica standard." },
+                    { q: "Correct weather sentence:", options: ["It is raining outside.", "It raining outside.", "It is rain outside.", "It rains outside now."], correct: 0, roast: "Azione in corso richiede il Present Continuous." },
+                    { q: "Choose the correct meeting phrase:", options: ["Let's catch up tomorrow.", "Let's catch down tomorrow.", "Let's catch tomorrow.", "Let us catching up."], correct: 0, roast: "Phrasal verb corretto per aggiornarsi: 'catch up'." },
+                    { q: "Correct sleepy sentence:", options: ["I am feeling tired.", "I am feel tired.", "I feel tiredly.", "I feeling tired."], correct: 0, roast: "Aggettivo dopo verbi di percezione." },
+                    { q: "Choose the correct traffic phrase:", options: ["I got stuck in traffic.", "I got stuck on traffic.", "I got stuck into traffic.", "I stuck in traffic."], correct: 0, roast: "Imbottigliati nel traffico: 'stuck in traffic'." },
+                    { q: "Correct habit sentence:", options: ["I am used to waking up early.", "I am used to wake up early.", "I use to wake up early.", "I used wake up early."], correct: 0, roast: "Essere abituati a richiede 'to' + verbo in -ing." },
+                    { q: "Choose the correct chore sentence:", options: ["He is taking out the trash.", "He is making out the trash.", "He is doing out the trash.", "He taking out trash."], correct: 0, roast: "Portare fuori la spazzatura: 'take out'." },
+                    { q: "Correct parking phrase:", options: ["Where can I park my car?", "Where can I park car?", "Where I can park my car?", "Where can parking my car?"], correct: 0, roast: "Ordine delle parole corretto nelle domande dirette." },
+                    { q: "Choose the correct time inquiry:", options: ["What time is it?", "Which time is it?", "What hours is it?", "How time is it?"], correct: 0, roast: "Formula standard per chiedere l'ora." },
+                    { q: "Correct grocery sentence:", options: ["I need to buy some groceries.", "I need to buy any groceries.", "I need buy groceries.", "I needing groceries."], correct: 0, roast: "Frase affermativa usa 'some'." },
+                    { q: "Choose the correct message reply:", options: ["I will text you later.", "I will text later you.", "I text you later will.", "I am texting later you."], correct: 0, roast: "Futuro semplice con 'will'." },
+                    { q: "Correct resting phrase:", options: ["I just want to relax.", "I just want relaxing.", "I just want relax.", "I just wanting to relax."], correct: 0, roast: "Want vuole l'infinito con 'to'." },
+                    { q: "Choose the correct weekend phrase:", options: ["Have a nice weekend!", "Have a good weekend!", "Both A and B are correct.", "Make a nice weekend!"], correct: 2, roast: "Sia nice che good vanno benissimo." },
+                    { q: "Final daily check:", options: ["See you tomorrow!", "See you soon!", "Both A and B are correct.", "See you yesterday!"], correct: 2, roast: "Ottimo lavoro con i saluti quotidiani." }
                 ]
             },
+            // Fallback completo per tutte le altre combinazioni linguistiche per garantire sempre 20 domande funzionanti
             'it-fra': {
                 food: [
                     { q: "Choisissez la phrase correcte :", options: ["Je voudrais un café.", "Je veux un café de la tasse.", "Donne-moi café.", "J'aimerais du cafés."], correct: 0, roast: "Ottimo! Ma fai attenzione agli articoli partitivi." },
-                    { q: "Traduisez correctement :", options: ["La nourriture est délicieuse.", "Le nourriture est délicieux.", "La nourriture sont délicieuse.", "Les nourritures est délicieuse."], correct: 0, roast: "'Nourriture' è femminile singolare!" }
+                    { q: "Traduisez correctement :", options: ["La nourriture est délicieuse.", "Le nourriture est délicieux.", "La nourriture sont délicieuse.", "Les nourritures est délicieuse."], correct: 0, roast: "'Nourriture' è femminile singolare!" },
+                    { q: "Choisissez l'option correcte :", options: ["J'aime le chocolat.", "J'aime chocolat.", "Je aime le chocolat.", "J'aimes le chocolat."], correct: 0, roast: "I verbi di preferenza vogliono l'articolo determinativo." },
+                    { q: "Traduisez 'Vorrei una mela':", options: ["Je voudrais une pomme.", "Je voudrais un pomme.", "Je veux pomme.", "J'ai une pomme."], correct: 0, roast: "Pomme è femminile singolare." },
+                    { q: "Choisissez la bonne forme :", options: ["Je bois de l'eau.", "Je bois l'eau.", "Je bois de eau.", "Je bois des eau."], correct: 0, roast: "Articolo partitivo corretto davanti a vocale." },
+                    { q: "Traduisez 'Ho fame':", options: ["J'ai faim.", "Je suis faim.", "J'ai la faim.", "Je fais faim."], correct: 0, roast: "In francese si usa il verbo avoir per la fame." },
+                    { q: "Choisissez le bon plat :", options: ["Le pain est frais.", "La pain est frais.", "Le pain est fraîche.", "Les pain sont frais."], correct: 0, roast: "Pain è maschile singolare." },
+                    { q: "Traduisez 'Un bicchiere di vino':", options: ["Un verre de vin.", "Un verre du vin.", "Une tasse de vin.", "Un verre vin."], correct: 0, roast: "Corretto, 'de vin'." },
+                    { q: "Choisissez la phrase :", options: ["C'est très bon.", "C'est très bonne.", "Il est très bon.", "C'est très bien bon."], correct: 0, roast: "Espressione impersonale con 'bon'." },
+                    { q: "Traduisez 'Il conto per favore':", options: ["L'addition s'il vous plaît.", "Le compte s'il vous plaît.", "La facture s'il vous plaît.", "Le billet s'il vous plaît."], correct: 0, roast: "Per il ristorante si usa 'l'addition'." },
+                    { q: "Choisissez la bonne option :", options: ["Je n'aime pas le poisson.", "Je n'aime pas de poisson.", "Je n'aime poisson pas.", "Je aime pas le poisson."], correct: 0, roast: "Negazione standard corretta." },
+                    { q: "Traduisez 'Vorrei un tè':", options: ["Je voudrais un thé.", "Je voudrais une thé.", "Je veux du thé chaud.", "Both A and C are correct."], correct: 3, roast: "Ottimo lavoro." },
+                    { q: "Choisissez :", options: ["Les fruits sont frais.", "Le fruit sont frais.", "Les fruits est frais.", "La fruit est fraîche."], correct: 0, roast: "Soggetto plurale, accordo corretto." },
+                    { q: "Traduisez 'Ho sete':", options: ["J'ai soif.", "Je suis soif.", "J'ai la soif.", "Je fais soif."], correct: 0, roast: "Espressione con avoir." },
+                    { q: "Choisissez :", options: ["Je mange une pomme.", "Je mange un pomme.", "Je mange de pomme.", "Je mange pomme."], correct: 0, roast: "Pomme è femminile." },
+                    { q: "Traduisez 'Buon appetito':", options: ["Bon appétit !", "Bonne appétit !", "Bon appétits !", "Bien mangé !"], correct: 0, roast: "Formula classica." },
+                    { q: "Choisissez :", options: ["Le fromage français.", "La fromage française.", "Les fromage français.", "Le fromage française."], correct: 0, roast: "Fromage è maschile." },
+                    { q: "Traduisez 'Una fetta di torta':", options: ["Une tranche de gâteau.", "Un morceau de gâteau.", "Both A and B are correct.", "Une part de gâteau."], correct: 2, roast: "Tranche o morceau vanno benissimo." },
+                    { q: "Choisissez :", options: ["C'est délicieux.", "C'est délicieuse.", "Il est délicieux.", "Elle est délicieuse."], correct: 0, roast: "Forma neutra 'C'est'." },
+                    { q: "Final food check:", options: ["Bonne cuisine !", "Bon cuisine !", "Bonne cuisinant !", "Bien cuisiner !"], correct: 0, roast: "Cuisine è femminile." }
                 ],
-                travel: [{ q: "Où se trouve la gare correcte ?", options: ["Où est la gare?", "Où est le station?", "Où se trouve le train lieu?", "Où sont la gare?"], correct: 0, roast: "Preciso! Almeno non ti perderai a Parigi." }],
-                sports: [{ q: "Complétez la phrase sportive :", options: ["Notre équipe a gagné.", "Notre équipe a gagné le match.", "Sia A che B sono eccellenti.", "Notre équipe ont gagné."], correct: 2, roast: "Perfetto!" }],
-                culture: [{ q: "Identifiez la bonne formulation :", options: ["Ce musée est magnifique.", "Cet musée est magnifique.", "Cette musée est magnifique.", "Ce musées sont magnifiques."], correct: 0, roast: "Davanti a consonante si usa 'ce'!" }],
-                dailylife: [{ q: "Comment dit-on en retard ?", options: ["Je suis en retard.", "Je suis en retardé.", "J'ai retard.", "Je fais retard."], correct: 0, roast: "Esatto, 'en retard'." }]
+                travel: [
+                    { q: "Où se trouve la gare correcte ?", options: ["Où est la gare?", "Où est le station?", "Où se trouve le train lieu?", "Où sont la gare?"], correct: 0, roast: "Preciso! Almeno non ti perderai a Parigi." },
+                    { q: "Traduisez 'Dov'è l'hotel ?':", options: ["Où est l'hôtel ?", "Où est le hôtel ?", "Où est la hôtel ?", "Où est hôtel ?"], correct: 0, roast: "Elisione corretta davanti a h muta." },
+                    { q: "Choisissez :", options: ["Je prends le train.", "Je prend le train.", "Je prends la train.", "Je prends des train."], correct: 0, roast: "Terza persona singolare del verbo prendre." },
+                    { q: "Traduisez 'Un biglietto per Lione':", options: ["Un billet pour Lyon.", "Un billet à Lyon.", "Un billet de Lyon.", "Un billet pour le Lyon."], correct: 0, roast: "Destinazione con 'pour'." },
+                    { q: "Choisissez :", options: ["Le vol est à l'heure.", "Le vol est en l'heure.", "Le vol est à heure.", "Le vol est ponctuel."], correct: 0, roast: "Espressione 'à l'heure'." },
+                    { q: "Traduisez 'Ho perso il mio passaporto':", options: ["J'ai perdu mon passeport.", "Je perds mon passeport.", "J'ai perdu ma passeport.", "Je suis perdu mon passeport."], correct: 0, roast: "Passato composto con avoir." },
+                    { q: "Choisissez :", options: ["Où sont les toilettes ?", "Où est les toilettes ?", "Où est la toilette ?", "Où sont la toilettes ?"], correct: 0, roast: "Toilettes è sempre plurale." },
+                    { q: "Traduisez 'Un taxi per favore':", options: ["Un taxi s'il vous plaît.", "Une taxi s'il vous plaît.", "Le taxi s'il vous plaît.", "Taxi s'il vous plaît."], correct: 0, roast: "Taxi è maschile." },
+                    { q: "Choisissez :", options: ["Je voudrais réserver une chambre.", "Je veux réserver chambre.", "Je réserve une chambre.", "Both A and C are correct."], correct: 3, roast: "Ottima scelta." },
+                    { q: "Traduisez 'A presto !':", options: ["À bientôt !", "À tout à l'heure !", "Both A and B are correct.", "À demain !"], correct: 2, roast: "Entrambe ottime formule di saluto." },
+                    { q: "Choisissez :", options: ["Le train est en retard.", "Le train est en retardé.", "Le train a retard.", "Le train est tard."], correct: 0, roast: "Espressione corretta 'en retard'." },
+                    { q: "Traduisez 'Buon viaggio':", options: ["Bon voyage !", "Bonne voyage !", "Bon voyages !", "Bon routage !"], correct: 0, roast: "Voyage è maschile." },
+                    { q: "Choisissez :", options: ["Où est l'aéroport ?", "Où est le aéroport ?", "Où est la aéroport ?", "Où est aéroport ?"], correct: 0, roast: "Elisione perfetta." },
+                    { q: "Traduisez 'Ho una valigia':", options: ["J'ai une valise.", "J'ai un valise.", "Je suis une valise.", "J'ai des valise."], correct: 0, roast: "Valise è femminile." },
+                    { q: "Choisissez :", options: ["C'est loin d'ici ?", "C'est loin ici ?", "C'est loin de ici ?", "C'est loin à ici ?"], correct: 0, roast: "Costruzione 'loin de'." },
+                    { q: "Traduisez 'Gira a sinistra':", options: ["Tournez à gauche.", "Tournez à droite.", "Tourne à gauche.", "Both A and C are correct."], correct: 3, roast: "Imperativo formale o informale." },
+                    { q: "Choisissez :", options: ["La carte de la ville.", "La carte du ville.", "Le carte de la ville.", "La carte de ville."], correct: 0, roast: "Mappa della città." },
+                    { q: "Traduisez 'Quanto costa ?':", options: ["Combien ça coûte ?", "Combien coûte ça ?", "Combien est ça ?", "Comment ça coûte ?"], correct: 0, roast: "Formula standard." },
+                    { q: "Choisissez :", options: ["Je cherche la station.", "Je cherche le station.", "Je cherche à la station.", "Je cherche station."], correct: 0, roast: "Chercher regge direttamente l'oggetto." },
+                    { q: "Final travel check:", options: ["Bon voyage et bon retour !", "Bon voyage !", "Bon retour !", "Bonne route !"], correct: 0, roast: "Perfetto." }
+                ],
+                sports: [
+                    { q: "Complétez la phrase sportive :", options: ["Notre équipe a gagné.", "Notre équipe a gagné le match.", "Sia A che B sono eccellenti.", "Notre équipe ont gagné."], correct: 2, roast: "Perfetto!" },
+                    { q: "Traduisez 'Abbiamo vinto la partita':", options: ["Nous avons gagné le match.", "Nous avons gagné le partie.", "Nous avons gagné le jeu.", "Nous avons gagné match."], correct: 0, roast: "Ottimo uso del passato composto." },
+                    { q: "Choisissez :", options: ["Il court très vite.", "Il court très rapide.", "Il court très vitement.", "Il cour vite."], correct: 0, roast: "Vite è l'avverbio corretto." },
+                    { q: "Traduisez 'Lo stadio è pieno':", options: ["Le stade est plein.", "Le stade est pleine.", "La stade est plein.", "Le stades sont pleins."], correct: 0, roast: "Stade è maschile singolare." },
+                    { q: "Choisissez :", options: ["Le ballon de football.", "La ballon de football.", "Les ballon de football.", "Le ballon de foot."], correct: 3, roast: "Foot è l'abbreviazione comunissima." },
+                    { q: "Traduisez 'L'arbitro ha fischiato':", options: ["L'arbitre a sifflé.", "L'arbitre a soufflé.", "L'arbitre a crié.", "L'arbitre a donné."], correct: 0, roast: "Siffler è il verbo per fischiare." },
+                    { q: "Choisissez :", options: ["Une médaille d'or.", "Une médaille d'or de sport.", "Une médaille or.", "Une médaille d'or de la victoire."], correct: 0, roast: "Materiale introdotto da 'd'." },
+                    { q: "Traduisez 'Buona fortuna alla squadra':", options: ["Bonne chance à l'équipe.", "Bon chance à l'équipe.", "Bonne chance pour l'équipe.", "Bonne chance d'équipe."], correct: 0, roast: "Chance è femminile." },
+                    { q: "Choisissez :", options: ["Le joueur professionnel.", "La joueur professionnelle.", "Le joueur professionel.", "Le joueurs professionnelle."], correct: 0, roast: "Accordo maschile corretto." },
+                    { q: "Traduisez 'Il punteggio è uno a uno':", options: ["Le score est un à un.", "Le score est un pour un.", "Le score est un contre un.", "Le score est match nul."], correct: 0, roast: "Punteggio uno a uno." },
+                    { q: "Choisissez :", options: ["Faire du sport tous les jours.", "Faire le sport tous les jours.", "Faire de sport tous les jours.", "Faire sport tous les jours."], correct: 0, roast: "Espressione 'faire du sport'." },
+                    { q: "Traduisez 'La competizione è aperta':", options: ["La compétition est ouverte.", "Le compétition est ouverte.", "La compétition est ouvert.", "La compétition sont ouvertes."], correct: 0, roast: "Accordo femminile singolare." },
+                    { q: "Choisissez :", options: ["Supporter l'équipe nationale.", "Supporter l'équipe nationaux.", "Supporter le équipe nationale.", "Supporter équipe nationale."], correct: 0, roast: "Équipe è femminile." },
+                    { q: "Traduisez 'Un allenamento duro':", options: ["Un entraînement dur.", "Une entraînement dure.", "Un entraînement dure.", "Un entraînement durement."], correct: 0, roast: "Entraînement è maschile." },
+                    { q: "Choisissez :", options: ["Le champion du monde.", "La champion du monde.", "Le champion de monde.", "Le champion du mondes."], correct: 0, roast: "Campione del mondo." },
+                    { q: "Traduisez 'La porta del campo':", options: ["Le but du terrain.", "La porte du terrain.", "Le but de terrain.", "La but du terrain."], correct: 0, roast: "Porta intesa come rete da calcio: 'but'." },
+                    { q: "Choisissez :", options: ["Gagner le tournoi.", "Gagner le tournois.", "Gagner la tournoi.", "Gagner du tournoi."], correct: 0, roast: "Tournoi è maschile." },
+                    { q: "Traduisez 'Una forte difesa':", options: ["Une défense solide.", "Un défense solide.", "Une défense solide de fer.", "Both A and C are correct."], correct: 3, roast: "Ottima espressione." },
+                    { q: "Choisissez :", options: ["Courir sur la piste.", "Courir sur le piste.", "Courir à la piste.", "Courir sur piste."], correct: 0, roast: "Piste è femminile." },
+                    { q: "Final sports check:", options: ["C'est la victoire !", "C'est le victoire !", "Ce est la victoire !", "C'est la vaincre !"], correct: 0, roast: "Victoire è femminile." }
+                ],
+                culture: [
+                    { q: "Identifiez la bonne formulation :", options: ["Ce musée est magnifique.", "Cet musée est magnifique.", "Cette musée est magnifique.", "Ce musées sont magnifiques."], correct: 0, roast: "Davanti a consonante si usa 'ce'!" },
+                    { q: "Traduisez 'L'arte moderna':", options: ["L'art moderne.", "Le art moderne.", "La art moderne.", "L'arts modernes."], correct: 0, roast: "Elisione corretta di art." },
+                    { q: "Choisissez :", options: ["Un chef-d'œuvre de la peinture.", "Une chef-d'œuvre de la peinture.", "Un chef-d'œuvres de la peinture.", "Un chef de œuvre."], correct: 0, roast: "Chef-d'œuvre è maschile." },
+                    { q: "Traduisez 'La Gioconda al Louvre':", options: ["La Joconde au Louvre.", "La Joconde à le Louvre.", "La Joconde dans Louvre.", "La Joconde sur le Louvre."], correct: 0, roast: "Contrazione 'à + le' diventa 'au'." },
+                    { q: "Choisissez :", options: ["L'histoire de l'art.", "L'histoire de art.", "Le histoire de l'art.", "L'histoires de l'art."], correct: 0, roast: "Elisione perfetta." },
+                    { q: "Traduisez 'Uno scrittore famoso':", options: ["Un écrivain célèbre.", "Une écrivain célèbre.", "Un écrivain célèbres.", "Un écrivain fameux."], correct: 0, roast: "Écrivain è maschile." },
+                    { q: "Choisissez :", options: ["La littérature française.", "Le littérature française.", "La littérature français.", "Les littératures françaises."], correct: 0, roast: "Accordo femminile." },
+                    { q: "Traduisez 'Un concerto di musica classica':", options: ["Un concert de musique classique.", "Un concert du musique classique.", "Un concert de musique classiq.", "Une concert de musique classique."], correct: 0, roast: "Musica classica corretta." },
+                    { q: "Choisissez :", options: ["Le patrimoine culturel.", "La patrimoine culturel.", "Le patrimoines culturels.", "Le patrimoine culturelle."], correct: 0, roast: "Patrimoine è maschile." },
+                    { q: "Traduisez 'Una galleria d'arte':", options: ["Une galerie d'art.", "Un galerie d'art.", "Une galerie de art.", "Une galeries d'art."], correct: 0, roast: "Galerie è femminile." },
+                    { q: "Choisissez :", options: ["Le théâtre national.", "La théâtre national.", "Le théâtre nationale.", "Les théâtres nationale."], correct: 0, roast: "Théâtre è maschile." },
+                    { q: "Traduisez 'Il festival del cinema':", options: ["Le festival du film.", "Le festival de le film.", "Le festival de film.", "La festival du film."], correct: 0, roast: "Contrazione 'de + le' diventa 'du'." },
+                    { q: "Choisissez :", options: ["Un tableau impressionniste.", "Une tableau impressionniste.", "Un tableau impressionnistes.", "Un tableau impressioniste."], correct: 0, roast: "Tableau è maschile." },
+                    { q: "Traduisez 'La cultura europea':", options: ["La culture européenne.", "Le culture européenne.", "La culture européen.", "Les cultures européennes."], correct: 0, roast: "Accordo femminile singolare." },
+                    { q: "Choisissez :", options: ["Visiter un monument historique.", "Visiter une monument historique.", "Visiter un monument historiq.", "Visiter le monument historiques."], correct: 0, roast: "Monument è maschile." },
+                    { q: "Traduisez 'Il Rinascimento italiano':", options: ["La Renaissance italienne.", "Le Renaissance italien.", "La Renaissance italien.", "Le Renaissance italienne."], correct: 0, roast: "Renaissance è femminile." },
+                    { q: "Choisissez :", options: ["Un poète romantique.", "Une poète romantique.", "Un poète romantiques.", "Un poète romantico."], correct: 0, roast: "Poète è tradizionalmente maschile." },
+                    { q: "Traduisez 'L'architettura gotica':", options: ["L'architecture gothique.", "Le architecture gothique.", "La architecture gothique.", "L'architectures gothiques."], correct: 0, roast: "Elisione di architecture." },
+                    { q: "Choisissez :", options: ["L'opera lirica.", "Le opéra lyrique.", "La opéra lyrique.", "L'opéra lyrique."], correct: 3, roast: "Opéra lirico." },
+                    { q: "Final culture check:", options: ["L'art est éternel.", "L'art est éternelle.", "Le art est éternel.", "L'arts sont éternels."], correct: 0, roast: "Art è maschile singolare." }
+                ],
+                dailylife: [
+                    { q: "Comment dit-on en retard ?", options: ["Je suis en retard.", "Je suis en retardé.", "J'ai retard.", "Je fais retard."], correct: 0, roast: "Esatto, 'en retard'." },
+                    { q: "Traduisez 'Mi sveglio presto':", options: ["Je me réveille tôt.", "Je réveille tôt.", "Je me lève tôt.", "Both A and C are correct."], correct: 3, roast: "Svegliarsi o alzarsi vanno benissimo." },
+                    { q: "Choisissez :", options: ["Je fais les courses.", "Je fais le courses.", "Je fais des courses.", "Both A and C are correct."], correct: 3, roast: "Espressione 'faire les/des courses'." },
+                    { q: "Traduisez 'Vado a lavorare':", options: ["Je vais travailler.", "Je vais au travail.", "Both A and B are correct.", "Je vais à travail."], correct: 2, roast: "Entrambe le forme sono eccellenti." },
+                    { q: "Choisissez :", options: ["Il fait beau temps.", "Il fait bon temps.", "Il fait belle temps.", "Il est beau temps."], correct: 0, roast: "Espressione impersonale fissa." },
+                    { q: "Traduisez 'Ho sonno':", options: ["J'ai sommeil.", "Je suis sommeil.", "J'ai le sommeil.", "Je fais sommeil."], correct: 0, roast: "Avoir sommeil è l'espressione corretta." },
+                    { q: "Choisissez :", options: ["Je prends le petit déjeuner.", "Je prends le petit dej.", "Both A and B are correct.", "Je fais le petit déjeuner."], correct: 2, roast: "Colazione completa o abbreviata." },
+                    { q: "Traduisez 'Studio francese':", options: ["J'étudie le français.", "J'étudie français.", "Je étudie le français.", "J'étudie de français."], correct: 0, roast: "Le lingue vogliono l'articolo." },
+                    { q: "Choisissez :", options: ["Regarder la télévision.", "Regarder le télévision.", "Voir la télévision.", "Regarder à la télévision."], correct: 0, roast: "Guardare la tv: 'regarder la télévision'." },
+                    { q: "Traduisez 'A presto in centro':", options: ["À bientôt en ville.", "À bientôt au ville.", "À bientôt dans la ville.", "Both A and C are correct."], correct: 3, roast: "Ottimo." },
+                    { q: "Choisissez :", options: ["Je suis fatigué.", "Je suis fatiguée.", "Both A and B depending on gender.", "Je suis fatiguant."], correct: 2, roast: "Accordo di genere fondamentale." },
+                    { q: "Traduisez 'Prendo un caffè':", options: ["Je prends un café.", "Je prends une café.", "Je prends du café.", "Both A and C are correct."], correct: 3, roast: "Un caffè specifico o in generale." },
+                    { q: "Choisissez :", options: ["Bonne journée !", "Bon journée !", "Bonnes journées !", "Bien journée !"], correct: 0, roast: "Journée è femminile." },
+                    { q: "Traduisez 'Vado a fare la spesa':", options: ["Je vais faire les courses.", "Je vais faire les achats.", "Both A and B are correct.", "Je vais faire du shopping."], correct: 2, roast: "Courses o achats vanno bene." },
+                    { q: "Choisissez :", options: ["Le soir, je me détends.", "Le soir, je détends.", "Le soir, je me repose.", "Both A and C are correct."], correct: 3, roast: "Rilassarsi o riposarsi." },
+                    { q: "Traduisez 'Che ora è ?':", options: ["Quelle heure est-il ?", "Quel heure est-il ?", "Quelle heure a il ?", "Qu'est-ce que l'heure ?"], correct: 0, roast: "Heure è femminile singolare." },
+                    { q: "Choisissez :", options: ["Bonne nuit !", "Bon nuit !", "Bonnes nuits !", "Bien nuit !"], correct: 0, roast: "Nuit è femminile." },
+                    { q: "Traduisez 'A domani':", options: ["À demain.", "À le demain.", "À prochain jour.", "Demain à plus."], correct: 0, roast: "Formula standard." },
+                    { q: "Choisissez :", options: ["Bon week-end !", "Bonne week-end !", "Bons week-ends !", "Bien week-end !"], correct: 0, roast: "Week-end è storicamente maschile in francese." },
+                    { q: "Final daily check:", options: ["Tout va bien.", "Tous va bien.", "Tout vont bien.", "Toute va bien."], correct: 0, roast: "Espressione impersonale fissa." }
+                ]
             },
             'it-ger': {
-                food: [{ q: "Wähle den korrekten Satz:", options: ["Ich möchte ein Bier.", "Ich will Bier Glas.", "Gib mir Bier.", "Ich möchte eine Biers."], correct: 0, roast: "Richtig!" }],
-                travel: [{ q: "Wo ist der Hauptbahnhof?", options: ["Wo ist der Hauptbahnhof?", "Wo ist das Hauptbahnhof?", "Wo ist die Hauptbahnhof?", "Wo ist Hauptbahnhof station?"], correct: 0, roast: "Perfekt, Bahnhof ist Maskulinum." }],
-                sports: [{ q: "Das Fußballspiel:", options: ["Das Spiel endete unentschieden.", "Das Spiel war ein Unentschieden.", "Sia A che B sono corrette.", "Das Match ist null."], correct: 2, roast: "Sehr gut." }],
-                culture: [{ q: "Die Kunst:", options: ["Dieses Bild ist berühmt.", "Dieser Bild ist berühmt.", "Dieses Bild sind berühmt.", "Dies Bild ist berühmteste."], correct: 0, roast: "Korrekt." }],
-                dailylife: [{ q: "Der Alltag:", options: ["Ich habe Hunger.", "Ich bin hungrig.", "Sia A che B sono corrette.", "Ich mache Hunger."], correct: 2, roast: "Ausgezeichnet." }]
-            },
-            'en-ita': {
-                food: [{ q: "Scegli la frase corretta:", options: ["Vorrei una fetta di torta.", "Io vorrei fetta torta.", "Voglio un pezzo di torta di fetta.", "Vorrei alcune fette di torta."], correct: 0, roast: "Spot on!" }],
-                travel: [{ q: "Dov'è la stazione?", options: ["Dov'è la stazione ferroviaria?", "Dove è il treno stazione?", "Dov'è la stazione dei treni?", "Entrambe A e C sono corrette."], correct: 3, roast: "Very natural!" }],
-                sports: [{ q: "Partita di calcio:", options: ["Abbiamo vinto la partita!", "Abbiamo guadagnato il match!", "Abbiamo trionfato nella gara!", "Entrambe A e C sono corrette."], correct: 3, roast: "Great!" }],
-                culture: [{ q: "Arte e cultura:", options: ["Adoro l'arte del Rinascimento.", "Amo l'arte rinascimentale.", "Mi piace l'arte del Rinascimento.", "Tutte le precedenti."], correct: 3, roast: "Wonderful!" }],
-                dailylife: [{ q: "Vita quotidiana:", options: ["Sono in ritardo.", "Sto correndo tardi.", "Faccio tardi.", "A e C vanno bene."], correct: 0, roast: "Smooth." }]
-            },
-            'en-fra': {
-                food: [{ q: "Traduisez :", options: ["Je voudrais un croissant.", "Je veux un croissant.", "J'aimerais un croissant.", "Toutes sont correctes."], correct: 3, roast: "Magnifique!" }],
-                travel: [{ q: "Où est la gare ?", options: ["Où est la gare?", "Où se trouve la gare?", "Les deux sont correctes.", "Où est le train?"], correct: 2, roast: "Correct." }],
-                sports: [{ q: "Le match :", options: ["Notre équipe a gagné.", "On a gagné.", "Les deux sont correctes.", "Notre équipe gagne."], correct: 2, roast: "Well done!" }],
-                culture: [{ q: "L'art :", options: ["J'adore l'art moderne.", "J'aime l'art moderne.", "Les deux sont correctes.", "Je kiffe l'art."], correct: 2, roast: "Nice." }],
-                dailylife: [{ q: "Le temps :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Je suis en avance."], correct: 2, roast: "Perfect." }]
-            },
-            'en-ger': {
-                food: [{ q: "Wählen Sie:", options: ["Ich möchte ein Bier.", "Ich hätte gern ein Bier.", "Beide sind korrekt.", "Ich will Bier."], correct: 2, roast: "Sehr gut!" }],
-                travel: [{ q: "Das Hotel:", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Beide sind korrekt.", "Wo ist der Hotel?"], correct: 2, roast: "Brilliant!" }],
-                sports: [{ q: "Das Spiel:", options: ["Wir haben das Spiel gewonnen.", "Wir gewannen das Spiel.", "Beide sind korrekt.", "Wir haben gewonnen."], correct: 2, roast: "Perfect!" }],
-                culture: [{ q: "Meisterwerk:", options: ["Das ist ein Meisterwerk.", "Das ist eine Meisterarbeit.", "Beide sind korrekt.", "Das ist gut."], correct: 0, roast: "Masterful!"}],
-                dailylife: [{ q: "Zu spät:", options: ["Ich bin zu spät.", "Ich verspäte mich.", "Beide sind korrekt.", "Ich habe spät."], correct: 2, roast: "Spot on!" }]
-            },
-            'fr-ita': {
-                food: [{ q: "Scegli la frase:", options: ["Vorrei una pizza.", "Voglio una pizza.", "Mi piacerebbe una pizza.", "Tutte sono corrette."], correct: 3, roast: "Parfait !" }],
-                travel: [{ q: "La stazione:", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Entrambe sono corrette.", "Dov'è il treno?"], correct: 2, roast: "Excellent." }],
-                sports: [{ q: "La squadra:", options: ["La nostra squadra ha vinto.", "La nostra squadra ha trionfato.", "Entrambe sono corrette.", "Il team ha vinto."], correct: 2, roast: "Très bien !" }],
-                culture: [{ q: "Il Rinascimento:", options: ["Adoro l'arte del Rinascimento.", "Mi piace l'arte rinascimentale.", "Entrambe sono corrette.", "Amo l'arte."], correct: 2, roast: "Magnifique !" }],
-                dailylife: [{ q: "In ritardo:", options: ["Sono in ritardo.", "Ho ritardo.", "Faccio tardi.", "Tutte vanno bene."], correct: 0, roast: "Précis !" }]
-            },
-            'fr-eng': {
-                food: [{ q: "Choose:", options: ["I prefer pizza to pasta.", "I prefer pizza than pasta.", "I like pizza.", "I want pizza."], correct: 0, roast: "Mon dieu!" }],
-                travel: [{ q: "Travel:", options: ["I went to Rome last summer.", "I have went to Rome.", "I go to Rome.", "I was in Rome."], correct: 0, roast: "Catastrophic logic." }],
-                sports: [{ q: "Sports:", options: ["Our team played very well.", "Our team played very good.", "Our team played well.", "Our team win."], correct: 2, roast: "Won!" }],
-                culture: [{ q: "Museum:", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "Museum was good."], correct: 0, roast: "Singular takes was!" }],
-                dailylife: [{ q: "Daily:", options: ["You're going to be late.", "Your going to be late.", "You are late.", "Late is you."], correct: 0, roast: "Contraction error!" }]
-            },
-            'fr-ger': {
-                food: [{ q: "Wählen Sie:", options: ["Ich möchte ein Bier.", "Ich will Bier.", "Beide sind korrekt.", "Bier bitte."], correct: 2, roast: "Sehr gut!" }],
-                travel: [{ q: "Das Hotel:", options: ["Wo ist das Hotel?", "Wo befindet sich das Hotel?", "Beide sind korrekt.", "Hotel wo?"], correct: 2, roast: "Parfait !" }],
-                sports: [{ q: "Das Spiel:", options: ["Wir haben das Spiel gewonnen.", "On a gagné.", "Les deux sont correctes.", "Sieg."], correct: 2, roast: "Excellente !" }],
-                culture: [{ q: "Chef-d'œuvre :", options: ["C'est un chef-d'œuvre.", "Beau.", "Super.", "Art."], correct: 0, roast: "Splendide !" }],
-                dailylife: [{ q: "En retard :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Spät."], correct: 2, roast: "Perfekt!" }]
-            },
-            'ger-ita': {
-                food: [{ q: "Scegli la frase:", options: ["Vorrei una pizza.", "Voglio una pizza.", "Entrambe sono corrette.", "Pizza."], correct: 2, roast: "Sehr gut!" }],
-                travel: [{ q: "La stazione:", options: ["Dov'è la stazione?", "Dove si trova la stazione?", "Entrambe sono corrette.", "Stazione."], correct: 2, roast: "Ausgezeichnet!" }],
-                sports: [{ q: "La squadra:", options: ["Abbiamo vinto.", "Abbiamo trionfato.", "Entrambe sono corrette.", "Vittoria."], correct: 2, roast: "Toll!" }],
-                culture: [{ q: "Capolavoro:", options: ["Questo è un capolavoro.", "Opera stupenda.", "Bello.", "Capolavoro."], correct: 0, roast: "Hervorragend!" }],
-                dailylife: [{ q: "In ritardo:", options: ["Sono in ritardo.", "Ho ritardo.", "Entrambe sono corrette.", "Tardi."], correct: 0, roast: "Perfekt!" }]
-            },
-            'ger-eng': {
-                food: [{ q: "Choose:", options: ["I prefer pizza to pasta.", "I prefer pizza than pasta.", "Pizza is good.", "I eat pizza."], correct: 0, roast: "Richtig!" }],
-                travel: [{ q: "Travel:", options: ["I went to Rome last summer.", "I have went to Rome.", "I go Rome.", "Travel."], correct: 0, roast: "Derailed." }],
-                sports: [{ q: "Sports:", options: ["Our team played very well.", "Our team played very good.", "Good play.", "Win."], correct: 0, roast: "Relegated!" }],
-                culture: [{ q: "Culture:", options: ["That museum was amazing.", "That museum were amazing.", "Museum good.", "Art."], correct: 0, roast: "Non-existent grammar." }],
-                dailylife: [{ q: "Daily:", options: ["You're going to be late.", "Your going to be late.", "Late.", "Time."], correct: 0, roast: "Late!" }]
-            },
-            'ger-fra': {
-                food: [{ q: "Choisis :", options: ["Je voudrais un croissant.", "Je veux un croissant.", "Les deux sont correctes.", "Croissant."], correct: 2, roast: "Sehr gut!" }],
-                travel: [{ q: "La gare :", options: ["Où est la gare?", "Où se trouve la gare?", "Les deux sont correctes.", "Gare."], correct: 2, roast: "Ausgezeichnet!" }],
-                sports: [{ q: "Le match :", options: ["Nous avons gagné.", "On a gagné.", "Les deux sont correctes.", "Sieg."], correct: 2, roast: "Toll!" }],
-                culture: [{ q: "Chef-d'œuvre :", options: ["C'est un chef-d'œuvre.", "Beau.", "Super.", "Art."], correct: 0, roast: "Hervorragend!" }],
-                dailylife: [{ q: "En retard :", options: ["Je suis en retard.", "J'ai du retard.", "Les deux sont correctes.", "Spät."], correct: 2, roast: "Perfekt!" }]
+                food: [
+                    { q: "Wähle den korrekten Satz:", options: ["Ich möchte ein Bier.", "Ich will Bier Glas.", "Gib mir Bier.", "Ich möchte eine Biers."], correct: 0, roast: "Richtig!" },
+                    { q: "Übersetze 'Ich hätte gern eine Pizza':", options: ["Ich hätte gern eine Pizza.", "Ich habe gern eine Pizza.", "Ich will gern Pizza.", "Ich möchte ein Pizza."], correct: 0, roast: "Konjunktiv II per la cortesia." },
+                    { q: "Wähle aus:", options: ["Das Essen schmeckt gut.", "Das Essen schmeckt gutem.", "Der Essen schmeckt gut.", "Das Essen schmecken gut."], correct: 0, roast: "Soggetto neutro 'Das Essen'." },
+                    { q: "Übersetze 'Ich trinke gerne Kaffee':", options: ["Ich trinke gerne Kaffee.", "Ich trinke gern Kaffee.", "Both A and B are correct.", "Ich trinke Kaffee gerne."], correct: 2, roast: "Gerne o gern sono intercambiabili." },
+                    { q: "Wähle aus:", options: ["Ein Glas Wasser, bitte.", "Eine Glas Wasser, bitte.", "Ein Glas Wassers, bitte.", "Ein Glas von Wasser, bitte."], correct: 0, roast: "Genitivo neutro corretto." },
+                    { q: "Übersetze 'Ich habe großen Hunger':", options: ["Ich habe großen Hunger.", "Ich bin großen Hunger.", "Ich habe große Hunger.", "Ich mache großen Hunger."], correct: 0, roast: "Hunger è maschile accusativo." },
+                    { q: "Wähle aus:", options: ["Der Apfel ist frisch.", "Die Apfel ist frisch.", "Das Apfel ist frisch.", "Der Apfel sind frisch."], correct: 0, roast: "Apfel è maschile." },
+                    { q: "Übersetze 'Die Rechnung bitte':", options: ["Die Rechnung, bitte.", "Das Rechnung, bitte.", "Der Rechnung, bitte.", "Rechnung, bitte."], correct: 0, roast: "Rechnung è femminile." },
+                    { q: "Wähle aus:", options: ["Wir essen zu Abend.", "Wir machen zu Abend essen.", "Wir essen Abend.", "Wir sind zu Abend."], correct: 0, roast: "Espressione fissa 'zu Abend essen'." },
+                    { q: "Übersetze 'Guten Appetit':", options: ["Guten Appetit!", "Guter Appetit!", "Gutes Appetit!", "Gut Appetit!"], correct: 0, roast: "Accusativo maschile." },
+                    { q: "Wähle aus:", options: ["Das Brot ist frisch gebacken.", "Der Brot ist frisch gebacken.", "Das Brot sind frisch gebacken.", "Das Brote ist frisch."], correct: 0, roast: "Brot è neutro." },
+                    { q: "Übersetze 'Ich mag keinen Fisch':", options: ["Ich mag keinen Fisch.", "Ich mag nicht Fisch.", "Ich mag kein Fisch.", "Both A and C are correct."], correct: 3, roast: "Accusativo corretto." },
+                    { q: "Wähle aus:", options: ["Eine Tasse Kaffee.", "Einen Tasse Kaffee.", "Ein Tasse Kaffee.", "Tasse Kaffee."], correct: 0, roast: "Tasse è femminile." },
+                    { q: "Übersetze 'Prost!':", options: ["Prost!", "Prost Mahlzeit!", "Both A and B are correct.", "Cheers!"], correct: 2, roast: "Brindisi classico tedesco." },
+                    { q: "Wähle aus:", options: ["Der Käse schmeckt lecker.", "Die Käse schmeckt lecker.", "Das Käse schmeckt lecker.", "Der Käse schmecken lecker."], correct: 0, roast: "Käse è maschile." },
+                    { q: "Übersetze 'Ich bin satt':", options: ["Ich bin satt.", "Ich habe satt.", "Ich bin satter.", "Ich mache satt."], correct: 0, roast: "Predicato nominale corretto." },
+                    { q: "Wähle aus:", options: ["Frisches Obst und Gemüse.", "Frische Obst und Gemüse.", "Frischen Obst und Gemüse.", "Frisches Obst und Gemüsen."], correct: 0, roast: "Declinazione degli aggettivi." },
+                    { q: "Übersetze 'Zum Mitnehmen, bitte':", options: ["Zum Mitnehmen, bitte.", "Für Mitnehmen, bitte.", "Mitnehmen, bitte.", "Zum Mitnehmen bitte."], correct: 0, roast: "Espressione standard da asporto." },
+                    { q: "Wähle aus:", options: ["Das Restaurant ist geschlossen.", "Der Restaurant ist geschlossen.", "Das Restaurant sind geschlossen.", "Restaurant ist geschlossen."], correct: 0, roast: "Restaurant è neutro." },
+                    { q: "Final food check:", options: ["Alles schmeckt wunderbar.", "Alles schmeckt wunderbaren.", "Alles schmeckt wunderbare.", "Alles schmeckt wunderbarste."], correct: 0, roast: "Avverbio invariato." }
+                ],
+                travel: [
+                    { q: "Wo ist der Hauptbahnhof?", options: ["Wo ist der Hauptbahnhof?", "Wo ist das Hauptbahnhof?", "Wo ist die Hauptbahnhof?", "Wo ist Hauptbahnhof station?"], correct: 0, roast: "Perfekt, Bahnhof ist Maskulinum." },
+                    { q: "Übersetze 'Wo ist das Hotel?':", options: ["Wo ist das Hotel?", "Wo ist der Hotel?", "Wo ist die Hotel?", "Wo hotel ist?"], correct: 0, roast: "Hotel è neutro." },
+                    { q: "Wähle aus:", options: ["Ich nehme den Zug.", "Ich nehme das Zug.", "Ich nehme die Zug.", "Ich nehme Zug."], correct: 0, roast: "Zug è accusativo maschile." },
+                    { q: "Übersetze 'Eine Fahrkarte nach Berlin':", options: ["Eine Fahrkarte nach Berlin.", "Eine Fahrkarte für Berlin.", "Eine Fahrkarte zu Berlin.", "Eine Fahrkarte in Berlin."], correct: 0, roast: "Città senza articolo vogliono 'nach'." },
+                    { q: "Wähle aus:", options: ["Der Zug hat Verspätung.", "Der Zug hat Verspätungen.", "Der Zug ist Verspätung.", "Der Zug macht Verspätung."], correct: 0, roast: "Espressione fissa 'Verspätung haben'." },
+                    { q: "Übersetze 'Ich habe meinen Pass verloren':", options: ["Ich habe meinen Pass verloren.", "Ich habe mein Pass verloren.", "Ich bin meinen Pass verloren.", "Ich verliere meinen Pass."], correct: 0, roast: "Perfekt mit haben." },
+                    { q: "Wähle aus:", options: ["Wo sind die Toiletten?", "Wo ist die Toiletten?", "Wo sind das Toilette?", "Wo sind Toiletten?"], correct: 0, roast: "Plurale corretto." },
+                    { q: "Übersetze 'Ein Taxi, bitte':", options: ["Ein Taxi, bitte.", "Einen Taxi, bitte.", "Eine Taxi, bitte.", "Taxi, bitte."], correct: 0, roast: "Taxi è neutro." },
+                    { q: "Wähle aus:", options: ["Ich möchte ein Zimmer reservieren.", "Ich will Zimmer reservieren.", "Ich reserviere ein Zimmer.", "Both A and C are correct."], correct: 3, roast: "Ottimo." },
+                    { q: "Übersetze 'Auf Wiedersehen!':", options: ["Auf Wiedersehen!", "Auf Wiederhören!", "Both A and B are correct.", "Tschüss!"], correct: 2, roast: "Visiva o telefonica." },
+                    { q: "Wähle aus:", options: ["Der Flug ist pünktlich.", "Der Flug ist pünktliche.", "Der Flug ist pünktlichen.", "Der Flug sind pünktlich."], correct: 0, roast: "Predicato nominale invariato." },
+                    { q: "Übersetze 'Gute Reise!':", options: ["Gute Reise!", "Guter Reise!", "Gutes Reise!", "Guten Reise!"], correct: 0, roast: "Reise è femminile." },
+                    { q: "Wähle aus:", options: ["Wo ist der Flughafen?", "Wo ist das Flughafen?", "Wo ist die Flughafen?", "Wo Flughafen ist?"], correct: 0, roast: "Flughafen è maschile." },
+                    { q: "Übersetze 'Ich habe einen Koffer':", options: ["Ich habe einen Koffer.", "Ich habe ein Koffer.", "Ich habe der Koffer.", "Ich bin einen Koffer."], correct: 0, roast: "Koffer è accusativo maschile." },
+                    { q: "Wähle aus:", options: ["Ist das weit von hier?", "Ist das weit von hier aus?", "Both A and B are correct.", "Ist das weit hier?"], correct: 2, roast: "Espressioni entrambe valide." },
+                    { q: "Übersetze 'Biegen Sie links ab':", options: ["Biegen Sie links ab.", "Biegen Sie nach links ab.", "Both A and B are correct.", "Biege links ab."], correct: 2, roast: "Formale o informale." },
+                    { q: "Wähle aus:", options: ["Ein Stadtplan von München.", "Ein Stadtplan von Münchens.", "Ein Stadtplan aus München.", "Ein Stadtplan München."], correct: 0, roast: "Preposizione 'von'." },
+                    { q: "Übersetze 'Wie viel kostet das?':", options: ["Wie viel kostet das?", "Wie viel ist das?", "Both A and B are correct.", "Wie viel kostet?"], correct: 2, roast: "Entrambe perfette." },
+                    { q: "Wähle aus:", options: ["Ich suche den Bahnhof.", "Ich suche dem Bahnhof.", "Ich suche der Bahnhof.", "Ich suche Bahnhof."], correct: 0, roast: "Suchen regge l'accusativo." },
+                    { q: "Final travel check:", options: ["Gute Reise und gute Heimkehr!", "Gute Reise!", "Gute Heimkehr!", "Gute Fahrt!"], correct: 0, roast: "Perfetto." }
+                ],
+                sports: [
+                    { q: "Das Fußballspiel:", options: ["Das Spiel endete unentschieden.", "Das Spiel war ein Unentschieden.", "Sia A che B sono corrette.", "Das Match ist null."], correct: 2, roast: "Sehr gut." },
+                    { q: "Übersetze 'Wir haben das Spiel gewonnen':", options: ["Wir haben das Spiel gewonnen.", "Wir haben das Spiel gewinnt.", "Wir gewannen das Spiel.", "Both A and C are correct."], correct: 3, roast: "Perfekt." },
+                    { q: "Wähle aus:", options: ["Er läuft sehr schnell.", "Er läuft sehr schnelle.", "Er läuft sehr schnellste.", "Er läuft schnell."], correct: 0, roast: "Avverbio corretto." },
+                    { q: "Übersetze 'Das Stadion ist voll':", options: ["Das Stadion ist voll.", "Das Stadion ist volle.", "Der Stadion ist voll.", "Das Stadion sind voll."], correct: 0, roast: "Stadion è neutro." },
+                    { q: "Wähle aus:", options: ["Der Fußballverein.", "Die Fußballverein.", "Das Fußballverein.", "Der Fußballvereine."], correct: 0, roast: "Verein è maschile." },
+                    { q: "Übersetze 'Der Schiedsrichter hat gepfiffen':", options: ["Der Schiedsrichter hat gepfiffen.", "Der Schiedsrichter hat pfeifen.", "Der Schiedsrichter pfiff.", "Both A and C are correct."], correct: 3, roast: "Perfekt." },
+                    { q: "Wähle aus:", options: ["Eine Goldmedaille.", "Einen Goldmedaille.", "Ein Goldmedaille.", "Goldmedaille."], correct: 0, roast: "Medaille è femminile." },
+                    { q: "Übersetze 'Viel Glück für das Team':", options: ["Viel Glück für das Team.", "Viel Glück dem Team.", "Both A and B are correct.", "Gutes Glück Team."], correct: 2, roast: "Ottimo." },
+                    { q: "Wähle aus:", options: ["Der professionelle Spieler.", "Die professionelle Spieler.", "Das professionelle Spieler.", "Der professionellen Spieler."], correct: 0, roast: "Declinazione forte." },
+                    { q: "Übersetze 'Es steht eins zu eins':", options: ["Es steht eins zu eins.", "Es steht eins für eins.", "Es steht eins gegen eins.", "Es ist eins zu eins."], correct: 0, roast: "Formula fissa dello score." },
+                    { q: "Wähle aus:", options: ["Sport treiben jeden Tag.", "Sport machen jeden Tag.", "Both A and B are correct.", "Sport tun."], correct: 2, roast: "Treiben o machen vanno benissimo." },
+                    { q: "Übersetze 'Der Wettkampf ist offen':", options: ["Der Wettkampf ist offen.", "Der Wettkampf ist offene.", "Die Wettkampf ist offen.", "Der Wettkampf sind offen."], correct: 0, roast: "Wettkampf è maschile." },
+                    { q: "Wähle aus:", options: ["Die Fans unterstützen die Mannschaft.", "Die Fans unterstützen die Mannschafte.", "Die Fans unterstützt Mannschaft.", "Fans unterstützen Mannschaft."], correct: 0, roast: "Mannschaft è femminile." },
+                    { q: "Übersetze 'Ein hartes Training':", options: ["Ein hartes Training.", "Eine harte Training.", "Ein harter Training.", "Ein hartes Trainingen."], correct: 0, roast: "Training è neutro." },
+                    { q: "Wähle aus:", options: ["Der Weltmeister.", "Die Weltmeister.", "Das Weltmeister.", "Der Weltmeisterin."], correct: 0, roast: "Campione del mondo maschile." },
+                    { q: "Übersetze 'Das Tor des Monats':", options: ["Das Tor des Monats.", "Das Tor der Monats.", "Der Tor des Monats.", "Das Tor dem Monat."], correct: 0, roast: "Genitivo maschile 'des Monats'." },
+                    { q: "Wähle aus:", options: ["Das Turnier gewinnen.", "Das Turnier gewinnt.", "Das Turnier gewonn.", "Turnier gewinnen."], correct: 0, roast: "Infinito." },
+                    { q: "Übersetze 'Eine starke Abwehr':", options: ["Eine starke Abwehr.", "Ein starke Abwehr.", "Einen starke Abwehr.", "Eine starker Abwehr."], correct: 0, roast: "Abwehr è femminile." },
+                    { q: "Wähle aus:", options: ["Auf der Laufbahn rennen.", "Auf die Laufbahn rennen.", "Auf dem Laufbahn rennen.", "Auf Laufbahn rennen."], correct: 0, roast: "Dativ per stato in luogo." },
+                    { q: "Final sports check:", options: ["Das ist der Sieg!", "Das ist die Sieg!", "Das ist das Sieg!", "Das ist Sieg!"], correct: 0, roast: "Sieg è maschile." }
+                ],
+                culture: [
+                    { q: "Die Kunst:", options: ["Dieses Bild ist berühmt.", "Dieser Bild ist berühmt.", "Dieses Bild sind berühmt.", "Dies Bild ist berühmteste."], correct: 0, roast: "Korrekt." },
+                    { q: "Übersetze 'Die moderne Kunst':", options: ["Die moderne Kunst.", "Der moderne Kunst.", "Das moderne Kunst.", "Die modernen Kunst."], correct: 0, roast: "Kunst è femminile." },
+                    { q: "Wähle aus:", options: ["Ein Meisterwerk der Malerei.", "Eine Meisterwerk der Malerei.", "Ein Meisterwerke der Malerei.", "Ein Meisterwerk des Malerei."], correct: 0, roast: "Meisterwerk è neutro." },
+                    { q: "Übersetze 'Goethes Faust':", options: ["Goethes Faust.", "Goethe Faust.", "Faust von Goethe.", "Both A and C are correct."], correct: 3, roast: "Genitivo sassone o von." },
+                    { q: "Wähle aus:", options: ["Die Geschichte der Kunst.", "Die Geschichte der Künste.", "Both A and B are correct.", "Geschichte der Kunst."], correct: 2, roast: "Arte al singolare o plurale." },
+                    { q: "Übersetze 'Ein bekannter Schriftsteller':", options: ["Ein bekannter Schriftsteller.", "Eine bekannter Schriftsteller.", "Ein bekannter Schriftstellerin.", "Bekannter Schriftsteller."], correct: 0, roast: "Schriftsteller è maschile." },
+                    { q: "Wähle aus:", options: ["Die deutsche Literatur.", "Der deutsche Literatur.", "Das deutsche Literatur.", "Die deutschen Literatur."], correct: 0, roast: "Literatur è femminile." },
+                    { q: "Übersetze 'Ein klassisches Konzert':", options: ["Ein klassisches Konzert.", "Eine klassische Konzert.", "Ein klassisches Konzerte.", "Ein klassischer Konzert."], correct: 0, roast: "Konzert è neutro." },
+                    { q: "Wähle aus:", options: ["Das kulturelle Erbe.", "Der kulturelle Erbe.", "Das kulturellen Erbe.", "Das kulturelles Erbe."], correct: 0, roast: "Erbe è neutro." },
+                    { q: "Übersetze 'Eine Kunstgalerie':", options: ["Eine Kunstgalerie.", "Ein Kunstgalerie.", "Einen Kunstgalerie.", "Kunstgalerie."], correct: 0, roast: "Galerie è femminile." },
+                    { q: "Wähle aus:", options: ["Das Nationaltheater.", "Der Nationaltheater.", "Das Nationaltheaters.", "Nationaltheater."], correct: 0, roast: "Theater è neutro." },
+                    { q: "Übersetze 'Das Filmfestival':", options: ["Das Filmfestival.", "Der Filmfestival.", "Das Filmfestivals.", "Film festival."], correct: 0, roast: "Festival è neutro." },
+                    { q: "Wähle aus:", options: ["Ein impressionistisches Gemälde.", "Eine impressionistische Gemälde.", "Ein impressionistisches Gemäldes.", "Gemälde impressionistisch."], correct: 0, roast: "Gemälde è neutro." },
+                    { q: "Übersetze 'Die europäische Kultur':", options: ["Die europäische Kultur.", "Der europäische Kultur.", "Die europäischer Kultur.", "Kultur europäisch."], correct: 0, roast: "Accordo femminile." },
+                    { q: "Wähle aus:", options: ["Ein historisches Denkmal besuchen.", "Eine historische Denkmal besuchen.", "Ein historisches Denkmal besuche.", "Denkmal besuchen."], correct: 0, roast: "Denkmal è neutro." },
+                    { q: "Übersetze 'Die deutsche Romantik':", options: ["Die deutsche Romantik.", "Der deutsche Romantik.", "Die deutscher Romantik.", "Romantik deutsch."], correct: 0, roast: "Romantik è femminile." },
+                    { q: "Wähle aus:", options: ["Ein romantischer Dichter.", "Eine romantische Dichter.", "Ein romantischer Dichterin.", "Dichter romantisch."], correct: 0, roast: "Dichter è maschile." },
+                    { q: "Übersetze 'Die gotische Architektur':", options: ["Die gotische Architektur.", "Der gotische Architektur.", "Die gotischer Architektur.", "Architektur gotisch."], correct: 0, roast: "Architektur è femminile." },
+                    { q: "Wähle aus:", options: ["Die klassische Oper.", "Der klassische Oper.", "Die klassischer Oper.", "Oper klassisch."], correct: 0, roast: "Oper è femminile." },
+                    { q: "Final culture check:", options: ["Die Kunst ist ewig.", "Der Kunst ist ewig.", "Das Kunst ist ewig.", "Kunst ist ewig."], correct: 0, roast: "Kunst è femminile." }
+                ],
+                dailylife: [
+                    { q: "Der Alltag:", options: ["Ich habe Hunger.", "Ich bin hungrig.", "Sia A che B sono corrette.", "Ich mache Hunger."], correct: 2, roast: "Ausgezeichnet." },
+                    { q: "Übersetze 'Ich bin zu spät':", options: ["Ich bin zu spät.", "Ich verspäte mich.", "Beide sind korrekt.", "Ich habe spät."], correct: 2, roast: "Spot on!" },
+                    { q: "Wähle aus:", options: ["Ich stehe früh auf.", "Ich aufstehe früh.", "Ich stehe früh an.", "Ich steh früh."], correct: 0, roast: "Verbo separabile 'aufstehen'." },
+                    { q: "Übersetze 'Ich mache den Einkauf':", options: ["Ich mache den Einkauf.", "Ich gehe einkaufen.", "Both A and B are correct.", "Ich mache einkaufen."], correct: 2, roast: "Entrambe perfette." },
+                    { q: "Wähle aus:", options: ["Ich gehe zur Arbeit.", "Ich gehe nach Arbeit.", "Ich gehe in Arbeit.", "Ich gehe arbeiten zu."], correct: 0, roast: "Contrazione 'zu + der' = zur." },
+                    { q: "Übersetze 'Das Wetter ist schön':", options: ["Das Wetter ist schön.", "Der Wetter ist schön.", "Das Wetter sind schön.", "Wetter ist schön."], correct: 0, roast: "Wetter è neutro." },
+                    { q: "Wähle aus:", options: ["Ich bin müde.", "Ich habe müde.", "Ich bin müder.", "Ich mache müde."], correct: 0, roast: "Predicato nominale corretto." },
+                    { q: "Übersetze 'Ich trinke Kaffee zum Frühstück':", options: ["Ich trinke Kaffee zum Frühstück.", "Ich trinke Kaffee für Frühstück.", "Ich trinke Kaffee in Frühstück.", "Frühstück Kaffee."], correct: 0, roast: "Preposizione 'zum'." },
+                    { q: "Wähle aus:", options: ["Fernsehen am Abend.", "Fernsehen in Abend.", "Fernsehen auf Abend.", "Fernsehen Abend."], correct: 0, roast: "Espressione 'am Abend'." },
+                    { q: "Übersetze 'Bis morgen!':", options: ["Bis morgen!", "Bis zum morgen!", "Bis mörgens!", "Morgen bis!"], correct: 0, roast: "Formula standard." },
+                    { q: "Wähle aus:", options: ["Ich muss mich entspannen.", "Ich muss entspannen mich.", "Ich muss entspannen.", "Ich mich muss entspannen."], correct: 0, roast: "Verbo modale + riflessivo." },
+                    { q: "Übersetze 'Ich hätte gerne einen Kaffee':", options: ["Ich hätte gerne einen Kaffee.", "Ich habe gerne Kaffee.", "Ich will Kaffee.", "Ich möchte Kaffee."], correct: 0, roast: "Konjunktiv II cortesia." },
+                    { q: "Wähle aus:", options: ["Schönen Tag noch!", "Schöner Tag noch!", "Schönes Tag noch!", "Schöne Tag noch!"], correct: 0, roast: "Accusativo maschile 'Tag'." },
+                    { q: "Übersetze 'Ich muss einkaufen gehen':", options: ["Ich muss einkaufen gehen.", "Ich muss einkaufen.", "Both A and B are correct.", "Ich gehe einkaufen muss."], correct: 2, roast: "Entrambe valide." },
+                    { q: "Wähle aus:", options: ["Am Wochenende erhole ich mich.", "Am Wochenende erhole mich.", "Am Wochenende ich erhole.", "Wochenende erhole ich."], correct: 0, roast: "Inversioner nach adverbialem Ausdruck." },
+                    { q: "Übersetze 'Wie spät ist es?':", options: ["Wie spät ist es?", "Was für Uhr ist es?", "Wie viel Uhr ist es?", "Both A and C are correct."], correct: 3, roast: "Entrambe comunissime in Germania." },
+                    { q: "Wähle aus:", options: ["Gute Nacht!", "Guten Nacht!", "Guter Nacht!", "Gutes Nacht!"], correct: 0, roast: "Nacht è femminile nominativo/accusativo." },
+                    { q: "Übersetze 'Bis bald!':", options: ["Bis bald!", "Bis spätestens!", "Bis gleicht!", "Bis geschwind!"], correct: 0, roast: "Standard." },
+                    { q: "Wähle aus:", options: ["Schönes Wochenende!", "Schöner Wochenende!", "Schönen Wochenende!", "Schöne Wochenende!"], correct: 0, roast: "Wochenende è neutro accusativo." },
+                    { q: "Final daily check:", options: ["Alles in Ordnung.", "Alles im Ordnung.", "Alles an Ordnung.", "Alles Ordnung."], correct: 0, roast: "Espressione fissa impeccabile." }
+                ]
             }
         };
 
+        // Riempimento automatico dei dataset mancanti speculari per evitare array vuoti
+        function ensureDatasets() {
+            const langs = ['it', 'eng', 'fr', 'de'];
+            const topics = ['food', 'travel', 'sports', 'culture', 'dailylife'];
+            langs.forEach(nat => {
+                langs.forEach(tgt => {
+                    if (nat === tgt) return;
+                    const key = `${nat}-${tgt}`;
+                    if (!dataSet[key]) {
+                        dataSet[key] = {};
+                    }
+                    topics.forEach(top => {
+                        if (!dataSet[key][top]) {
+                            // Fallback basato su it-eng o it-fra se non presente
+                            dataSet[key][top] = dataSet['it-eng'][top] || [];
+                        }
+                    });
+                });
+            });
+        }
+        ensureDatasets();
+
+        // Audio sintetizzatore Web Audio API
         let audioCtx = null;
         function playSound(type) {
             try {
@@ -697,6 +970,7 @@
             } catch(e) {}
         }
 
+        // Elementi DOM
         const nativeLangOptions = document.querySelectorAll('#nativeLangOptions .lang-choice-btn');
         const targetLangOptions = document.querySelectorAll('#targetLangOptions .lang-choice-btn');
         const nativeLangLbl = document.getElementById('nativeLangLbl');
@@ -720,24 +994,61 @@
         const roastBtnText = document.getElementById('roastBtnText');
         const customResultOutput = document.getElementById('customResultOutput');
 
+        // Logica di isolamento dinamico: la lingua target non può essere uguale a quella nativa
+        function updateTargetAvailability() {
+            targetLangOptions.forEach(btn => {
+                const tgt = btn.getAttribute('data-target');
+                if (tgt === currentNative) {
+                    btn.disabled = true;
+                    btn.classList.remove('active');
+                } else {
+                    btn.disabled = false;
+                }
+            });
+
+            // Se il target selezionato ora è disabilitato, seleziona il primo disponibile
+            const activeTargetBtn = document.querySelector('#targetLangOptions .lang-choice-btn.active');
+            if (!activeTargetBtn || activeTargetBtn.disabled) {
+                const firstValid = Array.from(targetLangOptions).find(b => !b.disabled);
+                if (firstValid) {
+                    targetLangOptions.forEach(b => b.classList.remove('active'));
+                    firstValid.classList.add('active');
+                    currentTarget = firstValid.getAttribute('data-target');
+                }
+            }
+        }
+
+        // Gestione click Lingua Nativa
         nativeLangOptions.forEach(btn => {
             btn.addEventListener('click', () => {
                 nativeLangOptions.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentNative = btn.getAttribute('data-native');
+                
+                updateTargetAvailability();
+                updateTutorAvatar();
                 updateUiTexts();
                 initTopic(currentTopic);
             });
         });
 
+        // Gestione click Lingua Target
         targetLangOptions.forEach(btn => {
             btn.addEventListener('click', () => {
+                if (btn.disabled) return;
                 targetLangOptions.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentTarget = btn.getAttribute('data-target');
                 initTopic(currentTopic);
             });
         });
+
+        function updateTutorAvatar() {
+            const profile = tutorProfiles[currentNative] || tutorProfiles['it'];
+            characterImage.src = profile.file;
+            characterCaption.innerText = profile.caption;
+            setTutorMood('neutral');
+        }
 
         function updateUiTexts() {
             const t = uiTranslations[currentNative] || uiTranslations['it'];
@@ -773,11 +1084,11 @@
             score = 0;
             
             const comboKey = `${currentNative}-${currentTarget}`;
-            currentQuestions = dataSet[comboKey]?.[topicKey] || dataSet['it-eng'][topicKey] || dataSet['it-eng']['food'];
+            currentQuestions = dataSet[comboKey]?.[topicKey] || dataSet['it-eng'][topicKey] || [];
             
             const t = uiTranslations[currentNative] || uiTranslations['it'];
             const formattedTopic = t.topics[topicKey] ? t.topics[topicKey].replace(/^[^\w\s]+/, '').trim() : topicKey;
-            drillSectionTitle.innerText = `${formattedTopic} ${t.drillTitleSuffix}`;
+            drillSectionTitle.innerText = formattedTopic;
             setTutorMood('neutral');
             loadQuestion();
         }
@@ -796,6 +1107,7 @@
         }
 
         function loadQuestion() {
+            if (!currentQuestions || currentQuestions.length === 0) return;
             const item = currentQuestions[currentIndex];
             prepareShuffledOptions(item);
             const t = uiTranslations[currentNative] || uiTranslations['it'];
@@ -847,7 +1159,7 @@
                 roastFeedback.style.borderColor = '#12B76A';
                 roastFeedback.style.color = '#027A48';
             } else {
-                roastFeedback.innerHTML = `<strong>🎩 ${t.roastHeader}</strong> Ah, a valiant effort, though entirely incorrect. Allow me to guide you before your syntax causes permanent diplomatic damage. — <em>${roastText}</em>`;
+                roastFeedback.innerHTML = `<strong>🎩 ${t.roastHeader}</strong> Ah, un tentativo encomiabile ma errato. Lascia che ti guidi prima che la sintassi causi danni diplomatici. — <em>${roastText}</em>`;
                 roastFeedback.style.backgroundColor = '#FDF3F2';
                 roastFeedback.style.borderColor = '#FECDCA';
                 roastFeedback.style.color = '#B42318';
@@ -868,16 +1180,16 @@
 
                 if (percentage >= 60) {
                     setTutorMood('happy');
-                    characterCaption.innerText = currentNative === 'it' ? "Il tutor è sorpreso: te la sei cavata." : 
-                                                 currentNative === 'en' ? "The tutor is surprised: you managed okay." :
-                                                 currentNative === 'fr' ? "Le tuteur est surpris : vous vous en êtes sorti." :
-                                                 "Der Tutor ist überrascht: Du hast dich gut geschlagen.";
+                    characterCaption.innerText = currentNative === 'it' ? "Il tutor è sorpreso: te la sei cavata egregiamente." : 
+                                                 currentNative === 'en' ? "The tutor is surprised: you managed wonderfully." :
+                                                 currentNative === 'fr' ? "Le tuteur est surpris : vous vous en êtes sorti haut la main." :
+                                                 "Der Tutor ist überrascht: Du hast dich hervorragend geschlagen.";
                 } else {
                     setTutorMood('angry');
-                    characterCaption.innerText = currentNative === 'it' ? "Disastro totale! Il tutor è furioso." :
-                                                 currentNative === 'en' ? "Total disaster! The tutor is furious." :
-                                                 currentNative === 'fr' ? "Désastre total ! Le tuteur est furieux." :
-                                                 "Totalabsturz! Der Tutor ist wütend.";
+                    characterCaption.innerText = currentNative === 'it' ? "Disastro totale! Sotto al 60%: il tutor è furioso." :
+                                                 currentNative === 'en' ? "Total disaster! Under 60%: the tutor is furious." :
+                                                 currentNative === 'fr' ? "Désastre total ! Moins de 60 % : le tuteur est furieux." :
+                                                 "Totalabsturz! Unter 60%: Der Tutor ist wütend.";
                 }
                 return;
             }
@@ -892,9 +1204,13 @@
             });
         });
 
+        // Inizializzazione iniziale
+        updateTargetAvailability();
+        updateTutorAvatar();
         updateUiTexts();
         initTopic('food');
 
+        // Banco di Tortura (Frasi Libere con correzione)
         roastBtn.addEventListener('click', () => {
             const val = userSentence.value.trim();
             const t = uiTranslations[currentNative] || uiTranslations['it'];
@@ -902,7 +1218,7 @@
                 playSound('error');
                 setTutorMood('angry');
                 customResultOutput.style.display = 'block';
-                customResultOutput.innerHTML = `<strong>🔥 Hey!</strong> ${t.emptyToast}`;
+                customResultOutput.innerHTML = `<strong>🔥 Ehi!</strong> ${t.emptyToast}`;
                 return;
             }
 
@@ -910,9 +1226,9 @@
             setTutorMood('angry');
             customResultOutput.style.display = 'block';
             customResultOutput.innerHTML = `
-                <strong>🔥 ${t.roastOutputHeader}</strong> Analyzing '${val}'... This sentence has just offended centuries of literature!
+                <strong>🔥 ${t.roastOutputHeader}</strong> Analizzando '${val}'... Questa frase ha appena offeso secoli di grammatica internazionale!
                 <div class="custom-correction">
-                    ✨ <strong>${t.correctionHeader}</strong> (Impeccable formulation worthy of elite grammar)
+                    ✨ <strong>${t.correctionHeader}</strong> Versione corretta d'élite pronta per l'uso ufficiale.
                 </div>
             `;
         });
