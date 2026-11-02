@@ -143,7 +143,7 @@
             border-color: var(--accent-red);
         }
 
-        /* SEZIONE DRILL DEI TOPIC */
+        /* SEZIONE LISTA FISSA DELLE 20 DOMANDE PER TOPIC */
         .drill-section {
             background: white;
             border: 1px solid var(--card-border);
@@ -162,17 +162,40 @@
             margin: 0;
         }
 
-        .drill-box {
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .question-item {
             background-color: #F8F5EE;
             border: 1px solid var(--card-border);
-            padding: 16px;
+            padding: 12px 16px;
             border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             color: var(--text-dark);
-            min-height: 50px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        .question-item span.error-text {
+            font-weight: 600;
+        }
+
+        .question-item span.fix-text {
+            font-size: 13px;
+            color: var(--accent-red);
+            font-weight: 600;
+            background: #FDF3F2;
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid #FECDCA;
         }
 
         /* SEZIONE INPUT LIBERO A PARTE */
@@ -205,11 +228,6 @@
             border-color: var(--accent-red);
         }
 
-        .action-row {
-            display: flex;
-            gap: 12px;
-        }
-
         .btn-roasted {
             background-color: var(--accent-red);
             color: white;
@@ -224,27 +242,11 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            width: fit-content;
         }
 
         .btn-roasted:hover {
             background-color: var(--btn-red-hover);
-        }
-
-        .btn-drill {
-            background-color: white;
-            color: var(--text-dark);
-            border: 1px solid var(--card-border);
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 2px 4px var(--card-shadow);
-            transition: border-color 0.2s;
-        }
-
-        .btn-drill:hover {
-            border-color: #98A2B3;
         }
 
         .result-output {
@@ -264,7 +266,7 @@
     <div class="container">
         <header class="header">
             <div class="lang-badge">ENGLISH GB • ITALIANO IT</div>
-            <div class="counter-badge" id="counterDisplay">Database: 100 Drills Loaded</div>
+            <div class="counter-badge" id="counterDisplay">Database: 100 Fixed Drills Loaded</div>
         </header>
 
         <!-- 1. VIGNETTA IN ALTO SOPRA TUTTO -->
@@ -280,7 +282,7 @@
                 because it stings.
             </h1>
             <p class="subtitle">
-                Forget boring conjugation tables. Select one of your 5 core topics to train with 100 targeted drills, or write your own sentence below to get instantly roasted.
+                Explore the 20 fixed drills for each of your 5 core topics below, or use the separate box at the bottom to type and roast any custom sentence.
             </p>
 
             <!-- 5 TOPICS -->
@@ -293,33 +295,25 @@
             </div>
         </section>
 
-        <!-- 2. SEZIONE DRILL (20 domande per ciascuno dei 5 topic = 100 totali) -->
+        <!-- 2. SEZIONE LISTA FISSA DELLE 20 DOMANDE PER IL TOPIC SELEZIONATO -->
         <section class="drill-section">
-            <h3 class="section-title" id="drillSectionTitle">Topic Drill Practice (Food)</h3>
-            <div class="drill-box" id="drillQuestionDisplay">Click the button below to load a challenge from the selected topic!</div>
-            <div class="action-row">
-                <button class="btn-drill" id="nextDrillBtn">Load Next Topic Drill</button>
+            <h3 class="section-title" id="drillSectionTitle">Fixed Drills for: Food (20 Questions)</h3>
+            <div class="questions-list" id="questionsListContainer">
+                <!-- Verrà popolato via JavaScript con le 20 frasi fisse -->
             </div>
-            <div id="drillResultOutput" class="result-output"></div>
         </section>
 
         <!-- 3. SEZIONE INPUT LIBERO A PARTE PER CORREZIONE E ROAST -->
         <section class="custom-roast-section">
-            <h3 class="section-title">Free Sentence Roast & Correction</h3>
-            <textarea id="userSentence" placeholder="Type any sentence here to get your custom grammar roast..."></textarea>
-            <div class="action-row">
-                <button class="btn-roasted" id="roastBtn"><span>🔥</span> Get custom sentence roasted</button>
-            </div>
+            <h3 class="section-title">Free Custom Sentence Roast & Correction</h3>
+            <textarea id="userSentence" placeholder="Type any custom sentence here to get your grammar roasted..."></textarea>
+            <button class="btn-roasted" id="roastBtn"><span>🔥</span> Get custom sentence roasted</button>
             <div id="customResultOutput" class="result-output"></div>
         </section>
     </div>
 
     <script>
-        // Database esatto di 100 domande divise equamente (20 per ciascuno dei 5 topic)
-        const topicList = ['food', 'travel', 'sports', 'culture', 'dailylife'];
-        const drillsDatabase = [];
-
-        // Generazione mirata di 20 drill per ciascun topic
+        // Database fisso di esattamente 20 domande scritte per ciascuno dei 5 topic (100 totali)
         const topicData = {
             food: [
                 { q: "I prefer pizza than pasta.", fix: "I prefer pizza *to* pasta." },
@@ -433,37 +427,32 @@
             ]
         };
 
-        // Popolamento dell'array globale dei drill
-        topicList.forEach(t => {
-            topicData[t].forEach((item, index) => {
-                drillsDatabase.push({
-                    topic: t,
-                    q: item.q,
-                    roast: `Topic drill failure! The proper grammar is: "${item.fix}". Your syntax is falling apart.`
-                });
-            });
-        });
-
-        document.getElementById('counterDisplay').innerText = `Database: ${drillsDatabase.length} Drills Loaded`;
-
         let currentTopic = 'food';
-        let currentDrillItem = null;
 
         const pills = document.querySelectorAll('.topic-pill');
         const drillSectionTitle = document.getElementById('drillSectionTitle');
-        const drillQuestionDisplay = document.getElementById('drillQuestionDisplay');
-        const nextDrillBtn = document.getElementById('nextDrillBtn');
-        const drillResultOutput = document.getElementById('drillResultOutput');
+        const questionsListContainer = document.getElementById('questionsListContainer');
 
         const userSentence = document.getElementById('userSentence');
         const roastBtn = document.getElementById('roastBtn');
         const customResultOutput = document.getElementById('customResultOutput');
 
-        function loadNewDrill() {
-            const filtered = drillsDatabase.filter(d => d.topic === currentTopic);
-            currentDrillItem = filtered[Math.floor(Math.random() * filtered.length)];
-            drillQuestionDisplay.innerText = currentDrillItem.q;
-            drillResultOutput.style.display = 'none';
+        function renderTopicQuestions(topicKey) {
+            currentTopic = topicKey;
+            drillSectionTitle.innerText = `Fixed Drills for: ${topicKey.charAt(0).toUpperCase() + topicKey.slice(1)} (20 Questions)`;
+            
+            questionsListContainer.innerHTML = '';
+            const items = topicData[topicKey];
+
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <span class="error-text">${index + 1}. ${item.q}</span>
+                    <span class="fix-text">Fix: ${item.fix}</span>
+                `;
+                questionsListContainer.appendChild(div);
+            });
         }
 
         // Cambio topic tramite pillole
@@ -471,26 +460,12 @@
             pill.addEventListener('click', () => {
                 pills.forEach(p => p.classList.remove('active'));
                 pill.classList.add('active');
-                currentTopic = pill.getAttribute('data-topic');
-                drillSectionTitle.innerText = `Topic Drill Practice (${currentTopic.toUpperCase()})`;
-                loadNewDrill();
+                renderTopicQuestions(pill.getAttribute('data-topic'));
             });
         });
 
-        // Carica primo drill all'avvio
-        loadNewDrill();
-
-        nextDrillBtn.addEventListener('click', () => {
-            loadNewDrill();
-        });
-
-        // Mostra il roast del drill corrente quando l'utente ci clicca sopra o preme il tasto
-        drillQuestionDisplay.addEventListener('click', () => {
-            if(currentDrillItem) {
-                drillResultOutput.style.display = 'block';
-                drillResultOutput.innerHTML = `<strong>🔥 Topic Roast:</strong> ${currentDrillItem.roast}`;
-            }
-        });
+        // Render iniziale del primo topic
+        renderTopicQuestions('food');
 
         // Sezione input libero a parte per il roast personalizzato
         roastBtn.addEventListener('click', () => {
