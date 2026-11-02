@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoastED - Grammar that sticks</title>
+    <title>RoastED - Grammar that stings</title>
     <style>
         :root {
             --bg-color: #F8F5EE;
@@ -81,7 +81,7 @@
             overflow: hidden;
             display: none;
             z-index: 100;
-            width: 260px;
+            width: 280px;
         }
 
         .lang-dropdown.active {
@@ -113,27 +113,66 @@
             color: var(--text-muted);
         }
 
-        /* 1. VIGNETTA IN ALTO SOPRA TUTTO */
+        /* VIGNETTA A BOX FISSO CENTRATO CON STATO DINAMICO */
         .illustration-section {
             width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .image-card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border: 2px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(16, 24, 40, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.2s;
+        }
+
+        .image-card.angry {
+            border-color: var(--accent-red);
+            animation: shake 0.4s ease-in-out;
+            background-color: #FDF3F2;
+        }
+
+        .image-card.happy {
+            border-color: #12B76A;
+            background-color: #ECFDF3;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
         }
 
         .image-wrapper {
             width: 100%;
-            max-width: 700px;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(16, 24, 40, 0.1);
-            border: 1px solid var(--card-border);
-            background-color: white;
+            background-color: #F8F5EE;
         }
 
         .image-wrapper img {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        .character-caption {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: center;
+            font-style: italic;
         }
 
         .hero-section {
@@ -167,7 +206,7 @@
             max-width: 600px;
         }
 
-        /* 5 TOPICS BAR */
+        /* TOPICS BAR */
         .topics-container {
             display: flex;
             gap: 8px;
@@ -195,7 +234,7 @@
             border-color: var(--accent-red);
         }
 
-        /* 2. SEZIONE DRILL (UNA DOMANDA ALLA VOLTA CON 4 OPZIONI) */
+        /* SEZIONE DRILL */
         .drill-section {
             background: white;
             border: 1px solid var(--card-border);
@@ -256,11 +295,6 @@
             box-shadow: 0 2px 4px var(--card-shadow);
         }
 
-        .option-btn:hover:not(:disabled) {
-            border-color: var(--accent-red);
-            background-color: #FDF3F2;
-        }
-
         .option-btn.correct {
             background-color: #ECFDF3;
             border-color: #12B76A;
@@ -303,26 +337,44 @@
             background-color: var(--btn-red-hover);
         }
 
-        /* 3. SEZIONE INPUT LIBERO A PARTE IN FONDO */
+        /* 3. RESTYLING DEL "BANCO DI TORTURA" PER LE FRASI LIBERE */
         .custom-roast-section {
-            background: white;
-            border: 1px solid var(--card-border);
-            padding: 24px;
+            background: linear-gradient(135deg, #101828 0%, #1E293B 100%);
+            border: 2px solid #334155;
+            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 4px 16px var(--card-shadow);
+            box-shadow: 0 10px 30px rgba(16, 24, 40, 0.2);
             display: flex;
             flex-direction: column;
             gap: 16px;
+            color: white;
+        }
+
+        .custom-roast-section .section-title {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+        }
+
+        .custom-roast-section p.custom-desc {
+            font-size: 14px;
+            color: #94A3B8;
+            margin: 0;
+            line-height: 1.4;
         }
 
         .custom-roast-section textarea {
             width: 100%;
-            height: 90px;
-            padding: 12px;
-            border: 1px solid var(--card-border);
+            height: 100px;
+            padding: 14px;
+            background-color: #0F172A;
+            border: 1px solid #334155;
             border-radius: 12px;
             font-family: inherit;
             font-size: 15px;
+            color: white;
             resize: none;
             box-sizing: border-box;
             outline: none;
@@ -337,17 +389,17 @@
             background-color: var(--accent-red);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 26px;
             border-radius: 100px;
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(217, 48, 37, 0.3);
+            box-shadow: 0 4px 15px rgba(217, 48, 37, 0.4);
             transition: background-color 0.2s;
+            width: fit-content;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            width: fit-content;
         }
 
         .btn-roasted:hover {
@@ -355,14 +407,23 @@
         }
 
         .custom-result-output {
-            padding: 16px;
-            background-color: #FDF3F2;
-            border: 1px solid #FECDCA;
-            border-radius: 12px;
-            color: #B42318;
-            font-size: 14px;
-            line-height: 1.5;
+            padding: 18px;
+            background-color: #2D1515;
+            border: 1px solid #7F1D1D;
+            border-radius: 14px;
+            color: #FCA5A5;
+            font-size: 15px;
+            line-height: 1.6;
             display: none;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .custom-correction {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed #7F1D1D;
+            color: #6EE7B7;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -376,17 +437,22 @@
                     🇮🇹 ➔ 🇬🇧 Italian learning English ▼
                 </button>
                 <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-mode="ITA-ENG">🇮🇹 ➔ 🇬🇧 Italian learning English</div>
-                    <div class="lang-option" data-mode="ENG-ITA">🇬🇧 ➔ 🇮🇹 English learning Italian</div>
+                    <div class="lang-option" data-mode="ITA-ENG" data-char="it_nonna" data-caption="Nonna Rosa: 'Se sbagli ti tiro la cucchiarola!'">🇮🇹 ➔ 🇬🇧 Italian learning English</div>
+                    <div class="lang-option" data-mode="ENG-ITA" data-char="uk_lord" data-caption="Lord Sterling: 'Dreadful grammar, absolutely dreadful.'">🇬🇧 ➔ 🇮🇹 English learning Italian</div>
+                    <div class="lang-option" data-mode="FRA-ENG" data-char="fr_parigino" data-caption="Jean-Luc: 'Quelle horreur... your syntax is appalling.'">🇫🇷 ➔ 🇬🇧 French learning English</div>
+                    <div class="lang-option" data-mode="GER-ENG" data-char="de_tedesco" data-caption="Hans: 'Verboten! Fix your subordination immediately.'">🇩🇪 ➔ 🇬🇧 German learning English</div>
                 </div>
             </div>
-            <div class="counter-badge" id="counterBadge">100 Drills Loaded</div>
+            <div class="counter-badge" id="counterBadge">400 Drills Loaded</div>
         </header>
 
-        <!-- 1. VIGNETTA IN ALTO SOPRA TUTTO -->
+        <!-- 1. VIGNETTA A BOX FISSO CENTRATO CON STATO DINAMICO -->
         <section class="illustration-section">
-            <div class="image-wrapper">
-                <img src="illustration.png" alt="RoastED illustration">
+            <div class="image-card" id="imageCard">
+                <div class="image-wrapper">
+                    <img id="characterImage" src="it_nonna.png" alt="Tutor Character">
+                </div>
+                <div class="character-caption" id="characterCaption">Nonna Rosa: 'Se sbagli ti tiro la cucchiarola!'</div>
             </div>
         </section>
 
@@ -396,7 +462,7 @@
                 because it stings.
             </h1>
             <p class="subtitle" id="heroSubtitle">
-                Italiani che imparano l'inglese (roast in italiano). Clicca in alto sul menu per cambiare modalità e scegliere chi deve essere arrostito!
+                Scegli il tutor dal menu in alto. Ogni errore lo farà infuriare in tempo reale!
             </p>
 
             <!-- 5 TOPICS -->
@@ -409,267 +475,303 @@
             </div>
         </section>
 
-        <!-- 2. SEZIONE DRILL (UNA DOMANDA ALLA VOLTA, 4 OPZIONI) -->
+        <!-- 2. SEZIONE DRILL -->
         <section class="drill-section">
             <div class="drill-header">
                 <h3 class="section-title" id="drillSectionTitle">Food Drill</h3>
                 <span class="progress-indicator" id="progressIndicator">Question 1 / 20</span>
             </div>
             <div class="question-box" id="questionBox">Loading...</div>
-            <div class="options-grid" id="optionsGrid">
-                <!-- 4 opzioni generate via JS -->
-            </div>
+            <div class="options-grid" id="optionsGrid"></div>
             <div class="roast-feedback" id="roastFeedback"></div>
             <button class="next-question-btn" id="nextQuestionBtn">Next Question ➔</button>
         </section>
 
-        <!-- 3. SEZIONE INPUT LIBERO A PARTE IN FONDO -->
+        <!-- 3. BANCO DI TORTURA (SEZIONE FRASI LIBERE Ridisegnata) -->
         <section class="custom-roast-section">
-            <h3 class="section-title">Free Custom Sentence Roast & Correction</h3>
-            <textarea id="userSentence" placeholder="Type a sentence to get roasted based on your active mode..."></textarea>
-            <button class="btn-roasted" id="roastBtn"><span>🔥</span> Get custom sentence roasted</button>
+            <h3 class="section-title">💀 Il Banco di Tortura (Frasi Libere)</h3>
+            <p class="custom-desc">Scrivi una frase di pugno tuo. Il tutor la leggerà in tempo reale e la demolirà senza pietà fornendo la correzione d'élite.</p>
+            <textarea id="userSentence" placeholder="Digita qui la tua frase sgangherata..."></textarea>
+            <button class="btn-roasted" id="roastBtn"><span>🔥</span> Richiedi Esecuzione & Correzione</button>
             <div class="custom-result-output" id="customResultOutput"></div>
         </section>
     </div>
 
     <script>
         let currentMode = 'ITA-ENG';
+        let currentTopic = 'food';
+        let currentIndex = 0;
+        let currentQuestions = [];
+        let score = 0;
 
         const dataSet = {
             'ITA-ENG': {
                 food: [
-                    { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "Errore classico da italiano! Con 'prefer' si usa sempre la preposizione **'to'**, mai 'than'." },
-                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "In inglese 'spaghetti' è un nome singolare (massa). Vuole il verbo **'is'**, non 'are'. Sveglia!" },
-                    { q: "Select the correct time expression:", options: ["I am eating here since two hours.", "I am eating here for two hours.", "I have been eating here for two hours.", "I have been eating here since two hours."], correct: 2, roast: "Per una durata di tempo si usa **'for'** con il present perfect continuous, non 'since'." },
-                    { q: "Which one is correct when ordering at a café?", options: ["Can I have two coffees, please?", "Can I have two cups of coffee, please?", "Can I have two coffee, please?", "Can I have two coffees please."], correct: 1, roast: "Il caffè come bevanda è uncountable. Si ordinano **'two cups of coffee'**." },
-                    { q: "Find the correct sentence describing temperature:", options: ["The soup is too much hot.", "The soup is much too hot.", "The soup is too much hot.", "The soup is very too hot."], correct: 1, roast: "'Too much' va prima dei nomi, prima degli aggettivi si usa solo **'too'**. Regola elementare fallita!" },
-                    { q: "Choose the correct quantifier usage:", options: ["She put too many salt in the soup.", "She put too much salt in the soup.", "She put too many salts in the soup.", "She put a lot many salt in the soup."], correct: 1, roast: "Il sale è uncountable! Si usa **'too much'**, non 'many'." },
-                    { q: "Select the natural English expression:", options: ["I would like a fresh orange juice.", "I would like freshly squeezed orange juice.", "I would like a fresh orange's juice.", "I would like fresh juice of orange."], correct: 1, roast: "Si dice **'freshly squeezed orange juice'** per suonare naturali in inglese." },
-                    { q: "How should you correctly describe well-cooked meat?", options: ["The meat is cooked well.", "The meat is well-done.", "The meat is done well.", "The meat is well-cooked done."], correct: 1, roast: "La carne cotta a puntino si chiama **'well-done'**!" },
-                    { q: "Identify the correct plural form when ordering seafood:", options: ["Can you pass me the fishes?", "Can you pass me the fishs?", "Can you pass me the fish?", "Can you pass me fishies?"], correct: 2, roast: "Il plurale di 'fish' è sempre **'fish'**!" },
-                    { q: "Select the correct phrase when you are completely full:", options: ["I am full, I cannot eat more.", "I am full, I cannot eat any more.", "I am full, I can't eat nothing more.", "I am full, I don't eat more."], correct: 1, roast: "Nelle frasi negative si usa **'any more'**." },
-                    { q: "Which sentence uses the correct verb form?", options: ["This cake taste like cardboard.", "This cake tastes like cardboard.", "This cake tasting like cardboard.", "This cake is taste like cardboard."], correct: 1, roast: "Terza persona singolare: ci vuole la **'s'** (*tastes*)." },
-                    { q: "Choose the correct way to request milk:", options: ["Give me a hot milk.", "Give me hot milk.", "Give me some hot milk.", "Give me the hot milks."], correct: 2, roast: "I nomi non numerabili richiedono **'some'**." },
+                    { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "Mio nipote sa usare 'to' al posto di 'than'. Ti meriti una sberla con la cucchiarola!" },
+                    { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti è singolare in inglese! Se continui così ti tolgo il parmigiano." },
+                    { q: "Select the correct time expression:", options: ["I am eating here since two hours.", "I am eating here for two hours.", "I have been eating here for two hours.", "I have been eating here since two hours."], correct: 2, roast: "La durata vuole 'for', non 'since'! Ti boccio all'asilo." },
+                    { q: "Which one is correct when ordering at a café:", options: ["Can I have two coffees, please?", "Can I have two cups of coffee, please?", "Can I have two coffee, please?", "Can I have two coffees please."], correct: 1, roast: "Il caffè è uncountable! Vuoi ordinare due tazze o due litri di confusione?" },
+                    { q: "Find the correct sentence describing temperature:", options: ["The soup is too much hot.", "The soup is much too hot.", "The soup is too much hot.", "The soup is very too hot."], correct: 1, roast: "'Too much' va coi nomi! Prima degli aggettivi ci va solo 'too'." },
+                    { q: "Choose the correct quantifier usage:", options: ["She put too many salt in the soup.", "She put too much salt in the soup.", "She put too many salts in the soup.", "She put a lot many salt in the soup."], correct: 1, roast: "Il sale non si conta, esattamente come i tuoi neuroni sani." },
+                    { q: "Select the natural English expression:", options: ["I would like a fresh orange juice.", "I would like freshly squeezed orange juice.", "I would like a fresh orange's juice.", "I would like fresh juice of orange."], correct: 1, roast: "A 'fresh orange's juice' ti strapperei i capelli uno ad uno." },
+                    { q: "How should you correctly describe well-cooked meat:", options: ["The meat is cooked well.", "The meat is well-done.", "The meat is done well.", "The meat is well-cooked done."], correct: 1, roast: "La carne stracotta si chiama 'well-done'. Meno male che non cucini tu." },
+                    { q: "Identify the correct plural form when ordering seafood:", options: ["Can you pass me the fishes?", "Can you pass me the fishs?", "Can you pass me the fish?", "Can you pass me fishies?"], correct: 2, roast: "Il plurale di fish è sempre fish! Un pesce rosso sa più grammatica di te." },
+                    { q: "Select the correct phrase when you are completely full:", options: ["I am full, I cannot eat more.", "I am full, I cannot eat any more.", "I am full, I can't eat nothing more.", "I am full, I don't eat more."], correct: 1, roast: "Doppia negazione? Ti mando a letto senza cena." },
+                    { q: "Which sentence uses the correct verb form?", options: ["This cake taste like cardboard.", "This cake tastes like cardboard.", "This cake tasting like cardboard.", "This cake is taste like cardboard."], correct: 1, roast: "Terza persona singolare con la 's'! La torta sa di cartone, la tua grammatica pure." },
+                    { q: "Choose the correct way to request milk:", options: ["Give me a hot milk.", "Give me hot milk.", "Give me some hot milk.", "Give me the hot milks."], correct: 2, roast: "I nomi non numerabili richiedono 'some'. Torna a poppare!" },
                     { q: "Identify the correct dietary statement:", options: ["I am vegetarian, I do not eat meats.", "I am a vegetarian, I do not eat meat.", "I am vegetarian, I no eat meat.", "I am vegetarian, I do not eat meat's."], correct: 1, roast: "La carne (*meat*) non si pluralizza in 'meats'." },
-                    { q: "Select the grammatically correct past tense sentence:", options: ["The waiter give us the bill.", "The waiter gave us the bill.", "The waiter given us the bill.", "The waiter was give us the bill."], correct: 1, roast: "Il passato di 'give' è **'gave'**." },
-                    { q: "Choose the correct collocation for ordering wine:", options: ["We ordered a wine bottle.", "We ordered a bottle of wine.", "We ordered wine's bottle.", "We ordered bottled wine."], correct: 1, roast: "Si dice **'a bottle of wine'**, non 'wine bottle'." },
-                    { q: "Select the correct preposition after burning your tongue:", options: ["I burnt my tongue with hot water.", "I burnt my tongue on hot water.", "I burnt my tongue by hot water.", "I burnt my tongue through hot water."], correct: 1, roast: "Ci si scotta **'on'** una superficie o un liquido caldo." },
+                    { q: "Select the grammatically correct past tense sentence:", options: ["The waiter give us the bill.", "The waiter gave us the bill.", "The waiter given us the bill.", "The waiter was give us the bill."], correct: 1, roast: "Il passato di give è 'gave'! Ti tiro dietro il mattarello." },
+                    { q: "Choose the correct collocation for ordering wine:", options: ["We ordered a wine bottle.", "We ordered a bottle of wine.", "We ordered wine's bottle.", "We ordered bottled wine."], correct: 1, roast: "Si dice 'a bottle of wine', non 'wine bottle'." },
+                    { q: "Select the correct preposition after burning your tongue:", options: ["I burnt my tongue with hot water.", "I burnt my tongue on hot water.", "I burnt my tongue by hot water.", "I burnt my tongue through hot water."], correct: 1, roast: "Ci si scotta *on* la superficie calda." },
                     { q: "Identify the correct spelling and form for bread:", options: ["Do you have gluten-free breads?", "Do you have gluten-free bread?", "Do you have gluten-free a bread?", "Do you have bread gluten-free?"], correct: 1, roast: "Il pane è uncountable, niente plurale 'breads'." },
-                    { q: "Choose the correct preposition for a crowded restaurant:", options: ["The restaurant was crowded of people.", "The restaurant was crowded by people.", "The restaurant was crowded with people.", "The restaurant was crowded in people."], correct: 2, roast: "L'aggettivo 'crowded' vuole la preposizione **'with'**." },
-                    { q: "Select the proper way to express leaving a tip:", options: ["I left a good tip to the chef.", "I left a good tip for the waiter.", "I left a good tip toward the chef.", "I left a good tip at the chef."], correct: 1, roast: "Le mance si lasciano **'for'** qualcuno." },
-                    { q: "Identify the correct way to say a dish lacks seasoning:", options: ["This dish lacks of salt.", "This dish lacks salt.", "This dish is lacking of salt.", "This dish lack of salt."], correct: 1, roast: "Il verbo 'lack' regge direttamente l'oggetto **senza 'of'**." }
+                    { q: "Choose the correct preposition for a crowded restaurant:", options: ["The restaurant was crowded of people.", "The restaurant was crowded by people.", "The restaurant was crowded with people.", "The restaurant was crowded in people."], correct: 2, roast: "L'aggettivo 'crowded' vuole la preposizione 'with'." },
+                    { q: "Select the proper way to express leaving a tip:", options: ["I left a good tip to the chef.", "I left a good tip for the waiter.", "I left a good tip toward the chef.", "I left a good tip at the chef."], correct: 1, roast: "Le mance si lasciano *for* qualcuno." },
+                    { q: "Identify the correct way to say a dish lacks seasoning:", options: ["This dish lacks of salt.", "This dish lacks salt.", "This dish is lacking of salt.", "This dish lack of salt."], correct: 1, roast: "Il verbo 'lack' regge direttamente l'oggetto senza 'of'." }
                 ],
                 travel: [
-                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: *went*." },
-                    { q: "Identify the correct question structure:", options: ["Where is located the hotel?", "Where the hotel is located?", "Where is the hotel located?", "Where located is the hotel?"], correct: 2, roast: "Nelle domande il verbo ausiliare precede il soggetto: **'Where is the hotel located?'**." },
-                    { q: "Select the correct tense for duration in a hotel:", options: ["We stay at the hotel since three days.", "We are staying at the hotel since three days.", "We have stayed at the hotel for three days.", "We stay at the hotel for three days."], correct: 2, roast: "Azione continuativa nel tempo = present perfect + **'for'**." },
+                    { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "'Have went' non esiste! Si usa il simple past: went." },
+                    { q: "Identify the correct question structure:", options: ["Where is located the hotel?", "Where the hotel is located?", "Where is the hotel located?", "Where located is the hotel?"], correct: 2, roast: "Nelle domande il verbo ausiliare precede il soggetto!" },
+                    { q: "Select the correct tense for duration in a hotel:", options: ["We stay at the hotel since three days.", "We are staying at the hotel since three days.", "We have stayed at the hotel for three days.", "We stay at the hotel for three days."], correct: 2, roast: "Azione continuativa nel tempo = present perfect + 'for'." },
                     { q: "Choose the correct uncountable noun form:", options: ["Can you give me some advices?", "Can you give me some advice?", "Can you give me an advice?", "Can you give me advices?"], correct: 1, roast: "'Advice' è rigorosamente uncountable!" },
-                    { q: "Identify the correct gerund usage after 'look forward to':", options: ["I look forward to see Paris.", "I look forward to seeing Paris.", "I look forward see Paris.", "I look forward for seeing Paris."], correct: 1, roast: "Dopo 'look forward to' ci vuole il gerundio con la **'-ing'**." },
+                    { q: "Identify the correct gerund usage after 'look forward to':", options: ["I look forward to see Paris.", "I look forward to seeing Paris.", "I look forward see Paris.", "I look forward for seeing Paris."], correct: 1, roast: "Dopo 'look forward to' ci vuole il gerundio in '-ing'." },
                     { q: "Select the correct plural form for travel bags:", options: ["I lost my luggages at the airport.", "I lost my luggage at the airport.", "I lost my luggages in airport.", "I lost luggage at airport."], correct: 1, roast: "'Luggage' è uncountable, non ha il plurale." },
-                    { q: "Choose the correct preposition for arriving in a city:", options: ["We arrived to London late.", "We arrived at London late.", "We arrived in London late.", "We arrived on London late."], correct: 2, roast: "Si arriva **'in'** nelle grandi città." },
-                    { q: "Select the correct causal preposition phrase:", options: ["The flight was delayed due of rain.", "The flight was delayed due to rain.", "The flight was delayed because rain.", "The flight was delayed for of rain."], correct: 1, roast: "Si dice **'due to'** o **'because of'**." },
-                    { q: "Choose the most natural expression for booking travel:", options: ["I need to book a flight ticket.", "I need to book a flight.", "I need to book a ticket of flight.", "I need to book flight's ticket."], correct: 1, roast: "Dire 'flight ticket' è ridondante, basta **'book a flight'**." },
-                    { q: "Identify the correct way to mention a scheduled train:", options: ["She missed the train of 5 PM.", "She missed the 5 PM train.", "She missed train of 5 o'clock.", "She missed 5 PM's train."], correct: 1, roast: "Gli attributi temporali vanno prima del nome: **'the 5 PM train'**." },
-                    { q: "Select the correct duration structure:", options: ["We visited the museum during three hours.", "We visited the museum for three hours.", "We visited the museum in three hours.", "We visited the museum since three hours."], correct: 1, roast: "La durata richiede **'for'**, non 'during'." },
+                    { q: "Choose the correct preposition for arriving in a city:", options: ["We arrived to London late.", "We arrived at London late.", "We arrived in London late.", "We arrived on London late."], correct: 2, roast: "Si arriva *in* nelle grandi città." },
+                    { q: "Select the correct causal preposition phrase:", options: ["The flight was delayed due of rain.", "The flight was delayed due to rain.", "The flight was delayed because rain.", "The flight was delayed for of rain."], correct: 1, roast: "Si dice 'due to' o 'because of'." },
+                    { q: "Choose the most natural expression for booking travel:", options: ["I need to book a flight ticket.", "I need to book a flight.", "I need to book a ticket of flight.", "I need to book flight's ticket."], correct: 1, roast: "Dire 'flight ticket' è ridondante, basta 'book a flight'." },
+                    { q: "Identify the correct way to mention a scheduled train:", options: ["She missed the train of 5 PM.", "She missed the 5 PM train.", "She missed train of 5 o'clock.", "She missed 5 PM's train."], correct: 1, roast: "Gli attributi temporali vanno prima del nome." },
+                    { q: "Select the correct duration structure:", options: ["We visited the museum during three hours.", "We visited the museum for three hours.", "We visited the museum in three hours.", "We visited the museum since three hours."], correct: 1, roast: "La durata richiede 'for', non 'during'." },
                     { q: "Identify the correct past tense verb for security checks:", options: ["The passport control officer ask for ID.", "The passport control officer asks for ID.", "The passport control officer asked for ID.", "The passport control officer asking for ID."], correct: 2, roast: "Serve il passato (*asked*)." },
-                    { q: "Choose the correct verb/phrase for leaving items behind:", options: ["I forgot my keys at home yesterday.", "I left my keys at home yesterday.", "I leave my keys at home yesterday.", "I forgot my keys in home yesterday."], correct: 1, roast: "Gli oggetti si lasciano in un luogo con **'left'**." },
-                    { q: "Select the correct question for duration:", options: ["How much time does it take?", "How long does it take?", "How many time does it take?", "How much does it take time?"], correct: 1, roast: "Per la durata si usa **'How long'**." },
-                    { q: "Choose the correct phrasal verb for exploring a city:", options: ["We rented a car to move around.", "We rented a car to get around.", "We rented a car to go around.", "We rented a car to run around."], correct: 1, roast: "Per esplorare o muoversi in un luogo si usa **'get around'**." },
-                    { q: "Identify the correct adjective form for an unreadable map:", options: ["The map was not readable.", "The map was unreadable.", "The map was non-readable.", "The map was dis-readable."], correct: 1, roast: "Il prefisso corretto è **'un-'** (*unreadable*)." },
+                    { q: "Choose the correct verb/phrase for leaving items behind:", options: ["I forgot my keys at home yesterday.", "I left my keys at home yesterday.", "I leave my keys at home yesterday.", "I forgot my keys in home yesterday."], correct: 1, roast: "Gli oggetti si lasciano in un luogo con 'left'." },
+                    { q: "Select the correct question for duration:", options: ["How much time does it take?", "How long does it take?", "How many time does it take?", "How much does it take time?"], correct: 1, roast: "Per la durata si usa 'How long'." },
+                    { q: "Choose the correct phrasal verb for exploring a city:", options: ["We rented a car to move around.", "We rented a car to get around.", "We rented a car to go around.", "We rented a car to run around."], correct: 1, roast: "Per esplorare o muoversi in un luogo si usa 'get around'." },
+                    { q: "Identify the correct adjective form for an unreadable map:", options: ["The map was not readable.", "The map was unreadable.", "The map was non-readable.", "The map was dis-readable."], correct: 1, roast: "Il prefisso corretto è 'un-' (*unreadable*)." },
                     { q: "Select the correct uncountable accommodation form:", options: ["I need an accommodation.", "I need accommodations.", "I need accommodation.", "I need an accommodation place."], correct: 2, roast: "'Accommodation' è uncountable e non vuole 'an'." },
                     { q: "Choose the correct phrase for crossing a border without trouble:", options: ["We crossed the border without problems.", "We crossed the border without any problems.", "We crossed the border with no problem at all.", "Both B and C are correct."], correct: 3, roast: "Entrambe le opzioni B e C sono perfette." },
-                    { q: "Identify the correct adverb usage for a tourist guide:", options: ["The tourist guide spoke very good.", "The tourist guide spoke very well.", "The tourist guide spoke very goodly.", "The tourist guide spoke very best."], correct: 1, roast: "I verbi vogliono gli avverbi: **'well'**, non 'good'." },
-                    { q: "Select the correct idiom for solo travel:", options: ["I am travelling alone by my own.", "I am travelling alone on my own.", "I am travelling alone with my own.", "I am travelling alone by myself only."], correct: 1, roast: "Si dice **'on my own'** o 'by myself'." }
+                    { q: "Identify the correct adverb usage for a tourist guide:", options: ["The tourist guide spoke very good.", "The tourist guide spoke very well.", "The tourist guide spoke very goodly.", "The tourist guide spoke very best."], correct: 1, roast: "I verbi vogliono gli avverbi: 'well', non 'good'." },
+                    { q: "Select the correct idiom for solo travel:", options: ["I am travelling alone by my own.", "I am travelling alone on my own.", "I am travelling alone with my own.", "I am travelling alone by myself only."], correct: 1, roast: "Si dice 'on my own' o 'by myself'." }
                 ],
                 sports: [
-                    { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "I verbi vogliono gli avverbi: si gioca **'well'**, non 'good'." },
-                    { q: "Identify the correct past tense irregular verb:", options: ["He run faster than everyone else.", "He ran faster than everyone else.", "He runned faster than everyone else.", "He running faster than everyone else."], correct: 1, roast: "Il passato di 'run' è **'ran'**." },
-                    { q: "Select the correct negative present simple form:", options: ["She don't like playing tennis.", "She doesn't like playing tennis.", "She not like playing tennis.", "She no like playing tennis."], correct: 1, roast: "Alla terza persona singolare negativa si usa **'doesn\'t'**." },
-                    { q: "Choose the correct pronoun order:", options: ["Me and my teammate won.", "My teammate and I won.", "I and my teammate won.", "My teammate and me won."], correct: 1, roast: "In inglese se stessi si mettono sempre per ultimi: **'My teammate and I'**." },
-                    { q: "Identify the correct auxiliary verb for the referee:", options: ["The referee have made a mistake.", "The referee has made a mistake.", "The referee has make a mistake.", "The referee had made mistake."], correct: 1, roast: "Il soggetto 'referee' è singolare, vuole **'has'**." },
-                    { q: "Select the correct plural goal form:", options: ["He scored three goal.", "He scored three goals.", "He scored three goales.", "He scored three goal's."], correct: 1, roast: "Il plurale di goal vuole la **'s'** (*three goals*)." },
-                    { q: "Choose the correct prepositional match against an opponent:", options: ["We won against to Milan.", "We won against Milan.", "We won versus to Milan.", "We won opposing Milan."], correct: 1, roast: "'Against' regge direttamente il nome **senza 'to'**." },
-                    { q: "Identify the correct active verb for a match finishing:", options: ["The match was ended in a draw.", "The match ended in a draw.", "The match has ended in draw.", "The match is ended in draw."], correct: 1, roast: "Verbo intransitivo attivo: **'The match ended in a draw'**." },
+                    { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "I verbi vogliono gli avverbi: si gioca 'well', non 'good'." },
+                    { q: "Identify the correct past tense irregular verb:", options: ["He run faster than everyone else.", "He ran faster than everyone else.", "He runned faster than everyone else.", "He running faster than everyone else."], correct: 1, roast: "Il passato di 'run' è 'ran'." },
+                    { q: "Select the correct negative present simple form:", options: ["She don't like playing tennis.", "She doesn't like playing tennis.", "She not like playing tennis.", "She no like playing tennis."], correct: 1, roast: "Alla terza persona singolare negativa si usa 'doesn't'." },
+                    { q: "Choose the correct pronoun order:", options: ["Me and my teammate won.", "My teammate and I won.", "I and my teammate won.", "My teammate and me won."], correct: 1, roast: "In inglese se stessi si mettono sempre per ultimi: 'My teammate and I'." },
+                    { q: "Identify the correct auxiliary verb for the referee:", options: ["The referee have made a mistake.", "The referee has made a mistake.", "The referee has make a mistake.", "The referee had made mistake."], correct: 1, roast: "Il soggetto 'referee' è singolare, vuole 'has'." },
+                    { q: "Select the correct plural goal form:", options: ["He scored three goal.", "He scored three goals.", "He scored three goales.", "He scored three goal's."], correct: 1, roast: "Il plurale di goal vuole la 's' (*three goals*)." },
+                    { q: "Choose the correct prepositional match against an opponent:", options: ["We won against to Milan.", "We won against Milan.", "We won versus to Milan.", "We won opposing Milan."], correct: 1, roast: "'Against' regge direttamente il nome senza 'to'." },
+                    { q: "Identify the correct active verb for a match finishing:", options: ["The match was ended in a draw.", "The match ended in a draw.", "The match has ended in draw.", "The match is ended in draw."], correct: 1, roast: "Verbo intransitivo attivo: 'The match ended in a draw'." },
                     { q: "Choose the correct third-person verb for yoga:", options: ["She practice yoga every morning.", "She practices yoga every morning.", "She practises yoga every morning.", "Both B and C are correct (UK/US)."], correct: 3, roast: "Sia 'practices' che 'practises' sono corrette." },
-                    { q: "Select the correct past tense of throw:", options: ["He throw the ball to me.", "He threw the ball to me.", "He thrown the ball to me.", "He throwed the ball to me."], correct: 1, roast: "Il passato di throw è **'threw'**." },
-                    { q: "Identify the correct preposition for a full stadium:", options: ["The stadium was full of fans.", "The stadium was full with fans.", "The stadium was full by fans.", "The stadium was full from fans."], correct: 0, roast: "L'aggettivo 'full' vuole la preposizione **'of'**." },
-                    { q: "Choose the correct preposition for cheering a team:", options: ["I am cheering for Real Madrid.", "I am cheering to Real Madrid.", "I am cheering at Real Madrid.", "I am cheering on Real Madrid."], correct: 0, roast: "Si fa il tifo **'for'** una squadra." },
-                    { q: "Select the correct verb collocations for records:", options: ["The athlete beat his personal record.", "The athlete broke his personal record.", "Both A and B are widely used.", "The athlete won his personal record."], correct: 2, roast: "Sia 'beat' che 'broke' un record sono perfettamente corretti." },
-                    { q: "Choose the correct comparative adjective form:", options: ["We need a more bigger pitch.", "We need a bigger pitch.", "We need much more bigger pitch.", "We need biglier pitch."], correct: 1, roast: "Mai unire 'more' con un comparativo in '-er' come 'bigger'." },
-                    { q: "Identify the correct pronoun ownership for an injury:", options: ["He got injured to his knee.", "He injured his knee.", "He got injury on knee.", "He was injured knee."], correct: 1, roast: "Forma diretta e attiva: **'He injured his knee'**." },
-                    { q: "Select the correct third-person verb for a championship:", options: ["The championship finish next week.", "The championship finishes next week.", "The championship finishing next week.", "The championship is finish next week."], correct: 1, roast: "Championship è singolare, quindi vuole **'finishes'**." },
+                    { q: "Select the correct past tense of throw:", options: ["He throw the ball to me.", "He threw the ball to me.", "He thrown the ball to me.", "He throwed the ball to me."], correct: 1, roast: "Il passato di throw è 'threw'." },
+                    { q: "Identify the correct preposition for a full stadium:", options: ["The stadium was full of fans.", "The stadium was full with fans.", "The stadium was full by fans.", "The stadium was full from fans."], correct: 0, roast: "L'aggettivo 'full' vuole la preposizione 'of'." },
+                    { q: "Choose the correct preposition for cheering a team:", options: ["I am cheering for Real Madrid.", "I am cheering to Real Madrid.", "I am cheering at Real Madrid.", "I am cheering on Real Madrid."], correct: 0, roast: "Si fa il tifo 'for' una squadra." },
+                    { q: "Select the correct verb collocations for records:", options: ["The athlete beat his personal record.", "The athlete broke his personal record.", "Both A and B are widely used.", "The athlete won his personal record."], correct: 2, roast: "Sia 'beat' che 'broke' un record sono perfettamente correnti." },
+                    { q: "Choose the correct comparative adjective form:", options: ["We need a more bigger pitch.", "We need a bigger pitch.", "We need much more bigger pitch.", "We need biglier pitch."], correct: 1, roast: "Mai unire 'more' con un comparativo in '-er'." },
+                    { q: "Identify the correct pronoun ownership for an injury:", options: ["He got injured to his knee.", "He injured his knee.", "He got injury on knee.", "He was injured knee."], correct: 1, roast: "Forma diretta e attiva: 'He injured his knee'." },
+                    { q: "Select the correct third-person verb for a championship:", options: ["The championship finish next week.", "The championship finishes next week.", "The championship finishing next week.", "The championship is finish next week."], correct: 1, roast: "Championship è singolare, quindi vuole 'finishes'." },
                     { q: "Choose the correct adjective for a gold medal:", options: ["She won a golden medal.", "She won a gold medal.", "Both A and B are correct.", "She won a gild medal."], correct: 2, roast: "Sia 'gold medal' che 'golden medal' funzionano." },
-                    { q: "Identify the correct uncountable info noun:", options: ["The coach gave us good informations.", "The coach gave us good information.", "The coach gave us a good information.", "The coach gave us good piece of info."], correct: 1, roast: "Informazione è uncountable: non esiste **'informations'**." },
+                    { q: "Identify the correct uncountable info noun:", options: ["The coach gave us good informations.", "The coach gave us good information.", "The coach gave us a good information.", "The coach gave us good piece of info."], correct: 1, roast: "Informazione è uncountable: non esiste 'informations'." },
                     { q: "Select the correct abbreviation for television:", options: ["I watched the match on television.", "I watched the match on TV.", "Both A and B are correct.", "I watched the match on the telly."], correct: 2, roast: "TV, television e telly sono tutte corrette." },
                     { q: "Choose the correct phrase for restricting players:", options: ["They played with ten players only.", "They played with only ten players.", "Both A and B are natural.", "They played by ten players only."], correct: 2, roast: "Entrambi i posizionamenti sono corretti." }
                 ],
                 culture: [
-                    { q: "Choose the correct past tense verb 'to be' for a singular museum:", options: ["That museum were amazing.", "That museum was amazing.", "That museum is amazing.", "That museum been amazing."], correct: 1, roast: "'Museum' è singolare, vuole il passato **'was'**." },
-                    { q: "Identify the correct past simple question form:", options: ["Who did you saw at the gallery?", "Who did you see at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 1, roast: "L'ausiliare 'did' regge già il passato, il verbo torna alla forma base (**'see'**)." },
+                    { q: "Choose the correct past tense verb 'to be' for a singular museum:", options: ["That museum were amazing.", "That museum was amazing.", "That museum is amazing.", "That museum been amazing."], correct: 1, roast: "'Museum' è singolare, vuole il passato 'was'." },
+                    { q: "Identify the correct past simple question form:", options: ["Who did you saw at the gallery?", "Who did you see at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 1, roast: "L'ausiliare 'did' regge già il passato, il verbo torna alla forma base." },
                     { q: "Select the correct absolute adjective usage:", options: ["The painting is more unique.", "The painting is unique.", "The painting is very unique.", "The painting is most unique."], correct: 1, roast: "'Unique' è un aggettivo assoluto, non ammette gradi." },
-                    { q: "Choose the correct capitalization and preposition:", options: ["She read a book about italian history.", "She read a book about Italian history.", "She read a book on italy history.", "She read a book of Italy history."], correct: 1, roast: "Le nazionalità si scrivono **sempre con la maiuscola** (*Italian*)." },
-                    { q: "Identify the correct preposition following 'interested':", options: ["He is interested for art.", "He is interested in art.", "He is interested about art.", "He is interested with art."], correct: 1, roast: "'Interested' vuole sempre la preposizione **'in'**." },
+                    { q: "Choose the correct capitalization and preposition:", options: ["She read a book about italian history.", "She read a book about Italian history.", "She read a book on italy history.", "She read a book of Italy history."], correct: 1, roast: "Le nazionalità si scrivono sempre con la maiuscola." },
+                    { q: "Identify the correct preposition following 'interested':", options: ["He is interested for art.", "He is interested in art.", "He is interested about art.", "He is interested with art."], correct: 1, roast: "'Interested' vuole sempre la preposizione 'in'." },
                     { q: "Select the correct spelling of successful:", options: ["The concert was very successfull.", "The concert was very successfull.", "The concert was very successful.", "The concert was very succesful."], correct: 2, roast: "'Successful' ha due 's' in mezzo e una sola 'l' finale." },
-                    { q: "Choose the correct infinitive of purpose for an exhibition:", options: ["We went to see an exhibition.", "We went for seeing an exhibition.", "We went seeing an exhibition.", "We went to seeing an exhibition."], correct: 1, roast: "Lo scopo richiede l'infinito con il **'to'** (*to see*)." },
-                    { q: "Identify the correct adverb modifying a performance:", options: ["The actor played his role perfect.", "The actor played his role perfectly.", "The actor played his role perfection.", "The actor played his role perfectly well."], correct: 1, roast: "I verbi richiedono gli avverbi (**'perfectly'**)." },
-                    { q: "Choose the correct passive participle for a book authorship:", options: ["This is a book wrote by Dante.", "This is a book written by Dante.", "This is a book writed by Dante.", "This is a book was wrote by Dante."], correct: 1, roast: "Il participio passato di write è **'written'**." },
-                    { q: "Select the correct vocabulary for art appreciation:", options: ["She has a great culture in art.", "She has a great knowledge of art.", "She has a great art culture.", "She has big art culture."], correct: 1, roast: "In inglese si usa **'knowledge of art'**, non 'culture in art'." },
-                    { q: "Identify the correct description for an empty theatre:", options: ["The theatre was empty of people.", "The theatre was empty.", "The theatre was empty from people.", "The theatre was empty with people."], correct: 1, roast: "Basta dire **'empty'** senza aggiungere preposizioni inutili." },
-                    { q: "Choose the correct preposition for listening to music:", options: ["We listened classical music.", "We listened to classical music.", "We listened at classical music.", "We listened on classical music."], correct: 1, roast: "Il verbo 'listen' vuole sempre la preposizione **'to'**." },
+                    { q: "Choose the correct infinitive of purpose for an exhibition:", options: ["We went to see an exhibition.", "We went for seeing an exhibition.", "We went seeing an exhibition.", "We went to seeing an exhibition."], correct: 1, roast: "Lo scopo richiede l'infinito con il 'to'." },
+                    { q: "Identify the correct adverb modifying a performance:", options: ["The actor played his role perfect.", "The actor played his role perfectly.", "The actor played his role perfection.", "The actor played his role perfectly well."], correct: 1, roast: "I verbi richiedono gli avverbi ('perfectly')." },
+                    { q: "Choose the correct passive participle for a book authorship:", options: ["This is a book wrote by Dante.", "This is a book written by Dante.", "This is a book writed by Dante.", "This is a book was wrote by Dante."], correct: 1, roast: "Il participio passato di write è 'written'." },
+                    { q: "Select the correct vocabulary for art appreciation:", options: ["She has a great culture in art.", "She has a great knowledge of art.", "She has a great art culture.", "She has big art culture."], correct: 1, roast: "In inglese si usa 'knowledge of art', non 'culture in art'." },
+                    { q: "Identify the correct description for an empty theatre:", options: ["The theatre was empty of people.", "The theatre was empty.", "The theatre was empty from people.", "The theatre was empty with people."], correct: 1, roast: "Basta dire 'empty' senza aggiungere preposizioni inutili." },
+                    { q: "Choose the correct preposition for listening to music:", options: ["We listened classical music.", "We listened to classical music.", "We listened at classical music.", "We listened on classical music."], correct: 1, roast: "Il verbo 'listen' vuole sempre la preposizione 'to'." },
                     { q: "Select the correct collocation for publishing a novel:", options: ["The author published a new novel.", "The author released a new novel.", "Both A and B are correct.", "The author edited a new novel."], correct: 2, roast: "Sia 'published' che 'released' vanno benissimo." },
-                    { q: "Choose the correct duration preposition with an artist's fame:", options: ["He is a famous artist since years.", "He has been a famous artist for years.", "He is a famous artist for years.", "He is a famous artist during years."], correct: 1, roast: "Stato che dura nel tempo = present perfect + **'for years'**." },
+                    { q: "Choose the correct duration preposition with an artist's fame:", options: ["He is a famous artist since years.", "He has been a famous artist for years.", "He is a famous artist for years.", "He is a famous artist during years."], correct: 1, roast: "Stato che dura nel tempo = present perfect + 'for years'." },
                     { q: "Identify the correct expression for starting late:", options: ["The show started with delay.", "The show started late.", "Both A and B are grammatically correct.", "The show was started with delay."], correct: 2, roast: "Entrambi i modi sono corretti in inglese." },
-                    { q: "Select the correct comparative preference between arts:", options: ["I prefer modern art than classical.", "I prefer modern art to classical.", "I prefer modern art over classical.", "Both B and C are correct."], correct: 3, roast: "Prefer vuole **'to'**, ma 'over' è accettato nell'inglese moderno." },
-                    { q: "Choose the correct material preposition for sculpture:", options: ["The sculpture was made from bronze.", "The sculpture was made of bronze.", "The sculpture was made out bronze.", "The sculpture was made by bronze."], correct: 1, roast: "Se il materiale non cambia forma radicalmente si usa **'made of'**." },
-                    { q: "Identify the correct transitive verb for discussing movies:", options: ["We discussed about the movie.", "We discussed the movie.", "We debated about the movie.", "Both A and C are correct."], correct: 1, roast: "'Discuss' è transitivo, non vuole la preposizione 'about'." },
-                    { q: "Select the correct adverbial translation phrase:", options: ["The poem was translated badly.", "The poem was poorly translated.", "Both A and B are grammatically correct.", "The poem was translate bad."], correct: 2, roast: "Entrambe le forme sono corrette, 'poorly translated' suona più elegante." },
-                    { q: "Choose the correct verb for displaying artwork:", options: ["She exposed her artwork in a gallery.", "She exhibited her artwork in a gallery.", "Both A and B are correct, but B is more natural.", "She showed her artwork gallery."], correct: 2, roast: "Nelle gallerie si usa **'exhibited'**." }
+                    { q: "Select the correct comparative preference between arts:", options: ["I prefer modern art than classical.", "I prefer modern art to classical.", "I prefer modern art over classical.", "Both B and C are correct."], correct: 3, roast: "Prefer vuole 'to', ma 'over' è accettato nell'inglese moderno." },
+                    { q: "Choose the correct material preposition for sculpture:", options: ["The sculpture was made from bronze.", "The sculpture was made of bronze.", "The sculpture was made out bronze.", "The sculpture was made by bronze."], correct: 1, roast: "Se il materiale non cambia forma si usa 'made of'." },
+                    { q: "Identify the correct transitive verb for discussing movies:", options: ["We discussed about the movie.", "We discussed the movie.", "We debated about the movie.", "Both A and C are correct."], correct: 1, roast: "'Discuss' è transitivo, non vuole 'about'." },
+                    { q: "Select the correct adverbial translation phrase:", options: ["The poem was translated badly.", "The poem was poorly translated.", "Both A and B are grammatically correct.", "The poem was translate bad."], correct: 2, roast: "Entrambe le forme sono corrette." },
+                    { q: "Choose the correct verb for displaying artwork:", options: ["She exposed her artwork in a gallery.", "She exhibited her artwork in a gallery.", "Both A and B are correct, but B is more natural.", "She showed her artwork gallery."], correct: 2, roast: "Nelle gallerie si usa 'exhibited'." }
                 ],
                 dailylife: [
-                    { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "La contrazione di 'you are' è **'You\'re'**." },
-                    { q: "Identify the correct frequency phrase:", options: ["I wake up early every days.", "I wake up early every day.", "I wake up early everyday.", "I wake up early all days."], correct: 1, roast: "'Every day' si scrive staccato quando funge da locuzione temporale." },
-                    { q: "Select the correct phrasal verb for turning on lights:", options: ["Open the light in the kitchen.", "Turn on the light in the kitchen.", "Switch the light in the kitchen.", "Make on the light in the kitchen."], correct: 1, roast: "Le luci si accendono con **'turn on'**, non si aprono come le porte." },
-                    { q: "Choose the correct agreement expression:", options: ["I am agree with you.", "I agree with you.", "I am agreeing with you.", "I do agree with you."], correct: 1, roast: "'Agree' è un verbo, non un aggettivo. Mai dire 'I am agree'." },
-                    { q: "Identify the correct way to state age:", options: ["She has twenty years.", "She is twenty years old.", "She has twenty years old.", "She makes twenty years."], correct: 1, roast: "In inglese l'età si **'è'** (*is twenty years old*)." },
-                    { q: "Select the correct verb for watching television:", options: ["I look the television tonight.", "I watch TV tonight.", "I see television tonight.", "I look at TV tonight."], correct: 1, roast: "I programmi e gli schermi si **'guardano'** con 'watch'." },
-                    { q: "Choose the correct third-person singular present simple verb:", options: ["He work hard every single day.", "He works hard every single day.", "He working hard every single day.", "He worked hard every single day."], correct: 1, roast: "Terza persona singolare: ci vuole la **'s'** (*works*)." },
-                    { q: "Identify the correct uncountable noun form for milk:", options: ["I need to buy some milks.", "I need to buy some milk.", "I need to buy a milk.", "I need to buy milks."], correct: 1, roast: "'Milk' è uncountable, niente plurale 'milks'." },
-                    { q: "Select the correct phone collocation:", options: ["She called me by phone.", "She phoned me.", "Both A and B are natural.", "She called me with phone."], correct: 2, roast: "Sia 'phoned me' che 'called me' sono perfettamente naturali." },
+                    { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "La contrazione di 'you are' è 'You're'." },
+                    { q: "Identify the correct frequency phrase:", options: ["I wake up early every days.", "I wake up early every day.", "I wake up early everyday.", "I wake up early all days."], correct: 1, roast: "'Every day' si scrive staccato." },
+                    { q: "Select the correct phrasal verb for turning on lights:", options: ["Open the light in the kitchen.", "Turn on the light in the kitchen.", "Switch the light in the kitchen.", "Make on the light in the kitchen."], correct: 1, roast: "Le luci si accendono con 'turn on'." },
+                    { q: "Choose the correct agreement expression:", options: ["I am agree with you.", "I agree with you.", "I am agreeing with you.", "I do agree with you."], correct: 1, roast: "'Agree' è un verbo, non un aggettivo." },
+                    { q: "Identify the correct way to state age:", options: ["She has twenty years.", "She is twenty years old.", "She has twenty years old.", "She makes twenty years."], correct: 1, roast: "In inglese l'età si 'è' (*is twenty years old*)." },
+                    { q: "Select the correct verb for watching television:", options: ["I look the television tonight.", "I watch TV tonight.", "I see television tonight.", "I look at TV tonight."], correct: 1, roast: "I programmi e gli schermi si 'guardano' con 'watch'." },
+                    { q: "Choose the correct third-person singular present simple verb:", options: ["He work hard every single day.", "He works hard every single day.", "He working hard every single day.", "He worked hard every single day."], correct: 1, roast: "Terza persona singolare: ci vuole la 's' (*works*)." },
+                    { q: "Identify the correct uncountable noun form for milk:", options: ["I need to buy some milks.", "I need to buy some milk.", "I need to buy a milk.", "I need to buy milks."], correct: 1, roast: "'Milk' è uncountable, niente plurale." },
+                    { q: "Select the correct phone collocation:", options: ["She called me by phone.", "She phoned me.", "Both A and B are natural.", "She called me with phone."], correct: 2, roast: "Sia 'phoned me' che 'called me' sono naturali." },
                     { q: "Choose the correct weather expression:", options: ["The weather is very nice today.", "The weather are very nice today.", "The weather is very nicely today.", "Weather is nice today very."], correct: 0, roast: "'Weather' è singolare e vuole l'aggettivo 'nice'." },
-                    { q: "Identify the correct verb for leaving an umbrella behind:", options: ["I forgot my umbrella at home.", "I left my umbrella at home.", "Both A and B are common in speech.", "I lost my umbrella at home."], correct: 2, roast: "I madrelingua usano 'forgot' in continuazione, te la passiamo." },
-                    { q: "Select the correct plural currency form:", options: ["Can you lend me ten euro?", "Can you lend me ten euros.", "Can you lend me ten euros?", "Can you lend me ten eura?"], correct: 2, roast: "Il plurale in inglese vuole la **'s'** finale (*euros*)." },
-                    { q: "Choose the correct preposition for marital status:", options: ["She is married with a doctor.", "She is married to a doctor.", "She is married by a doctor.", "She is married for a doctor."], correct: 1, roast: "In inglese ci si sposa **'to'** qualcuno." },
-                    { q: "Identify the correct quantifier for countable things:", options: ["I have too much things to do.", "I have too many things to do.", "I have too much thing to do.", "I have a lot many things to do."], correct: 1, roast: "Le cose sono countable, si usa **'too many'**." },
-                    { q: "Choose the correct adverb for speaking skills:", options: ["He speaks English very good.", "He speaks English very well.", "He speaks English very goodly.", "He speaks English super good."], correct: 1, roast: "I verbi vogliono gli avverbi: parla **'very well'**." },
-                    { q: "Select the correct word order for a question:", options: ["Where you live now?", "Where do you live now?", "Where are you live now?", "Where you living now?"], correct: 1, roast: "Le domande al present simple richiedono l'ausiliare **'do'**." },
+                    { q: "Identify the correct verb for leaving an umbrella behind:", options: ["I forgot my umbrella at home.", "I left my umbrella at home.", "Both A and B are common in speech.", "I lost my umbrella at home."], correct: 2, roast: "I madrelingua usano 'forgot' in continuazione." },
+                    { q: "Select the correct plural currency form:", options: ["Can you lend me ten euro?", "Can you lend me ten euros.", "Can you lend me ten euros?", "Can you lend me ten eura?"], correct: 2, roast: "Il plurale in inglese vuole la 's' finale (*euros*)." },
+                    { q: "Choose the correct preposition for marital status:", options: ["She is married with a doctor.", "She is married to a doctor.", "She is married by a doctor.", "She is married for a doctor."], correct: 1, roast: "In inglese ci si sposa 'to' qualcuno." },
+                    { q: "Identify the correct quantifier for countable things:", options: ["I have too much things to do.", "I have too many things to do.", "I have too much thing to do.", "I have a lot many things to do."], correct: 1, roast: "Le cose sono countable, si usa 'too many'." },
+                    { q: "Choose the correct adverb for speaking skills:", options: ["He speaks English very good.", "He speaks English very well.", "He speaks English very goodly.", "He speaks English super good."], correct: 1, roast: "I verbi vogliono gli avverbi: parla 'very well'." },
+                    { q: "Select the correct word order for a question:", options: ["Where you live now?", "Where do you live now?", "Where are you live now?", "Where you living now?"], correct: 1, roast: "Le domande al present simple richiedono l'ausiliare 'do'." },
                     { q: "Identify the correct noun phrase for employment:", options: ["I am looking for a work.", "I am looking for work.", "I am looking for a job of work.", "I am looking for works."], correct: 1, roast: "'Work' è uncountable e non vuole l'articolo 'a'." },
-                    { q: "Choose the correct preposition for punctuality:", options: ["The bus arrived in time.", "The bus arrived on time.", "The bus arrived at time.", "The bus arrived with time."], correct: 1, roast: "La puntualità si esprime con **'on time'**." },
-                    { q: "Select the correct modal verb structure:", options: ["I must to finish this task.", "I must finish this task.", "I must finishing this task.", "I must have finish this task."], correct: 1, roast: "I verbi modali come 'must' reggono la forma base **senza 'to'**." },
+                    { q: "Choose the correct preposition for punctuality:", options: ["The bus arrived in time.", "The bus arrived on time.", "The bus arrived at time.", "The bus arrived with time."], correct: 1, roast: "La puntualità si esprime con 'on time'." },
+                    { q: "Select the correct modal verb structure:", options: ["I must to finish this task.", "I must finish this task.", "I must finishing this task.", "I must have finish this task."], correct: 1, roast: "I verbi modali come 'must' reggono la forma base senza 'to'." },
                     { q: "Choose the correct morning greeting phrase:", options: ["See you at tomorrow morning.", "See you tomorrow morning.", "See you on tomorrow morning.", "See you in tomorrow morning."], correct: 1, roast: "Non serve alcuna preposizione davanti a 'tomorrow morning'." }
                 ]
             },
             'ENG-ITA': {
                 food: [
-                    { q: "English to Italian: Choose the correct translation for 'Vorrei una fetta di torta':", options: ["I would like a slice of cake.", "I would like a piece of cake of slice.", "I would like the slice cake.", "I would like some slices of cake."], correct: 0, roast: "Spot on! 'Slice' means 'fetta'. Even English speakers get this right." },
-                    { q: "Italian to English (English Error): How do you say 'Ho sete' in English?", options: ["I am thirsty.", "I have thirsty.", "I am thirst.", "I have the thirst."], correct: 0, roast: "Classic English speaker trap in reverse! In Italian you *have* thirst, but in English you *are* thirsty." },
-                    { q: "English to Italian: Translate 'Il caffè è troppo caldo':", options: ["Il caffè è troppo caldo.", "Il caffè è molto troppo caldo.", "Il caffè è troppo molto caldo.", "Il caffè è troppo calda."], correct: 0, roast: "Correct! 'Caffè' is masculine singular, so it takes 'caldo'." },
-                    { q: "Italian to English (English Error): Translate 'Non bevo caffè':", options: ["I do not drink coffee.", "I no drink coffee.", "I am not drink coffee.", "I don't drinking coffee."], correct: 0, roast: "Easy one for English speakers, but your grammar skills need a strong espresso boost!" },
-                    { q: "English to Italian: Translate 'L'acqua è fredda':", options: ["L'acqua è fredda.", "Il acqua è freddo.", "La acqua è fredda.", "L'acque sono fredde."], correct: 0, roast: "Nailed the feminine elision: **'L\'acqua'**!" },
-                    { q: "Italian to English (English Error): Translate 'Dov'è il ristorante?':", options: ["Where is the restaurant?", "Where stays the restaurant?", "Where is restaurant?", "Where does the restaurant?"], correct: 0, roast: "Right! We use 'is', not 'stays'." },
-                    { q: "English to Italian: Translate 'Il conto, per favore':", options: ["Il conto, per favore.", "La nota, per favore.", "Il prezzo, per favore.", "Il conto grazie."], correct: 0, roast: "Correct! 'Bill' translates to **'conto'** in Italy." },
-                    { q: "Italian to English (English Error): How do you say 'Buon appetito!' in English?", options: ["Enjoy your meal! / Bon appétit!", "Good appetite!", "Good food!", "Eat well!"], correct: 0, roast: "English speakers never say 'Good appetite'! It's **'Enjoy your meal!'**." },
-                    { q: "English to Italian: Translate 'Buon appetito!':", options: ["Buon appetito!", "Buon pasto!", "Godetevi il pasto!", "Buon cibo!"], correct: 0, roast: "Spot on cultural equivalent." },
-                    { q: "Italian to English (English Error): Translate 'Parlo un po' di italiano':", options: ["I speak a little Italian.", "I speak little Italian.", "I speaking a little Italian.", "I am speak little Italian."], correct: 0, roast: "Correct! 'A little' makes all the difference." },
-                    { q: "English to Italian: Translate 'Dov'è il ristorante?':", options: ["Dov'è il ristorante?", "Dove sta il ristorante?", "Dov'è ristorante?", "Dove è il ristorante?"], correct: 0, roast: "Well done using the contraction **Dov'è**." },
-                    { q: "Italian to English (English Error): Translate 'Mi piace la pizza':", options: ["I like pizza.", "Me like pizza.", "I am liking pizza.", "Pizza likes me."], correct: 0, roast: "In Italian you say 'A me piace', but in English it's simply **'I like pizza'**." },
-                    { q: "English to Italian: Translate 'Sono vegetariano':", options: ["Sono vegetariano.", "Sono un vegetariano.", "Io sono vegetariano.", "Sia A che C sono naturali."], correct: 3, roast: "Correct! Italian often drops subject pronouns." },
-                    { q: "Italian to English (English Error): Translate 'Ho 25 anni':", options: ["I am 25 years old.", "I have 25 years.", "I make 25 years.", "I hold 25 years."], correct: 0, roast: "English speakers always try to say 'I have years' when learning Romance languages!" },
-                    { q: "English to Italian: Translate 'Abbiamo ordinato del vino':", options: ["Abbiamo ordinato del vino.", "Abbiamo ordinato un vino.", "Noi abbiamo ordinato vino.", "Sia A che C sono corrette."], correct: 3, roast: "Spot on with partitive articles." },
-                    { q: "Italian to English (English Error): Translate 'Dov'è il bagno?':", options: ["Where is the bathroom / toilet?", "Where is the bath?", "Where is washing room?", "Where is toilet room?"], correct: 0, roast: "Essential travel phrase mastered." },
-                    { q: "English to Italian: Translate 'Avete del pane senza glutine?':", options: ["Avete del pane senza glutine?", "Avete pani senza glutine?", "C'è pane senza glutine?", "Sia A che C sono corrette."], correct: 3, roast: "Great job handling gluten-free requests." },
-                    { q: "Italian to English (English Error): Translate 'Buon giorno':", options: ["Good morning / Good day.", "Good journey.", "Good sun.", "Good light."], correct: 0, roast: "'Good day' is a bit old-fashioned, but you got it!" },
-                    { q: "English to Italian: Translate 'Ho lasciato una buona mancia':", options: ["Ho lasciato una buona mancia.", "Ho dato una mancia buona.", "Ho lasciato mance.", "Ho pagato la mancia."], correct: 0, roast: "Correct translation for tipping." },
-                    { q: "English to Italian: Translate 'Salute!' (Brindisi):", options: ["Salute! / Cin cin!", "Salute fisica!", "Buona salute!", "Evviva!"], correct: 0, roast: "Perfect! 'Cheers' translates directly to **'Salute!'** or **'Cin cin!'**." }
+                    { q: "English to Italian: Choose the correct translation for 'Vorrei una fetta di torta':", options: ["I would like a slice of cake.", "I would like a piece of cake of slice.", "I would like the slice cake.", "I would like some slices of cake."], correct: 0, roast: "Spot on! Though British lords are weeping into their tea." },
+                    { q: "Italian to English (English Error): How do you say 'Ho sete' in English?", options: ["I am thirsty.", "I have thirsty.", "I am thirst.", "I have the thirst."], correct: 0, roast: "In Italian you *have* thirst, but in English you *are* thirsty." },
+                    { q: "English to Italian: Translate 'Il caffè è troppo caldo':", options: ["Il caffè è troppo caldo.", "Il caffè è molto troppo caldo.", "Il caffè è troppo molto caldo.", "Il caffè è troppo calda."], correct: 0, roast: "'Caffè' is masculine singular, so it takes 'caldo'." },
+                    { q: "Italian to English (English Error): Translate 'Non bevo caffè':", options: ["I do not drink coffee.", "I no drink coffee.", "I am not drink coffee.", "I don't drinking coffee."], correct: 0, roast: "Your grammar skills need a strong espresso boost!" },
+                    { q: "English to Italian: Translate 'L'acqua è fredda':", options: ["L'acqua è fredda.", "Il acqua è freddo.", "La acqua è fredda.", "L'acque sono fredde."], correct: 0, roast: "Nailed the feminine elision: *L'acqua*!" }
                 ],
                 travel: [
                     { q: "English to Italian: Translate 'Dov'è la stazione ferroviaria?':", options: ["Dov'è la stazione ferroviaria?", "Dove è il treno stazione?", "Dov'è la stazione dei treni?", "Sia A che C sono naturali."], correct: 3, roast: "Both work wonderfully in Italian!" },
-                    { q: "Italian to English (English Error): Translate 'Sono andato a Roma':", options: ["I went to Rome.", "I have gone to Rome.", "I goed to Rome.", "Both A and B work depending on context."], correct: 3, roast: "English speakers love messing up past tenses, but you nailed it." },
+                    { q: "Italian to English (English Error): Translate 'Sono andato a Roma':", options: ["I went to Rome.", "I have gone to Rome.", "I goed to Rome.", "Both A and B work depending on context."], correct: 3, roast: "English speakers love messing up past tenses." },
                     { q: "English to Italian: Translate 'Ho perso il mio passaporto':", options: ["Ho perso il mio passaporto.", "Io ho perduto il passaporto.", "Ho smarrito il passaporto.", "Sia A che C sono perfette."], correct: 3, roast: "Spot on vocabulary." },
                     { q: "Italian to English (English Error): Translate 'Dove si trova l'albergo?':", options: ["Where is the hotel located?", "Where is located the hotel?", "Where the hotel is located?", "Where is the hotel?"], correct: 0, roast: "Good job avoiding inverted word order traps." },
-                    { q: "English to Italian: Translate 'Buon viaggio!':", options: ["Buon viaggio!", "Buona gita!", "Fai un bel viaggio!", "Sia A che C vanno bene."], correct: 3, roast: "Excellent travel greeting." },
-                    { q: "Italian to English (English Error): Translate 'Vorrei un consiglio':", options: ["I would like some advice.", "I would like an advice.", "I would like some advices.", "I would like advice."], correct: 0, roast: "Remember: 'advice' is uncountable in English!" },
-                    { q: "English to Italian: Translate 'Il volo è in ritardo':", options: ["Il volo è in ritardo.", "Il volo è ritardato.", "Il volo è posticipato.", "Sia A che C sono corrette."], correct: 3, roast: "Perfect airport terminology." },
-                    { q: "Italian to English (English Error): Translate 'Ho perso i bagagli':", options: ["I lost my luggage.", "I lost my luggages.", "I have lost bagages.", "I lost my baggage pack."], correct: 0, roast: "'Luggage' has no plural form!" },
-                    { q: "English to Italian: Translate 'Quanto costa un biglietto?':", options: ["Quanto costa un biglietto?", "Quanto è un biglietto?", "Quanto vale un biglietto?", "Quanto paghi il biglietto?"], correct: 0, roast: "Correct translation of 'How much is...'." },
-                    { q: "Italian to English (English Error): Translate 'Siamo arrivati a Londra':", options: ["We arrived in London.", "We arrived at London.", "We arrived to London.", "We reached into London."], correct: 0, roast: "We arrive *in* cities!" },
-                    { q: "English to Italian: Translate 'Dove posso noleggiare un'auto?':", options: ["Dove posso noleggiare un'auto?", "Dove posso affittare una macchina?", "Sia A che B sono usate in Italia.", "Dove posso trovare una macchina a noleggio."], correct: 2, roast: "Both 'noleggiare' and 'affittare' are common." },
-                    { q: "Italian to English (English Error): Translate 'Quanto tempo ci vuole?':", options: ["How long does it take?", "How much time does it take?", "How many time takes it?", "How long is it taking?"], correct: 0, roast: "Always use **'How long'** for duration!" },
-                    { q: "English to Italian: Translate 'Ho dimenticato le chiavi a casa':", options: ["Ho dimenticato le chiavi a casa.", "Ho lasciato le chiavi a casa.", "Sia A che B sono comuni.", "Ho scordato le chiavi."], correct: 2, roast: "Both work well in spoken Italian." },
-                    { q: "Italian to English (English Error): Translate 'Non vedo l'ora di partire':", options: ["I am looking forward to leaving.", "I look forward to leave.", "I am looking forward for leaving.", "I can't wait leaving."], correct: 0, roast: "'Look forward to' takes a gerund (-ing)!" },
-                    { q: "English to Italian: Translate 'Attenzione al gradino':", options: ["Attenzione al gradino / Mind the gap.", "Guarda il gradino.", "Attenzione allo spazio.", "Attenzione alla discesa."], correct: 0, roast: "Classic English translation." },
-                    { q: "Italian to English (English Error): Translate 'Piove':", options: ["It is raining / It rains.", "It rains it.", "Is rain.", "It is rain."], correct: 0, roast: "Don't forget the dummy subject 'it' in English!" },
-                    { q: "English to Italian: Translate 'Ho bisogno di una camera':", options: ["Ho bisogno di una camera.", "Voglio una stanza.", "Mi serve una camera.", "Sia A che C sono naturali."], correct: 3, roast: "Polite hotel booking." },
-                    { q: "Italian to English (English Error): Translate 'C'è un bancomat qui vicino?':", options: ["Is there an ATM near here?", "There is an ATM near here?", "Where is an ATM?", "Are there ATM near?"], correct: 0, roast: "Inversion needed for English questions!" },
-                    { q: "English to Italian: Translate 'Buon volo di ritorno!':", options: ["Buon volo! / Fai buon viaggio!", "Buon rientro!", "Vola sicuro!", "Buon volo a te!"], correct: 0, roast: "Safe flight wish translated." },
-                    { q: "English to Italian: Translate 'Buon viaggio!':", options: ["Buon viaggio!", "Buona vacanza!", "Fai buon viaggio!", "Sia A che C vanno bene."], correct: 3, roast: "Great job completing travel drills." }
+                    { q: "English to Italian: Translate 'Buon viaggio!':", options: ["Buon viaggio!", "Buona gita!", "Fai un bel viaggio!", "Sia A che C vanno bene."], correct: 3, roast: "Excellent travel greeting." }
                 ],
                 sports: [
                     { q: "English to Italian: Translate 'Abbiamo vinto la partita!':", options: ["Abbiamo vinto la partita!", "Abbiamo guadagnato il match!", "Abbiamo trionfato nella gara!", "Sia A che C sono corrette."], correct: 3, roast: "Both 'partita' and 'gara' fit well." },
-                    { q: "Italian to English (English Error): Translate 'La nostra squadra ha giocato bene':", options: ["Our team played very well.", "Our team played very good.", "Our team played goodly.", "Our team was play well."], correct: 0, roast: "Verbs take adverbs! Played **'well'**, not 'good'." },
+                    { q: "Italian to English (English Error): Translate 'La nostra squadra ha giocato bene':", options: ["Our team played very well.", "Our team played very good.", "Our team played goodly.", "Our team was play well."], correct: 0, roast: "Verbs take adverbs! Played *well*, not 'good'." },
                     { q: "English to Italian: Translate 'Ha segnato un gol fantastico':", options: ["Ha segnato un gol fantastico.", "Ha fatto una rete bellissima.", "Ha segnato una marcatura magnifica.", "Sia A che B sono comunissime."], correct: 3, roast: "Both 'gol' and 'rete' are used in Italian football." },
-                    { q: "Italian to English (English Error): Translate 'Lui ha corso più veloce':", options: ["He ran faster.", "He run faster.", "He runned faster.", "He is run faster."], correct: 0, roast: "Past of 'run' is **'ran'**!" },
-                    { q: "English to Italian: Translate 'L'arbitro ha fischiato':", options: ["L'arbitro ha fischiato.", "Il giudice ha soffiato nel fischietto.", "L'arbitro ha soffiato il fischio.", "L'arbitro ha dato il fischio."], correct: 0, roast: "Natural football expression." },
-                    { q: "Italian to English (English Error): Translate 'A lei non piace il tennis':", options: ["She does not like tennis.", "She don't like tennis.", "She not like tennis.", "She no like tennis."], correct: 0, roast: "Third-person singular negative requires **'doesn\'t'**." },
-                    { q: "English to Italian: Translate 'Per quale squadra tifi?':", options: ["Per quale squadra tifi?", "Chi supporti tu?", "A chi dai sostegno?", "Qual è la tua squadra?"], correct: 0, roast: "In Italian you 'cheer for' by asking **'Per quale squadra tifi?'**." },
-                    { q: "Italian to English (English Error): Translate 'Io e il mio compagno abbiamo vinto':", options: ["My teammate and I won.", "Me and my teammate won.", "I and my teammate won.", "My teammate and me won."], correct: 0, roast: "Polite English puts yourself last: **'My teammate and I'**." },
-                    { q: "English to Italian: Translate 'È finita in pareggio':", options: ["È finita in pareggio / È un pareggio.", "Ha pareggiato.", "Era un disegno.", "È un pari."], correct: 0, roast: "Correct translation for a draw." },
-                    { q: "Italian to English (English Error): Translate 'L'arbitro ha fatto un errore':", options: ["The referee has made a mistake.", "The referee have made a mistake.", "The referee has make a mistake.", "The referee had made mistake."], correct: 0, roast: "'Referee' is singular, so it takes **'has'**." },
-                    { q: "English to Italian: Translate 'Dobbiamo fare riscaldamento':", options: ["Dobbiamo fare riscaldamento.", "Ci serve riscaldarci.", "Dobbiamo scaldarci i muscoli.", "Sia A che C sono comunissime."], correct: 3, roast: "Athletic warmup translated perfectly." },
-                    { q: "Italian to English (English Error): Translate 'Ha segnato tre gol':", options: ["He scored three goals.", "He scored three goal.", "He scored three goales.", "He scored three goal's."], correct: 0, roast: "Don't forget the plural **'s'**!" },
-                    { q: "English to Italian: Translate 'Lui è il capitano della squadra':", options: ["Lui è il capitano della squadra.", "Egli è il capitano del team.", "È lui il capitano.", "Sia A che C sono naturali."], correct: 3, roast: "Team captain translation mastered." },
-                    { q: "Italian to English (English Error): Translate 'Ci serve un campo più grande':", options: ["We need a bigger pitch.", "We need a more bigger pitch.", "We need much more bigger pitch.", "We need biglier pitch."], correct: 0, roast: "Never combine 'more' with '-er' comparatives!" },
-                    { q: "English to Italian: Translate 'Lo stadio è esaurito / pienissimo':", options: ["Lo stadio è esaurito / pienissimo.", "Lo stadio è impacchettato.", "Lo stadio è colmo di gente.", "Sia A che C sono ottime."], correct: 3, roast: "Stadium packed translation." },
-                    { q: "Italian to English (English Error): Translate 'Si è infortunato al ginocchio':", options: ["He injured his knee.", "He got injured to his knee.", "He got injury on knee.", "He was injured knee."], correct: 0, roast: "Keep it active and direct: **'He injured his knee'**." },
-                    { q: "English to Italian: Translate 'Bella partita!':", options: ["Bella partita! / Ottimo match!", "Buon gioco!", "Complimenti per il gioco!", "Bella prestazione!"], correct: 0, roast: "End of match greeting." },
-                    { q: "Italian to English (English Error): Translate 'L'allenatore ci ha dato buone informazioni':", options: ["The coach gave us good information.", "The coach gave us good informations.", "The coach gave us a good information.", "The coach gave us good piece of info."], correct: 0, roast: "'Information' is uncountable in English!" },
-                    { q: "English to Italian: Translate 'Ho guardato la partita in TV':", options: ["Ho guardato la partita in TV.", "Ho visto il match alla televisione.", "Sia A che B sono usate.", "Ho guardato la partita sulla televisione."], correct: 2, roast: "Both are natural in conversational Italian." },
-                    { q: "English to Italian: Translate 'Bella partita!':", options: ["Bella partita!", "Buon match!", "Ottima gara!", "Sia A che C vanno bene."], correct: 3, roast: "Great job on sports drills." }
+                    { q: "Italian to English (English Error): Translate 'Lui ha corso più veloce':", options: ["He ran faster.", "He run faster.", "He runned faster.", "He is run faster."], correct: 0, roast: "Past of 'run' is *ran*!" },
+                    { q: "English to Italian: Translate 'L'arbitro ha fischiato':", options: ["L'arbitro ha fischiato.", "Il giudice ha soffiato nel fischietto.", "L'arbitro ha soffiato il fischio.", "L'arbitro ha dato il fischio."], correct: 0, roast: "Natural football expression." }
                 ],
                 culture: [
                     { q: "English to Italian: Translate 'Adoro l'arte del Rinascimento':", options: ["Adoro l'arte del Rinascimento.", "Amo l'arte rinascimentale.", "Mi piace l'arte del Rinascimento.", "Sia A che B sono perfette."], correct: 3, roast: "Wonderful translation for art periods." },
-                    { q: "Italian to English (English Error): Translate 'Quel museo era fantastico':", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "That museum been amazing."], correct: 0, roast: "'Museum' is singular, so it takes **'was'**!" },
-                    { q: "English to Italian: Translate 'La mostra era mozzafiato':", options: ["La mostra era mozzafiato.", "L'esposizione era incredibile.", "La mostra toglieva il fiato.", "Sia A yang B sono naturali."], correct: 3, roast: "'Breathtaking' translated seamlessly." },
-                    { q: "Italian to English (English Error): Translate 'Chi hai visto alla galleria?':", options: ["Who did you see at the gallery?", "Who did you saw at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 0, roast: "Auxiliary 'did' already carries the past, base verb **'see'** follows." },
-                    { q: "English to Italian: Translate 'È un'attrice di talento':", options: ["È un'attrice di talento.", "Lei è un'attrice talentuosa.", "È una bravissima attrice.", "Sia A che C sono comunissime."], correct: 3, roast: "Talented actress rendered nicely." },
-                    { q: "Italian to English (English Error): Translate 'Il dipinto è unico':", options: ["The painting is unique.", "The painting is more unique.", "The painting is very unique.", "The painting is most unique."], correct: 0, roast: "'Unique' is an absolute adjective—no degrees!" },
-                    { q: "English to Italian: Translate 'Ha scritto un capolavoro':", options: ["Ha scritto un capolavoro.", "Ha composto un'opera maestra.", "Ha scritto un grande capolavoro.", "Lui ha scritto un capolavoro."], correct: 0, roast: "'Masterpiece' translates directly to **'capolavoro'**." },
-                    { q: "Italian to English (English Error): Translate 'Ha letto un libro di storia italiana':", options: ["She read a book about Italian history.", "She read a book about italian history.", "She read a book on italy history.", "She read a book of Italy history."], correct: 0, roast: "Nationalities must **always** be capitalized in English (*Italian*)." },
-                    { q: "English to Italian: Translate 'Il concerto ha fatto registrare il tutto esaurito':", options: ["Il concerto ha fatto registrare il tutto esaurito / I biglietti sono esauriti.", "Il concerto è venduto fuori.", "I biglietti del concerto sono finiti.", "Sia A che C sono perfette."], correct: 3, roast: "'Sold out' translated to Italian idiom." },
-                    { q: "Italian to English (English Error): Translate 'Lui è interessato all'arte':", options: ["He is interested in art.", "He is interested for art.", "He is interested about art.", "He is interested with art."], correct: 0, roast: "'Interested' is always followed by **'in'**." },
-                    { q: "English to Italian: Translate 'Suona il violino in modo brillante':", options: ["Suona il violino in modo brillante.", "Lei suona brillantemente il violino.", "Suona il violino in modo eccezionale.", "Sia A che B sono corrette."], correct: 3, roast: "Brilliant musical performance translated." },
-                    { q: "Italian to English (English Error): Translate 'Il concerto è stato un grande successo':", options: ["The concert was very successful.", "The concert was very successfull.", "The concert was very succesful.", "The concert was very successfule."], correct: 0, roast: "Watch out for spelling: 'successful' has double 's' and single 'l'!" },
-                    { q: "English to Italian: Translate 'Un applauso, per favore':", options: ["Un applauso, per favore.", "Un giro di applausi, prego.", "Battete le mani per favore.", "Un forte applauso, grazie."], correct: 0, roast: "'A round of applause' translated neatly." },
-                    { q: "Italian to English (English Error): Translate 'Siamo andati a vedere una mostra':", options: ["We went to see an exhibition.", "We went for seeing an exhibition.", "We went seeing an exhibition.", "We went to seeing an exhibition."], correct: 0, roast: "Purpose is expressed with the bare infinitive **'to see'**." },
-                    { q: "English to Italian: Translate 'La lettura di poesie è stata commovente':", options: ["La lettura di poesie è stata commovente.", "La recita poetica si muoveva.", "Leggere poesie era emozionante.", "Sia A che C sono ottime."], correct: 3, roast: "'Moving' poetry reading rendered correctly." },
-                    { q: "Italian to English (English Error): Translate 'L'attore ha recitato alla perfezione':", options: ["The actor played his role perfectly.", "The actor played his role perfect.", "The actor played his role perfection.", "The actor played his role perfectly well."], correct: 0, roast: "Verbs take adverbs (**'perfectly'**), not adjectives!" },
-                    { q: "English to Italian: Translate 'Vietato calpestare le aiuole / Non calpestare il prato':", options: ["Non calpestare il prato / Vietato calpestare le aiuole.", "Stai lontano dall'erba.", "Non toccare l'erba.", "Vieni via dall'erba."], correct: 0, roast: "'Keep off the grass' translation." },
-                    { q: "Italian to English (English Error): Translate 'Questo è un libro scritto da Dante':", options: ["This is a book written by Dante.", "This is a book wrote by Dante.", "This is a book writed by Dante.", "This is a book was wrote by Dante."], correct: 0, roast: "Past participle of write is **'written'**." },
-                    { q: "English to Italian: Translate 'Ascoltavamo musica classica':", options: ["Ascoltavamo musica classica.", "Ascoltavamo la musica classica.", "Noi ascoltavamo musica classica.", "Sia A che C sono naturali."], correct: 3, roast: "Listening to classical music translated." },
-                    { q: "English to Italian: Translate 'Che capolavoro!':", options: ["Che capolavoro!", "Che opera d'arte!", "Che meraviglia!", "Sia A che B sono naturali."], correct: 3, roast: "Great job completing cultural drills." }
+                    { q: "Italian to English (English Error): Translate 'Quel museo era fantastico':", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "That museum been amazing."], correct: 0, roast: "'Museum' is singular, so it takes *was*!" },
+                    { q: "English to Italian: Translate 'La mostra era mozzafiato':", options: ["La mostra era mozzafiato.", "L'esposizione era incredibile.", "La mostra toglieva il fiato.", "Sia A yang B sono naturali."], correct: 3, roast: "Breathtaking translated seamlessly." },
+                    { q: "Italian to English (English Error): Translate 'Chi hai visto alla galleria?':", options: ["Who did you see at the gallery?", "Who did you saw at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 0, roast: "Auxiliary 'did' already carries the past." },
+                    { q: "English to Italian: Translate 'È un'attrice di talento':", options: ["È un'attrice di talento.", "Lei è un'attrice talentuosa.", "È una bravissima attrice.", "Sia A che C sono comunissime."], correct: 3, roast: "Talented actress rendered nicely." }
                 ],
                 dailylife: [
-                    { q: "English to Italian: Translate 'Sono in ritardo':", options: ["Sono in ritardo.", "Sto correndo tardi.", "Faccio tardi.", "Sia A che C sono comunissime."], correct: 3, roast: "'I am running late' translated smoothly." },
-                    { q: "Italian to English (English Error): Translate 'Stai per fare tardi':", options: ["You're going to be late.", "Your going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 0, roast: "Contraction of 'you are' is **'You\'re'**. Don't confuse with possessive 'your'." },
+                    { q: "English to Italian: Translate 'Sono in ritardo':", options: ["Sono in ritardo.", "Sto correndo tardi.", "Faccio tardi.", "Sia A che C sono comunissime."], correct: 3, roast: "I am running late translated smoothly." },
+                    { q: "Italian to English (English Error): Translate 'Stai per fare tardi':", options: ["You're going to be late.", "Your going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 0, roast: "Contraction of 'you are' is *You're*." },
                     { q: "English to Italian: Translate 'Potresti farmi un favore?':", options: ["Potresti farmi un favore?", "Mi faresti un favore?", "Puoi darmi una mano?", "Sia A che B sono perfette."], correct: 3, roast: "Polite request formulation." },
                     { q: "Italian to English (English Error): Translate 'Accendi la luce in cucina':", options: ["Turn on the light in the kitchen.", "Open the light in the kitchen.", "Switch the light in the kitchen.", "Make on the light in the kitchen."], correct: 0, roast: "Lights are turned on, not opened like windows!" },
-                    { q: "English to Italian: Translate 'Con calma / Prenditi il tuo tempo':", options: ["Prenditi tutto il tempo che ti serve / Con calma.", "Prendi il tuo tempo.", "Fai con comodo.", "Sia A che C sono calzanti."], correct: 3, roast: "'Take your time' translated." },
-                    { q: "Italian to English (English Error): Translate 'Sono d'accordo con te':", options: ["I agree with you.", "I am agree with you.", "I am agreeing with you.", "I do agree with you."], correct: 0, roast: "'Agree' is a verb in English, never say 'I am agree'!" },
-                    { q: "English to Italian: Translate 'Ho finito il latte':", options: ["Ho finito il latte.", "Il latte è uscito.", "Non ho più latte in casa.", "Sia A che C sono comunissime."], correct: 3, roast: "'I'm out of milk' translated." },
-                    { q: "Italian to English (English Error): Translate 'Lei ha venti anni':", options: ["She is twenty years old.", "She has twenty years.", "She has twenty years old.", "She makes twenty years."], correct: 0, roast: "In English you *are* an age, you don't 'have' years!" },
-                    { q: "English to Italian: Translate 'A domani!':", options: ["A domani!", "Ci vediamo domani.", "Ti vedo domani.", "Sia A che B sono naturali."], correct: 3, roast: "'See you tomorrow' translated." },
-                    { q: "Italian to English (English Error): Translate 'Guardo la televisione stasera':", options: ["I watch TV tonight.", "I look the television tonight.", "I see television tonight.", "I look at TV tonight."], correct: 0, roast: "Screens and shows are **watched**, not looked at." },
-                    { q: "English to Italian: Translate 'Abbassate la voce / Fate meno rumore':", options: ["Fate meno rumore, per favore / Abbassate la voce.", "Tienilo giù per favore.", "Parlate piano.", "Sia A che C sono ottime."], correct: 3, roast: "'Keep it down' translated." },
-                    { q: "Italian to English (English Error): Translate 'Lui lavora sodo ogni giorno':", options: ["He works hard every single day.", "He work hard every single day.", "He working hard every single day.", "He worked hard every single day."], correct: 0, roast: "Third-person singular present simple needs an **'s'** (*works*)." },
-                    { q: "English to Italian: Translate 'Meglio tardi che mai':", options: ["Meglio tardi che mai.", "Più tardi che mai.", "È meglio tardi che mai.", "Sia A che C sono perfette."], correct: 3, roast: "Classic proverb matched." },
-                    { q: "Italian to English (English Error): Translate 'Devo comprare del latte':", options: ["I need to buy some milk.", "I need to buy some milks.", "I need to buy a milk.", "I need to buy milks."], correct: 0, roast: "'Milk' is uncountable, no plural 'milks'!" },
-                    { q: "English to Italian: Translate 'Fai come se fossi a casa tua':", options: ["Mettiti comodo / Fai come se fossi a casa tua.", "Fai te stesso a casa.", "Sii a casa tua.", "Sia A che C sono calzanti."], correct: 3, roast: "'Make yourself at home' translated." },
-                    { q: "Italian to English (English Error): Translate 'Dove vivi adesso?':", options: ["Where do you live now?", "Where you live now?", "Where are you live now?", "Where you living now?"], correct: 0, roast: "Present simple questions need the auxiliary **'do'**!" },
-                    { q: "English to Italian: Translate 'Mi puoi prestare dieci euro?':", options: ["Mi puoi prestare dieci euro?", "Mi presti dieci euro?", "Puoi prestarmi dieci euro?", "Sia A che C sono naturali."], correct: 3, roast: "Lending money request translated." },
-                    { q: "Italian to English (English Error): Translate 'L'autobus è arrivato in orario':", options: ["The bus arrived on time.", "The bus arrived in time.", "The bus arrived at time.", "The bus arrived with time."], correct: 0, roast: "Punctuality is always **'on time'**!" },
-                    { q: "English to Italian: Translate 'Un gioco da ragazzi / Facilissimo':", options: ["Un gioco da ragazzi / Facilissimo.", "Un pezzo di torta.", "Molto dolce.", "Sia A che C sono ottime."], correct: 3, roast: "'Piece of cake' translated." },
-                    { q: "English to Italian: Translate 'A domani!':", options: ["A domani!", "Ci vediamo domani!", "A presto!", "Sia A che C vanno bene."], correct: 3, roast: "Great job completing daily life drills." }
+                    { q: "English to Italian: Translate 'Con calma / Prenditi il tuo tempo':", options: ["Prenditi tutto il tempo che ti serve / Con calma.", "Prendi il tuo tempo.", "Fai con comodo.", "Sia A che C sono calzanti."], correct: 3, roast: "Take your time translated." }
+                ]
+            },
+            'FRA-ENG': {
+                food: [
+                    { q: "French to English: Translate 'Je voudrais un croissant':", options: ["I would like a croissant.", "I want a croissant of bread.", "Give to me croissant.", "I would like some croissant please."], correct: 0, roast: "Mon dieu! Même un pigeon parisien a une meilleure grammaire." },
+                    { q: "English to French (French Error): Translate 'J'ai faim':", options: ["I am hungry.", "I have hungry.", "I am hungriness.", "I do hunger."], correct: 0, roast: "You are hungry, you do not 'have' it. Incroyable." },
+                    { q: "French to English: Translate 'Le café est trop chaud':", options: ["The coffee is too hot.", "The coffee is much too hot.", "The coffee is too much hot.", "The coffee is hot too much."], correct: 0, roast: "Your syntax makes my cigarette taste like despair." },
+                    { q: "English to French (French Error): Translate 'Je ne bois pas de vin':", options: ["I do not drink wine.", "I no drink wine.", "I am not drink wine.", "I don't drinking wine."], correct: 0, roast: "Not drinking wine and butchering syntax? Disgraceful." },
+                    { q: "French to English: Translate 'L'eau est froide':", options: ["The water is cold.", "The waters are cold.", "Water is cold very.", "The water is cold it."], correct: 0, roast: "Your existential dread is much colder than this water." }
+                ],
+                travel: [
+                    { q: "French to English: Translate 'Où est la gare?':", options: ["Where is the station?", "Where stays the station?", "Where is train place?", "Where are the station?"], correct: 0, roast: "Où est your brain? A catastrophic failure of logic." },
+                    { q: "English to French (French Error): Translate 'Je suis allé à Paris':", options: ["I went to Paris.", "I have gone to Paris.", "I goed to Paris.", "I was go to Paris."], correct: 0, roast: "Merde! 'Goed' does not exist, absolute clown." },
+                    { q: "French to English: Translate 'J'ai perdu mon passeport':", options: ["I lost my passport.", "I have lost passport my.", "I lose my passport yesterday.", "I did lose passport."], correct: 0, roast: "You should lose your keyboard privileges forever." },
+                    { q: "English to French (French Error): Translate 'Où se trouve l'hôtel ?':", options: ["Where is the hotel located?", "Where is located the hotel?", "Where hotel is locate?", "Where is hotel?"], correct: 0, roast: "Your syntax is as scruffy as a strike in Marseille." },
+                    { q: "French to English: Translate 'Bon voyage !':", options: ["Have a nice trip! / Safe journey!", "Good trip to you!", "Do a good voyage!", "Make good travel!"], correct: 0, roast: "Have a nice trip far away from any textbooks." }
+                ],
+                sports: [
+                    { q: "French to English: Translate 'Notre équipe a gagné le match !':", options: ["Our team won the match!", "Our team has win the match.", "Our team winned the match.", "Our team did win match."], correct: 0, roast: "Won! Not winned. Your grammar is losing 5-0." },
+                    { q: "English to French (French Error): Translate 'Il a couru très vite':", options: ["He ran very fast.", "He run very fast.", "He runned very fast.", "He is run fast."], correct: 0, roast: "He *ran*! Even a street mime runs circles around you." },
+                    { q: "French to English: Translate 'L'arbitro a sifflé':", options: ["The referee blew the whistle.", "The referee has blow whistle.", "The referee did blow the whistle.", "Both A and C are acceptable."], correct: 3, roast: "The referee blows the whistle on your career." },
+                    { q: "English to French (French Error): Translate 'Elle aime le tennis':", options: ["She likes tennis.", "She like tennis.", "She is like tennis.", "She liking tennis."], correct: 0, roast: "Third person singular takes an 's'! Quelle surprise." },
+                    { q: "French to English: Translate 'C'est un match nul':", options: ["It is a draw.", "It is a match null.", "It is zero zero.", "It draws."], correct: 0, roast: "A draw. Just like your artistic soul: uninspired." }
+                ],
+                culture: [
+                    { q: "French to English: Translate 'J'adore l'art moderne':", options: ["I love modern art.", "I adore the art modern.", "I am loving modern art.", "I love modern arts."], correct: 0, roast: "Your understanding of grammar belongs in the Stone Age." },
+                    { q: "English to French (French Error): Translate 'Ce musée était magnifique':", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "That museum been amazing."], correct: 0, roast: "'Museum' is singular, it takes 'was'!" },
+                    { q: "French to English: Translate 'C'est un chef-d'œuvre':", options: ["It is a masterpiece.", "It is a chief work.", "It is a master head.", "It is head of work."], correct: 0, roast: "Masterpiece. Unlike your sentence structure." },
+                    { q: "English to French (French Error): Translate 'Qui avez-vous vu à la galerie ?':", options: ["Who did you see at the gallery?", "Who did you saw at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 0, roast: "Auxiliary 'did' requires base verb 'see'." },
+                    { q: "French to English: Translate 'L'acteur a joué à la perfection':", options: ["The actor played his role perfectly.", "The actor played role perfect.", "The actor played perfectly role.", "The actor did play perfection."], correct: 0, roast: "Perfectly! Adverbs modify verbs, baguette-brain." }
+                ],
+                dailylife: [
+                    { q: "French to English: Translate 'Je suis en retard':", options: ["I am late.", "I am in retard.", "I run late.", "I am on late."], correct: 0, roast: "You are late on acquiring a functioning intellect." },
+                    { q: "English to French (French Error): Translate 'Allume la lumière':", options: ["Turn on the light.", "Open the light.", "Switch light on.", "Make light on."], correct: 0, roast: "Turn on! You do not 'open' a light like a wine bottle." },
+                    { q: "French to English: Translate 'Puis-je avoir un café ?':", options: ["Can I have a coffee?", "May I have a coffee?", "Could I have a coffee?", "All of the above are correct."], correct: 3, roast: "Take your coffee and go contemplate your terrible grammar." },
+                    { q: "English to French (French Error): Translate 'J'ai 30 ans':", options: ["I am 30 years old.", "I have 30 years.", "I make 30 years.", "I hold 30 years."], correct: 0, roast: "You are 30 years old, you do not 'have' them." },
+                    { q: "French to English: Translate 'À demain !':", options: ["See you tomorrow!", "Until tomorrow!", "To tomorrow!", "Both A and B are natural."], correct: 3, roast: "See you tomorrow. Hopefully with a proper brain." }
+                ]
+            },
+            'GER-ENG': {
+                food: [
+                    { q: "German to English: Translate 'Ich möchte ein Bier':", options: ["I would like a beer.", "I want a beer of glass.", "Give me beer.", "I would like some biers."], correct: 0, roast: "Richtig! Aber deine Grammatik ist so trocken wie ein Brezen." },
+                    { q: "English to German (German Error): Translate 'Ich habe Hunger':", options: ["I am hungry.", "I have hunger.", "I am hungriness.", "I do hunger."], correct: 0, roast: "In English you *are* hungry. Stop translating word-for-word." },
+                    { q: "German to English: Translate 'Der Kaffee ist zu heiß':", options: ["The coffee is too hot.", "The coffee is much too hot.", "The coffee is too much hot.", "The coffee is hot too much."], correct: 0, roast: "Your syntax, however, is ice cold and fundamentally broken." },
+                    { q: "English to German (German Error): Translate 'Ich trinke keinen Kaffee':", options: ["I do not drink coffee.", "I no drink coffee.", "I am not drink coffee.", "I don't drinking coffee."], correct: 0, roast: "A basic negative structure failed completely!" },
+                    { q: "German to English: Translate 'Das Wasser ist kalt':", options: ["The water is cold.", "The waters are cold.", "Water is cold very.", "The water is cold it."], correct: 0, roast: "Jump into cold water to shock your brain." }
+                ],
+                travel: [
+                    { q: "German to English: Translate 'Wo ist der Bahnhof?':", options: ["Where is the station?", "Where stays the station?", "Where is train place?", "Where are the station?"], correct: 0, roast: "Where is your intellect? Completely derailed." },
+                    { q: "English to German (German Error): Translate 'Ich bin nach Berlin gefahren':", options: ["I went to Berlin.", "I have gone to Berlin.", "I goed to Berlin.", "I was go to Berlin."], correct: 0, roast: "'Goed'? The past tense of go is *went*." },
+                    { q: "German to English: Translate 'Ich habe meinen Pass verloren':", options: ["I lost my passport.", "I have lost passport my.", "I lose my passport yesterday.", "I did lose passport."], correct: 0, roast: "You should lose your keyboard privileges." },
+                    { q: "English to German (German Error): Translate 'Wo befindet sich das Hotel?':", options: ["Where is the hotel located?", "Where is located the hotel?", "Where hotel is locate?", "Where is hotel?"], correct: 0, roast: "Inverted word order failure! A bureaucratic mess." },
+                    { q: "German to English: Translate 'Gute Reise!':", options: ["Have a nice trip! / Safe journey!", "Good trip to you!", "Do a good voyage!", "Make good travel!"], correct: 0, roast: "Have a nice trip far away from any English test center." }
+                ],
+                sports: [
+                    { q: "German to English: Translate 'Wir haben das Spiel gewonnen !':", options: ["We won the match!", "We have win the match.", "We winned the match.", "We did win match."], correct: 0, roast: "Won! Not winned. Relegated to the amateur league." },
+                    { q: "English to German (German Error): Translate 'Er ist schneller gelaufen':", options: ["He ran faster.", "He run faster.", "He runned faster.", "He is run faster."], correct: 0, roast: "He *ran*! Basic irregular past tense failure." },
+                    { q: "German to English: Translate 'Der Schiedsrichter hat gepfiffen':", options: ["The referee blew the whistle.", "The referee has blow whistle.", "The referee did blow the whistle.", "Both A and C are acceptable."], correct: 3, roast: "Red card for your grammatical career!" },
+                    { q: "English to German (German Error): Translate 'Sie mag kein Tennis':", options: ["She does not like tennis.", "She don't like tennis.", "She not like tennis.", "She no like tennis."], correct: 0, roast: "Third-person negative requires *doesn't*!" },
+                    { q: "German to English: Translate 'Das Spiel endete unentschieden':", options: ["The match ended in a draw.", "The match ended in draw.", "The match was draw.", "The match tied up."], correct: 0, roast: "A draw. Just like your brain activity: flatline." }
+                ],
+                culture: [
+                    { q: "German to English: Translate 'Ich liebe klassische Kunst':", options: ["I love classical art.", "I love the art classical.", "I am loving classical art.", "I love classical arts."], correct: 0, roast: "Your aesthetic appreciation of grammar is non-existent." },
+                    { q: "English to German (German Error): Translate 'Dieses Museum war fantastisch':", options: ["That museum was amazing.", "That museum were amazing.", "That museum is amazing.", "That museum been amazing."], correct: 0, roast: "'Museum' is singular, it takes *was*!" },
+                    { q: "German to English: Translate 'Das ist ein Meisterwerk':", options: ["It is a masterpiece.", "It is a master work.", "It is a work of master.", "It is main work."], correct: 0, roast: "Masterpiece. Unlike your sentence." },
+                    { q: "English to German (German Error): Translate 'Wen hast du in der Galerie gesehen?':", options: ["Who did you see at the gallery?", "Who did you saw at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 0, roast: "Auxiliary 'did' + base verb 'see'." },
+                    { q: "German to English: Translate 'Der Schauspieler hat perfekt gespielt':", options: ["The actor played his role perfectly.", "The actor played role perfect.", "The actor played perfectly role.", "The actor did play perfection."], correct: 0, roast: "Perfectly! Adverbs modify verbs, engineering disaster." }
+                ],
+                dailylife: [
+                    { q: "German to English: Translate 'Ich bin zu spät':", options: ["I am late.", "I am too late (or I am late).", "I run late.", "I am on late."], correct: 0, roast: "Late for acquiring a functioning intellect." },
+                    { q: "English to German (German Error): Translate 'Mach das Licht an':", options: ["Turn on the light.", "Open the light.", "Switch light on.", "Make light on."], correct: 0, roast: "Turn on! You do not 'open' a light like a beer bottle." },
+                    { q: "German to English: Translate 'Kann ich einen Kaffee haben?':", options: ["Can I have a coffee?", "May I have a coffee?", "Could I have a coffee?", "All of the above are correct."], correct: 3, roast: "Take your coffee and study hard before I lose patience." },
+                    { q: "English to German (German Error): Translate 'Ich bin 30 Jahre alt':", options: ["I am 30 years old.", "I have 30 years.", "I make 30 years.", "I hold 30 years."], correct: 0, roast: "You *are* 30 years old, you do not 'have' them." },
+                    { q: "German to English: Translate 'Bis morgen!':", options: ["See you tomorrow!", "Until tomorrow!", "To tomorrow!", "Both A and B are natural."], correct: 3, roast: "See you tomorrow. Hopefully with a proper dictionary." }
                 ]
             }
         };
 
-        let currentTopic = 'food';
-        let currentIndex = 0;
-        let currentQuestions = [];
+        let audioCtx = null;
+        function playSound(type) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'success') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now);
+                    osc.frequency.setValueAtTime(880, now + 0.1);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.setValueAtTime(100, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            } catch(e) {}
+        }
 
         const langToggleBtn = document.getElementById('langToggleBtn');
         const langDropdown = document.getElementById('langDropdown');
         const langOptions = document.querySelectorAll('.lang-option');
         const heroSubtitle = document.getElementById('heroSubtitle');
+        const characterImage = document.getElementById('characterImage');
+        const characterCaption = document.getElementById('characterCaption');
+        const imageCard = document.getElementById('imageCard');
         const pills = document.querySelectorAll('.topic-pill');
         const drillSectionTitle = document.getElementById('drillSectionTitle');
         const progressIndicator = document.getElementById('progressIndicator');
@@ -682,44 +784,65 @@
         const roastBtn = document.getElementById('roastBtn');
         const customResultOutput = document.getElementById('customResultOutput');
 
-        // Mostra/Nascondi il menu a tendina cliccando sul bottone in alto
         langToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             langDropdown.classList.toggle('active');
         });
 
-        // Chiudi il menu se si clicca fuori
         window.addEventListener('click', () => {
             langDropdown.classList.remove('active');
         });
 
-        // Selezione della modalità dal menu a tendina
         langOptions.forEach(opt => {
             opt.addEventListener('click', () => {
                 currentMode = opt.getAttribute('data-mode');
-                langToggleBtn.innerText = opt.innerText + " ▼";
+                const charFile = opt.getAttribute('data-char') + '.png';
+                const captionText = opt.getAttribute('data-caption');
+
+                langToggleBtn.innerText = opt.innerText.split('(')[0].trim() + " ▼";
                 langDropdown.classList.remove('active');
 
-                if (currentMode === 'ITA-ENG') {
-                    heroSubtitle.innerText = "Italiani che imparano l'inglese (roast in italiano). Clicca in alto sul menu per cambiare modalità.";
-                } else {
-                    heroSubtitle.innerText = "English learning Italian (roasts in English). Click the menu above to switch mode!";
-                }
+                characterImage.src = charFile;
+                characterCaption.innerText = captionText;
+                setTutorMood('neutral');
 
                 initTopic(currentTopic);
             });
         });
 
+        function setTutorMood(mood) {
+            imageCard.classList.remove('angry', 'happy');
+            if (mood === 'angry') {
+                imageCard.classList.add('angry');
+            } else if (mood === 'happy') {
+                imageCard.classList.add('happy');
+            }
+        }
+
         function initTopic(topicKey) {
             currentTopic = topicKey;
             currentIndex = 0;
-            currentQuestions = dataSet[currentMode][topicKey];
+            score = 0;
+            currentQuestions = dataSet[currentMode][topicKey] || dataSet['ITA-ENG']['food'];
             drillSectionTitle.innerText = `${topicKey.charAt(0).toUpperCase() + topicKey.slice(1)} Drill (${currentMode})`;
+            setTutorMood('neutral');
             loadQuestion();
+        }
+
+        function prepareShuffledOptions(item) {
+            let mapped = item.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            for (let i = mapped.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [mapped[i], mapped[j]] = [mapped[j], mapped[i]];
+            }
+            shuffledOptionsForCurrent = mapped;
+            currentCorrectOriginalIndex = item.correct;
         }
 
         function loadQuestion() {
             const item = currentQuestions[currentIndex];
+            prepareShuffledOptions(item);
+
             progressIndicator.innerText = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
             questionBox.innerText = item.q;
             roastFeedback.style.display = 'none';
@@ -727,38 +850,46 @@
             
             optionsGrid.innerHTML = '';
             
-            item.options.forEach((opt, idx) => {
+            shuffledOptionsForCurrent.forEach((optObj, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
-                btn.addEventListener('click', () => handleAnswer(idx, item.correct, item.roast));
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${optObj.text}`;
+                btn.addEventListener('click', () => handleAnswer(optObj.originalIndex, currentCorrectOriginalIndex, item.roast));
                 optionsGrid.appendChild(btn);
             });
         }
 
-        function handleAnswer(selectedIdx, correctIdx, roastText) {
+        function handleAnswer(selectedOriginalIdx, correctOriginalIdx, roastText) {
             const buttons = optionsGrid.querySelectorAll('.option-btn');
+            const isCorrect = (selectedOriginalIdx === correctOriginalIdx);
+
+            if (isCorrect) {
+                score++;
+                playSound('success');
+                setTutorMood('neutral');
+            } else {
+                playSound('error');
+                setTutorMood('angry');
+            }
             
             buttons.forEach((btn, idx) => {
                 btn.disabled = true;
-                if (idx === correctIdx) {
+                const optObj = shuffledOptionsForCurrent[idx];
+                if (optObj.originalIndex === correctOriginalIdx) {
                     btn.classList.add('correct');
-                } else if (idx === selectedIdx && selectedIdx !== correctIdx) {
+                } else if (optObj.originalIndex === selectedOriginalIdx && !isCorrect) {
                     btn.classList.add('incorrect');
                 }
             });
 
             roastFeedback.style.display = 'block';
-            if (selectedIdx === correctIdx) {
-                const successMsg = currentMode === 'ITA-ENG' 
-                    ? "<strong>🎉 Ottimo!</strong> Risposta corretta. Non montarti la testa però." 
-                    : "<strong>🎉 Spot on!</strong> Correct answer. Don't get cocky though.";
-                roastFeedback.innerHTML = successMsg;
+            if (isCorrect) {
+                roastFeedback.innerHTML = "<strong>🎉 Corretto!</strong> Non montarti la testa.";
                 roastFeedback.style.backgroundColor = '#ECFDF3';
                 roastFeedback.style.borderColor = '#12B76A';
                 roastFeedback.style.color = '#027A48';
             } else {
-                roastFeedback.innerHTML = `<strong>🔥 AI Roast:</strong> ${roastText}`;
+                roastFeedback.innerHTML = `<strong>🔥 Tutor Roast:</strong> ${roastText}`;
                 roastFeedback.style.backgroundColor = '#FDF3F2';
                 roastFeedback.style.borderColor = '#FECDCA';
                 roastFeedback.style.color = '#B42318';
@@ -770,12 +901,24 @@
         nextQuestionBtn.addEventListener('click', () => {
             currentIndex++;
             if (currentIndex >= currentQuestions.length) {
-                currentIndex = 0;
+                const percentage = (score / currentQuestions.length) * 100;
+                questionBox.innerHTML = `<strong>📊 Set completato! Punteggio: ${score} / ${currentQuestions.length} (${percentage}%)</strong>`;
+                optionsGrid.innerHTML = '';
+                roastFeedback.style.display = 'none';
+                nextQuestionBtn.style.display = 'none';
+
+                if (percentage >= 60) {
+                    setTutorMood('happy');
+                    characterCaption.innerText = "Il tutor è sorpreso: te la sei cavata (per questa volta).";
+                } else {
+                    setTutorMood('angry');
+                    characterCaption.innerText = "Disastro totale! Sotto al 60%: il tutor è furioso con te.";
+                }
+                return;
             }
             loadQuestion();
         });
 
-        // Cambio topic tramite pillole
         pills.forEach(pill => {
             pill.addEventListener('click', () => {
                 pills.forEach(p => p.classList.remove('active'));
@@ -784,24 +927,27 @@
             });
         });
 
-        // Avvio iniziale
         initTopic('food');
 
-        // Sezione input libero in fondo
         roastBtn.addEventListener('click', () => {
             const val = userSentence.value.trim();
             if(!val) {
+                playSound('error');
+                setTutorMood('angry');
                 customResultOutput.style.display = 'block';
-                customResultOutput.innerHTML = currentMode === 'ITA-ENG' 
-                    ? "<strong>🔥 Ehi!</strong> Scrivi una frase prima di chiedere di fartela arrostire!" 
-                    : "<strong>🔥 Hey!</strong> Type a sentence first before asking to get roasted!";
+                customResultOutput.innerHTML = "<strong>🔥 Ehi!</strong> Scrivi una frase prima di pretendere di fartela demolire dal tutor!";
                 return;
             }
 
+            playSound('error');
+            setTutorMood('angry');
             customResultOutput.style.display = 'block';
-            customResultOutput.innerHTML = currentMode === 'ITA-ENG'
-                ? `<strong>🔥 Custom AI Roast:</strong> Analizzando '${val}'... La tua sintassi sta avendo un collasso strutturale!`
-                : `<strong>🔥 Custom AI Roast:</strong> Analyzing '${val}'... Your syntax is having a complete structural breakdown!`;
+            customResultOutput.innerHTML = `
+                <strong>🔥 Il Tutor sentenzia:</strong> Analizzando '${val}'... Questa frase ha appena offeso secoli di letteratura!
+                <div class="custom-correction">
+                    ✨ <strong>Versione Corretta:</strong> (Formulazione impeccabile e grammaticalmente degna)
+                </div>
+            `;
         });
     </script>
 
