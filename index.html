@@ -61,7 +61,7 @@
             color: var(--text-muted);
         }
 
-        /* VIGNETTA IN ALTO SOPRA TUTTO */
+        /* 1. VIGNETTA IN ALTO SOPRA TUTTO */
         .illustration-section {
             width: 100%;
             display: flex;
@@ -143,7 +143,7 @@
             border-color: var(--accent-red);
         }
 
-        /* SEZIONE LISTA FISSA DELLE 20 DOMANDE PER TOPIC */
+        /* 2. SEZIONE DRILL (UNA DOMANDA ALLA VOLTA CON 4 OPZIONI) */
         .drill-section {
             background: white;
             border: 1px solid var(--card-border);
@@ -152,7 +152,13 @@
             box-shadow: 0 4px 16px var(--card-shadow);
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
+        }
+
+        .drill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .section-title {
@@ -162,43 +168,90 @@
             margin: 0;
         }
 
-        .questions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 8px;
+        .progress-indicator {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-red);
         }
 
-        .question-item {
+        .question-box {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
             background-color: #F8F5EE;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background-color: white;
             border: 1px solid var(--card-border);
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 15px;
             font-weight: 500;
             color: var(--text-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px var(--card-shadow);
         }
 
-        .question-item span.error-text {
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-red);
+            background-color: #FDF3F2;
+        }
+
+        .option-btn.correct {
+            background-color: #ECFDF3;
+            border-color: #12B76A;
+            color: #027A48;
             font-weight: 600;
         }
 
-        .question-item span.fix-text {
-            font-size: 13px;
-            color: var(--accent-red);
-            font-weight: 600;
-            background: #FDF3F2;
-            padding: 4px 8px;
-            border-radius: 8px;
+        .option-btn.incorrect {
+            background-color: #FDF3F2;
+            border-color: #FECDCA;
+            color: #B42318;
+        }
+
+        .roast-feedback {
+            padding: 16px;
+            background-color: #FDF3F2;
             border: 1px solid #FECDCA;
+            border-radius: 12px;
+            color: #B42318;
+            font-size: 14px;
+            line-height: 1.5;
+            display: none;
         }
 
-        /* SEZIONE INPUT LIBERO A PARTE */
+        .next-question-btn {
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            width: fit-content;
+            display: none;
+            box-shadow: 0 4px 12px rgba(217, 48, 37, 0.3);
+        }
+
+        .next-question-btn:hover {
+            background-color: var(--btn-red-hover);
+        }
+
+        /* 3. SEZIONE INPUT LIBERO A PARTE IN FONDO */
         .custom-roast-section {
             background: white;
             border: 1px solid var(--card-border);
@@ -249,7 +302,7 @@
             background-color: var(--btn-red-hover);
         }
 
-        .result-output {
+        .custom-result-output {
             padding: 16px;
             background-color: #FDF3F2;
             border: 1px solid #FECDCA;
@@ -266,7 +319,7 @@
     <div class="container">
         <header class="header">
             <div class="lang-badge">ENGLISH GB • ITALIANO IT</div>
-            <div class="counter-badge" id="counterDisplay">Database: 100 Fixed Drills Loaded</div>
+            <div class="counter-badge">100 Drills Loaded (20 per topic)</div>
         </header>
 
         <!-- 1. VIGNETTA IN ALTO SOPRA TUTTO -->
@@ -282,7 +335,7 @@
                 because it stings.
             </h1>
             <p class="subtitle">
-                Explore the 20 fixed drills for each of your 5 core topics below, or use the separate box at the bottom to type and roast any custom sentence.
+                Choose a topic, tackle 20 fixed drills one by one with 4 options, and get instantly roasted. Or write your custom sentence in the separate box below.
             </p>
 
             <!-- 5 TOPICS -->
@@ -295,179 +348,235 @@
             </div>
         </section>
 
-        <!-- 2. SEZIONE LISTA FISSA DELLE 20 DOMANDE PER IL TOPIC SELEZIONATO -->
+        <!-- 2. SEZIONE DRILL (UNA DOMANDA ALLA VOLTA, 4 OPZIONI) -->
         <section class="drill-section">
-            <h3 class="section-title" id="drillSectionTitle">Fixed Drills for: Food (20 Questions)</h3>
-            <div class="questions-list" id="questionsListContainer">
-                <!-- Verrà popolato via JavaScript con le 20 frasi fisse -->
+            <div class="drill-header">
+                <h3 class="section-title" id="drillSectionTitle">Food Drill</h3>
+                <span class="progress-indicator" id="progressIndicator">Question 1 / 20</span>
             </div>
+            <div class="question-box" id="questionBox">Loading question...</div>
+            <div class="options-grid" id="optionsGrid">
+                <!-- 4 opzioni generate via JS -->
+            </div>
+            <div class="roast-feedback" id="roastFeedback"></div>
+            <button class="next-question-btn" id="nextQuestionBtn">Next Question ➔</button>
         </section>
 
-        <!-- 3. SEZIONE INPUT LIBERO A PARTE PER CORREZIONE E ROAST -->
+        <!-- 3. SEZIONE INPUT LIBERO A PARTE IN FONDO -->
         <section class="custom-roast-section">
             <h3 class="section-title">Free Custom Sentence Roast & Correction</h3>
-            <textarea id="userSentence" placeholder="Type any custom sentence here to get your grammar roasted..."></textarea>
+            <textarea id="userSentence" placeholder="Type any sentence here to get your custom grammar roast..."></textarea>
             <button class="btn-roasted" id="roastBtn"><span>🔥</span> Get custom sentence roasted</button>
-            <div id="customResultOutput" class="result-output"></div>
+            <div class="custom-result-output" id="customResultOutput"></div>
         </section>
     </div>
 
     <script>
-        // Database fisso di esattamente 20 domande scritte per ciascuno dei 5 topic (100 totali)
+        // Database completo di 20 domande per ciascuno dei 5 topic (100 totali), con 4 opzioni e roast
         const topicData = {
             food: [
-                { q: "I prefer pizza than pasta.", fix: "I prefer pizza *to* pasta." },
-                { q: "This spaghetti are delicious.", fix: "This spaghetti *is* delicious." },
-                { q: "I am eating here since two hours.", fix: "I have been eating here *for* two hours." },
-                { q: "Can I have two coffees, please?", fix: "Can I have two *cups of coffee*?" },
-                { q: "The soup is too much hot.", fix: "The soup is *too hot*." },
-                { q: "She put too many salt in the soup.", fix: "She put too *much* salt." },
-                { q: "I would like a fresh orange juice.", fix: "Freshly squeezed orange juice." },
-                { q: "The meat is cooked well.", fix: "The meat is *well-done*." },
-                { q: "Can you pass me the fishes?", fix: "Pass me the *fish*." },
-                { q: "I am full, I cannot eat more.", fix: "I cannot eat *any more*." },
-                { q: "This cake taste like cardboard.", fix: "This cake *tastes* like cardboard." },
-                { q: "Give me a hot milk.", fix: "Give me *some* hot milk." },
-                { q: "I am vegetarian, I do not eat meats.", fix: "I do not eat *meat*." },
-                { q: "The waiter give us the bill.", fix: "The waiter *gave* us the bill." },
-                { q: "We ordered a wine bottle.", fix: "We ordered *a bottle of wine*." },
-                { q: "I burnt my tongue with hot water.", fix: "Burnt my tongue on hot water." },
-                { q: "Do you have gluten-free breads?", fix: "Gluten-free *bread*." },
-                { q: "The restaurant was crowded of people.", fix: "Crowded *with* people." },
-                { q: "I left a good tip to the chef.", fix: "Left a tip *for* the waiter/chef." },
-                { q: "This dish lacks of salt.", fix: "This dish lacks salt (no 'of')." }
+                { q: "Choose the correct sentence regarding food preference:", options: ["I prefer pizza than pasta.", "I prefer pizza to pasta.", "I prefer pizza more than pasta.", "I prefer pizza rather than pasta."], correct: 1, roast: "You prefer failing English to speaking correctly! It's 'prefer X *to* Y'." },
+                { q: "Identify the grammatically correct option:", options: ["This spaghetti are delicious.", "This spaghettis are delicious.", "This spaghetti is delicious.", "These spaghetti is delicious."], correct: 2, roast: "Spaghetti takes singular agreement in English. Your grammar is melting like bad cheese." },
+                { q: "Select the correct time expression:", options: ["I am eating here since two hours.", "I am eating here for two hours.", "I have been eating here for two hours.", "I have been eating here since two hours."], correct: 2, roast: "For a duration use 'for', not 'since'! You've been messing this up for way too long." },
+                { q: "Which one is correct when ordering at a café?", options: ["Can I have two coffees, please?", "Can I have two cups of coffee, please?", "Can I have two coffee, please?", "Can I have two coffees please."], correct: 1, roast: "Coffee as a drink is uncountable. You want cups of coffee, unless you're crunching raw beans." },
+                { q: "Find the correct sentence describing temperature:", options: ["The soup is too much hot.", "The soup is much too hot.", "The soup is too much hot.", "The soup is very too hot."], correct: 1, roast: "'Too much' goes before nouns, 'too' goes before adjectives. Basic rule check: failed!" },
+                { q: "Choose the correct quantifier usage:", options: ["She put too many salt in the soup.", "She put too much salt in the soup.", "She put too many salts in the soup.", "She put a lot many salt in the soup."], correct: 1, roast: "Salt is uncountable! You used 'many' like an amateur. Back to primary school." },
+                { q: "Select the natural English expression:", options: ["I would like a fresh orange juice.", "I would like freshly squeezed orange juice.", "I would like a fresh orange's juice.", "I would like fresh juice of orange."], correct: 1, roast: "Freshly squeezed! Nobody says 'fresh orange juice' in professional contexts." },
+                { q: "How should you correctly describe well-cooked meat?", options: ["The meat is cooked well.", "The meat is well-done.", "The meat is done well.", "The meat is well-cooked done."], correct: 1, roast: "Meat isn't just 'cooked well', it's *well-done*. Culinary and grammar disaster avoided!" },
+                { q: "Identify the correct plural form when ordering seafood:", options: ["Can you pass me the fishes?", "Can you pass me the fishs?", "Can you pass me the fish?", "Can you pass me fishies?"], correct: 2, roast: "The plural of fish is fish! You tried to multiply a species out of thin air." },
+                { q: "Select the correct phrase when you are completely full:", options: ["I am full, I cannot eat more.", "I am full, I cannot eat any more.", "I am full, I can't eat nothing more.", "I am full, I don't eat more."], correct: 1, roast: "Double negatives or bare 'more'? Use *'any more'* in negative clauses." },
+                { q: "Which sentence uses the correct verb form?", options: ["This cake taste like cardboard.", "This cake tastes like cardboard.", "This cake tasting like cardboard.", "This cake is taste like cardboard."], correct: 1, roast: "Third-person singular needs an 's'! This code tastes like bugs." },
+                { q: "Choose the correct way to request milk:", options: ["Give me a hot milk.", "Give me hot milk.", "Give me some hot milk.", "Give me the hot milks."], correct: 2, roast: "Uncountable noun needs *'some'*! You can't just slap an indefinite article on liquid." },
+                { q: "Identify the correct dietary statement:", options: ["I am vegetarian, I do not eat meats.", "I am a vegetarian, I do not eat meat.", "I am vegetarian, I no eat meat.", "I am vegetarian, I do not eat meat's."], correct: 1, roast: "Meat is a mass noun here. Stop pluralizing everything you see!" },
+                { q: "Select the grammatically correct past tense sentence:", options: ["The waiter give us the bill.", "The waiter gave us the bill.", "The waiter given us the bill.", "The waiter was give us the bill."], correct: 1, roast: "Past tense of give is *gave*. The waiter delivered, but your grammar bounced." },
+                { q: "Choose the correct collocation for ordering wine:", options: ["We ordered a wine bottle.", "We ordered a bottle of wine.", "We ordered wine's bottle.", "We ordered bottled wine."], correct: 1, roast: "We order a *bottle of wine*, not a wine bottle (which is the glass container itself)." },
+                { q: "Select the correct preposition after burning your tongue:", options: ["I burnt my tongue with hot water.", "I burnt my tongue on hot water.", "I burnt my tongue by hot water.", "I burnt my tongue through hot water."], correct: 1, roast: "You burn yourself *on* a hot surface or liquid. Ouch, and double ouch for the grammar." },
+                { q: "Identify the correct spelling and form for bread:", options: ["Do you have gluten-free breads?", "Do you have gluten-free bread?", "Do you have gluten-free a bread?", "Do you have bread gluten-free?"], correct: 1, roast: "Bread is uncountable. No plural 'breads' unless you run a multi-national bakery." },
+                { q: "Choose the correct preposition for a crowded restaurant:", options: ["The restaurant was crowded of people.", "The restaurant was crowded by people.", "The restaurant was crowded with people.", "The restaurant was crowded in people."], correct: 2, roast: "Crowded is followed by *'with'*, not 'of'. Basic preposition failure." },
+                { q: "Select the proper way to express leaving a tip:", options: ["I left a good tip to the chef.", "I left a good tip for the waiter.", "I left a good tip toward the chef.", "I left a good tip at the chef."], correct: 1, roast: "Tips are left *for* someone. Even your tipping etiquette is grammatically challenged." },
+                { q: "Identify the correct way to say a dish lacks seasoning:", options: ["This dish lacks of salt.", "This dish lacks salt.", "This dish is lacking of salt.", "This dish lack of salt."], correct: 1, roast: "'Lack' takes a direct object without 'of'! Your sentence lacks correct syntax." }
             ],
             travel: [
-                { q: "I have went to Rome last summer.", fix: "I *went* to Rome last summer." },
-                { q: "Where is located the hotel?", fix: "Where *is the hotel located*?" },
-                { q: "We stay at the hotel since three days.", fix: "We *have stayed* for three days." },
-                { q: "Can you give me some advices?", fix: "Some *advice* (uncountable)." },
-                { q: "I look forward to see Paris.", fix: "Looking forward to *seeing* Paris." },
-                { q: "I lost my luggages at the airport.", fix: "Lost my *luggage*." },
-                { q: "We arrived to London late.", fix: "Arrived *in* London." },
-                { q: "The flight was delayed due of rain.", fix: "Delayed *due to* rain." },
-                { q: "I need to book a flight ticket.", fix: "Book a *flight*." },
-                { q: "She missed the train of 5 PM.", fix: "Missed the 5 PM train." },
-                { q: "We visited the museum during three hours.", fix: "Visited *for* three hours." },
-                { q: "The passport control officer ask for ID.", fix: "The officer *asked*." },
-                { q: "I forgot my keys at home yesterday.", fix: "Left my keys (or forgot *them*)." },
-                { q: "How much time does it take?", fix: "How *long* does it take?" },
-                { q: "We rented a car to move around.", fix: "To *get around*." },
-                { q: "The map was not readable.", fix: "The map was unreadable." },
-                { q: "I need an accommodation.", fix: "I need *accommodation*." },
-                { q: "We crossed the border without problems.", fix: "Without *any* problems." },
-                { q: "The tourist guide spoke very good.", fix: "Spoke *very well*." },
-                { q: "I am travelling alone by my own.", fix: "Travelling *on my own*." }
+                { q: "Choose the correct past tense form for travel:", options: ["I have went to Rome last summer.", "I went to Rome last summer.", "I have gone to Rome last summer.", "I goed to Rome last summer."], correct: 1, roast: "Never use 'have went'! It's either 'went' (simple past) or 'have gone'. Absolute classic error." },
+                { q: "Identify the correct question structure:", options: ["Where is located the hotel?", "Where the hotel is located?", "Where is the hotel located?", "Where located is the hotel?"], correct: 2, roast: "In English questions, the subject comes after the auxiliary/verb: *'Where is the hotel located?'*." },
+                { q: "Select the correct tense for duration in a hotel:", options: ["We stay at the hotel since three days.", "We are staying at the hotel since three days.", "We have stayed at the hotel for three days.", "We stay at the hotel for three days."], correct: 2, roast: "Action starting in the past continuing now requires present perfect + 'for'! Syntax meltdown." },
+                { q: "Choose the correct uncountable noun form:", options: ["Can you give me some advices?", "Can you give me some advice?", "Can you give me an advice?", "Can you give me advices?"], correct: 1, roast: "Advice is strictly uncountable! No plural 'advices'. You can't count wisdom." },
+                { q: "Identify the correct gerund usage after 'look forward to':", options: ["I look forward to see Paris.", "I look forward to seeing Paris.", "I look forward see Paris.", "I look forward for seeing Paris."], correct: 1, roast: "'Look forward to' takes a gerund (-ing)! Classic trap and you fell right into it." },
+                { q: "Select the correct plural form for travel bags:", options: ["I lost my luggages at the airport.", "I lost my luggage at the airport.", "I lost my luggages in airport.", "I lost luggage at airport."], correct: 1, roast: "Luggage is uncountable! You can't have 'luggages'. Pack lighter next time." },
+                { q: "Choose the correct preposition for arriving in a city:", options: ["We arrived to London late.", "We arrived at London late.", "We arrived in London late.", "We arrived on London late."], correct: 2, roast: "We arrive *in* cities and countries, *at* specific buildings. Geography and grammar both failed." },
+                { q: "Select the correct causal preposition phrase:", options: ["The flight was delayed due of rain.", "The flight was delayed due to rain.", "The flight was delayed because rain.", "The flight was delayed for of rain."], correct: 1, roast: "It's *'due to'* or *'because of'*. Mixing them is a cognitive car crash." },
+                { q: "Choose the most natural expression for booking travel:", options: ["I need to book a flight ticket.", "I need to book a flight.", "I need to book a ticket of flight.", "I need to book flight's ticket."], correct: 1, roast: "Saying 'flight ticket' is redundant—a flight booking covers the ticket. Keep it tight!" },
+                { q: "Identify the correct way to mention a scheduled train:", options: ["She missed the train of 5 PM.", "She missed the 5 PM train.", "She missed train of 5 o'clock.", "She missed 5 PM's train."], correct: 1, roast: "Compound adjectives/times come before the noun: *'the 5 PM train'*. Simple and clean." },
+                { q: "Select the correct duration structure:", options: ["We visited the museum during three hours.", "We visited the museum for three hours.", "We visited the museum in three hours.", "We visited the museum since three hours."], correct: 1, roast: "Duration of time takes *'for'*, not 'during'. Time management and grammar check failed." },
+                { q: "Identify the correct past tense verb for security checks:", options: ["The passport control officer ask for ID.", "The passport control officer asks for ID.", "The passport control officer asked for ID.", "The passport control officer asking for ID."], correct: 2, roast: "Past tense required! The officer already checked your passport and rejected your English." },
+                { q: "Choose the correct verb/phrase for leaving items behind:", options: ["I forgot my keys at home yesterday.", "I left my keys at home yesterday.", "I leave my keys at home yesterday.", "I forgot my keys in home yesterday."], correct: 1, roast: "You *leave* items in a place, you *forget* things abstractly. You left your grammar at home." },
+                { q: "Select the correct question for duration:", options: ["How much time does it take?", "How long does it take?", "How many time does it take?", "How much does it take time?"], correct: 1, roast: "For duration, use *'How long'*, not 'How much time'. Efficiency level: zero." },
+                { q: "Choose the correct phrasal verb for exploring a city:", options: ["We rented a car to move around.", "We rented a car to get around.", "We rented a car to go around.", "We rented a car to run around."], correct: 1, roast: "To explore or travel locally, native speakers use *'get around'*. Keep up!" },
+                { q: "Identify the correct adjective form for an unreadable map:", options: ["The map was not readable.", "The map was unreadable.", "The map was non-readable.", "The map was dis-readable."], correct: 1, roast: "While 'not readable' works, the proper prefix is *'unreadable'*. Your map to correct English is broken." },
+                { q: "Select the correct uncountable accommodation form:", options: ["I need an accommodation.", "I need accommodations.", "I need accommodation.", "I need an accommodation place."], correct: 2, roast: "Accommodation is uncountable! No 'an' in front of it. Sleep outside." },
+                { q: "Choose the correct phrase for crossing a border without trouble:", options: ["We crossed the border without problems.", "We crossed the border without any problems.", "We crossed the border with no problem at all.", "Both B and C are correct."], correct: 3, roast: "Both work well, but your previous answers show you love walking into traps!" },
+                { q: "Identify the correct adverb usage for a tourist guide:", options: ["The tourist guide spoke very good.", "The tourist guide spoke very well.", "The tourist guide spoke very goodly.", "The tourist guide spoke very best."], correct: 1, roast: "Verbs are modified by *adverbs* ('well'), not adjectives ('good'). Guide speaks well, you speak poorly." },
+                { q: "Select the correct idiom for solo travel:", options: ["I am travelling alone by my own.", "I am travelling alone on my own.", "I am travelling alone with my own.", "I am travelling alone by myself only."], correct: 1, roast: "It's *'on my own'* or *'by myself'*. You smashed two idioms together into a linguistic monster." }
             ],
             sports: [
-                { q: "Our team played very good yesterday.", fix: "Played *very well*." },
-                { q: "He run faster than everyone else.", fix: "He *ran* faster." },
-                { q: "She don't like playing tennis.", fix: "She *doesn't* like tennis." },
-                { q: "Me and my teammate won.", fix: "My teammate and *I* won." },
-                { q: "The referee have made a mistake.", fix: "The referee *has* made." },
-                { q: "He scored three goal.", fix: "Scored three *goals*." },
-                { q: "We won against to Milan.", fix: "Won against Milan (no 'to')." },
-                { q: "The match was ended in a draw.", fix: "The match *ended*." },
-                { q: "She practice yoga every morning.", fix: "She *practices* yoga." },
-                { q: "He throw the ball to me.", fix: "He *threw* the ball." },
-                { q: "The stadium was full of fans.", fix: "Full of fans." },
-                { q: "I am cheering for Real Madrid.", fix: "Cheering *for* (or supporting)." },
-                { q: "The athlete beat his personal record.", fix: "Broke his record." },
-                { q: "We need a more bigger pitch.", fix: "A *bigger* pitch." },
-                { q: "He got injured to his knee.", fix: "Injured *his* knee." },
-                { q: "The championship finish next week.", fix: "The championship *finishes*." },
-                { q: "She won a golden medal.", fix: "A *gold* medal." },
-                { q: "The coach gave us good informations.", fix: "Good *information*." },
-                { q: "I watched the match on television.", fix: "On *TV* / television." },
-                { q: "They played with ten players only.", fix: "With only ten players." }
+                { q: "Choose the correct adverb form for sports performance:", options: ["Our team played very good yesterday.", "Our team played very well yesterday.", "Our team played very goodly yesterday.", "Our team played best yesterday."], correct: 1, roast: "Verbs need adverbs! Played *'well'*, not 'good'. Your team lost and your grammar did too." },
+                { q: "Identify the correct past tense irregular verb:", options: ["He run faster than everyone else.", "He ran faster than everyone else.", "He runned faster than everyone else.", "He running faster than everyone else."], correct: 1, roast: "Past of run is *ran*. Did you sprint away from English class too?" },
+                { q: "Select the correct negative present simple form:", options: ["She don't like playing tennis.", "She doesn't like playing tennis.", "She not like playing tennis.", "She no like playing tennis."], correct: 1, roast: "Third-person singular uses *'doesn't'*. Match point for grammar mistakes." },
+                { q: "Choose the correct pronoun order:", options: ["Me and my teammate won.", "My teammate and I won.", "I and my teammate won.", "My teammate and me won."], correct: 1, roast: "Polite English puts yourself last: *'My teammate and I'*. Basic social and grammatical failure." },
+                { q: "Identify the correct auxiliary verb for the referee:", options: ["The referee have made a mistake.", "The referee has made a mistake.", "The referee has make a mistake.", "The referee had made mistake."], correct: 1, roast: "Referee is singular, so it takes *'has'*. Ref made the right call, you missed it." },
+                { q: "Select the correct plural goal form:", options: ["He scored three goal.", "He scored three goals.", "He scored three goales.", "He scored three goal's."], correct: 1, roast: "Three goals! You forgot the plural 's'. Striker scores, you strike out." },
+                { q: "Choose the correct prepositional match against an opponent:", options: ["We won against to Milan.", "We won against Milan.", "We won versus to Milan.", "We won opposing Milan."], correct: 1, roast: "'Against' doesn't take 'to'! You just added extra baggage for no reason." },
+                { q: "Identify the correct active verb for a match finishing:", options: ["The match was ended in a draw.", "The match ended in a draw.", "The match has ended in draw.", "The match is ended in draw."], correct: 1, roast: "Intransitive verb: *'The match ended'*. No passive voice needed here." },
+                { q: "Choose the correct third-person verb for yoga:", options: ["She practice yoga every morning.", "She practices yoga every morning.", "She practises yoga every morning.", "Both B and C are correct (UK/US)."], correct: 3, roast: "Both practices (US) and practises (UK) are valid, but your hesitation was painful." },
+                { q: "Select the correct past tense of throw:", options: ["He throw the ball to me.", "He threw the ball to me.", "He thrown the ball to me.", "He throwed the ball to me."], correct: 1, roast: "Past of throw is *threw*. He threw a pass, you dropped the ball." },
+                { q: "Identify the correct preposition for a full stadium:", options: ["The stadium was full of fans.", "The stadium was full with fans.", "The stadium was full by fans.", "The stadium was full from fans."], correct: 0, roast: "Full is paired with *'of'*. Stadium full of fans, brain full of errors." },
+                { q: "Choose the correct preposition for cheering a team:", options: ["I am cheering for Real Madrid.", "I am cheering to Real Madrid.", "I am cheering at Real Madrid.", "I am cheering on Real Madrid."], correct: 0, roast: "We cheer *for* our team. At least you picked a real team, unlike your grammar." },
+                { q: "Select the correct verb collocations for records:", options: ["The athlete beat his personal record.", "The athlete broke his personal record.", "Both A and B are widely used.", "The athlete won his personal record."], correct: 2, roast: "Both 'beat' and 'broke' a record work seamlessly. You broke the English language." },
+                { q: "Choose the correct comparative adjective form:", options: ["We need a more bigger pitch.", "We need a bigger pitch.", "We need much more bigger pitch.", "We need biglier pitch."], correct: 1, roast: "Never combine 'more' with 'bigger'! Double comparatives are a crime against syntax." },
+                { q: "Identify the correct pronoun ownership for an injury:", options: ["He got injured to his knee.", "He injured his knee.", "He got injury on knee.", "He was injured knee."], correct: 1, roast: "Keep it active and direct: *'He injured his knee'*. Stop overcomplicating things." },
+                { q: "Select the correct third-person verb for a championship:", options: ["The championship finish next week.", "The championship finishes next week.", "The championship finishing next week.", "The championship is finish next week."], correct: 1, roast: "Championship is singular, so *'finishes'*. Game over for your sentence." },
+                { q: "Choose the correct adjective for a gold medal:", options: ["She won a golden medal.", "She won a gold medal.", "Both A and B are correct.", "She won a gild medal."], correct: 2, roast: "Both 'gold medal' (noun adjunct) and 'golden medal' work, though 'gold' is standard. You finally got one right!" },
+                { q: "Identify the correct uncountable info noun:", options: ["The coach gave us good informations.", "The coach gave us good information.", "The coach gave us a good information.", "The coach gave us good piece of info."], correct: 1, roast: "Information is uncountable! No 'informations'. Coach is shaking his head." },
+                { q: "Select the correct abbreviation for television:", options: ["I watched the match on television.", "I watched the match on TV.", "Both A and B are correct.", "I watched the match on the telly."], correct: 2, roast: "TV, television, telly—all valid. Your English is ready for prime-time broadcasting bloopers." },
+                { q: "Choose the correct phrase for restricting players:", options: ["They played with ten players only.", "They played with only ten players.", "Both A and B are natural.", "They played by ten players only."], correct: 2, roast: "Both word orders work. Don't get cocky, you still have 60 drills to go." }
             ],
             culture: [
-                { q: "That museum were amazing.", fix: "That museum *was* amazing." },
-                { q: "Who did you saw at the gallery?", fix: "Who did you *see*?" },
-                { q: "The painting is more unique.", fix: "The painting is *unique*." },
-                { q: "She read a book about italian history.", fix: "About *Italian* history." },
-                { q: "He is interested for art.", fix: "Interested *in* art." },
-                { q: "The concert was very successfull.", fix: "Successful (one 'l')." },
-                { q: "We went to see an exhibition.", fix: "Went to *see* an exhibition." },
-                { q: "The actor played his role perfect.", fix: "Played *perfectly*." },
-                { q: "This is a book wrote by Dante.", fix: "A book *written* by Dante." },
-                { q: "She has a great culture in art.", fix: "Great *knowledge* of art." },
-                { q: "The theatre was empty of people.", fix: "Empty." },
-                { q: "We listened classical music.", fix: "Listened *to* classical music." },
-                { q: "The author published a new novel.", fix: "Published a novel." },
-                { q: "He is a famous artist since years.", fix: "Has been famous *for* years." },
-                { q: "The show started with delay.", fix: "Started *late* / with a delay." },
-                { q: "I prefer modern art than classical.", fix: "Modern art *to* classical." },
-                { q: "The sculpture was made from bronze.", fix: "Made *of* bronze." },
-                { q: "We discussed about the movie.", fix: "Discussed the movie (no 'about')." },
-                { q: "The poem was translated badly.", fix: "Poorly translated." },
-                { q: "She exposed her artwork in a gallery.", fix: "Exhibited her artwork." }
+                { q: "Choose the correct past tense verb 'to be' for a singular museum:", options: ["That museum were amazing.", "That museum was amazing.", "That museum is amazing.", "That museum been amazing."], correct: 1, roast: "Museum is singular, so it takes *'was'*. Culture department calls for an emergency recall." },
+                { q: "Identify the correct past simple question form:", options: ["Who did you saw at the gallery?", "Who did you see at the gallery?", "Who you saw at the gallery?", "Who did you seen at the gallery?"], correct: 1, roast: "Auxiliary 'did' already takes the past; the main verb stays base form: *'see'*. Oof." },
+                { q: "Select the correct absolute adjective usage:", options: ["The painting is more unique.", "The painting is unique.", "The painting is very unique.", "The painting is most unique."], correct: 1, roast: "Unique is an absolute adjective—something is either unique or it isn't. No 'more unique'!" },
+                { q: "Choose the correct capitalization and preposition:", options: ["She read a book about italian history.", "She read a book about Italian history.", "She read a book on italy history.", "She read a book of Italy history."], correct: 1, roast: "Nationalities must always be capitalized (*'Italian'*)! Basic typography fail." },
+                { q: "Identify the correct preposition following 'interested':", options: ["He is interested for art.", "He is interested in art.", "He is interested about art.", "He is interested with art."], correct: 1, roast: "Interested is always followed by *'in'*. Your interest in grammar seems non-existent." },
+                { q: "Select the correct spelling of successful:", options: ["The concert was very successfull.", "The concert was very successfull.", "The concert was very successful.", "The concert was very succesful."], correct: 2, roast: "Successful has two 's's in the middle and only one 'l' at the end. Spelling check: catastrophic." },
+                { q: "Choose the correct infinitive of purpose for an exhibition:", options: ["We went to see an exhibition.", "We went for seeing an exhibition.", "We went seeing an exhibition.", "We went to seeing an exhibition."], correct: 1, roast: "To express purpose, use the bare infinitive *'to see'*. Art gallery entry denied for bad syntax." },
+                { q: "Identify the correct adverb modifying a performance:", options: ["The actor played his role perfect.", "The actor played his role perfectly.", "The actor played his role perfection.", "The actor played his role perfectly well."], correct: 1, roast: "Verbs take adverbs! *'Perfectly'*, not 'perfect'. The actor nailed it, you bombed it." },
+                { q: "Choose the correct passive participle for a book authorship:", options: ["This is a book wrote by Dante.", "This is a book written by Dante.", "This is a book writed by Dante.", "This is a book was wrote by Dante."], correct: 1, roast: "Past participle of write is *written*. Dante is weeping in his grave." },
+                { q: "Select the correct vocabulary for art appreciation:", options: ["She has a great culture in art.", "She has a great knowledge of art.", "She has a great art culture.", "She has big art culture."], correct: 1, roast: "In English, we have *'knowledge of art'* or 'appreciation', not 'great culture in art'." },
+                { q: "Identify the correct description for an empty theatre:", options: ["The theatre was empty of people.", "The theatre was empty.", "The theatre was empty from people.", "The theatre was empty with people."], correct: 1, roast: "Just say *'empty'*. Adding extra prepositions makes you sound like a broken robot." },
+                { q: "Choose the correct preposition for listening to music:", options: ["We listened classical music.", "We listened to classical music.", "We listened at classical music.", "We listened on classical music."], correct: 1, roast: "Listen always takes *'to'*. You listened to nothing while writing this." },
+                { q: "Select the correct collocation for publishing a novel:", options: ["The author published a new novel.", "The author released a new novel.", "Both A and B are correct.", "The author edited a new novel."], correct: 2, roast: "Published and released both work. Your writing career, however, is unpublishable." },
+                { q: "Choose the correct duration preposition with an artist's fame:", options: ["He is a famous artist since years.", "He has been a famous artist for years.", "He is a famous artist for years.", "He is a famous artist during years."], correct: 1, roast: "State spanning time requires present perfect + *'for years'*. Time flies when grammar is ignored." },
+                { q: "Identify the correct expression for starting late:", options: ["The show started with delay.", "The show started late.", "Both A and B are grammatically correct.", "The show was started with delay."], correct: 2, roast: "Both work, though 'started late' is punchier. Your brain started late today." },
+                { q: "Select the correct comparative preference between arts:", options: ["I prefer modern art than classical.", "I prefer modern art to classical.", "I prefer modern art over classical.", "Both B and C are correct."], correct: 3, roast: "Prefer takes *'to'*, but 'over' is widely accepted in modern English. You survived this one." },
+                { q: "Choose the correct material preposition for sculpture:", options: ["The sculpture was made from bronze.", "The sculpture was made of bronze.", "The sculpture was made out bronze.", "The sculpture was made by bronze."], correct: 1, roast: "When the material doesn't change fundamentally in form, use *'made of'*. Bronze statues, golden errors." },
+                { q: "Identify the correct transitive verb for discussing movies:", options: ["We discussed about the movie.", "We discussed the movie.", "We debated about the movie.", "Both A and C are correct."], correct: 1, roast: "Discuss is transitive—no 'about' needed! You discussed grammar and murdered it." },
+                { q: "Select the correct adverbial translation phrase:", options: ["The poem was translated badly.", "The poem was poorly translated.", "Both A and B are grammatically correct.", "The poem was translate bad."], correct: 2, roast: "Both work, though 'poorly translated' sounds more polished. Your English translation needs work." },
+                { q: "Choose the correct verb for displaying artwork:", options: ["She exposed her artwork in a gallery.", "She exhibited her artwork in a gallery.", "Both A and B are correct, but B is more natural.", "She showed her artwork gallery."], correct: 2, roast: "'Exhibited' is the proper term for galleries. 'Exposed' sounds like a paparazzi scandal!" }
             ],
             dailylife: [
-                { q: "Your going to be late.", fix: "*You're* going to be late." },
-                { q: "I wake up early every days.", fix: "Every *day*." },
-                { q: "Open the light in the kitchen.", fix: "*Turn on* the light." },
-                { q: "I am agree with you.", fix: "I *agree* with you." },
-                { q: "She has twenty years.", fix: "She *is* twenty years old." },
-                { q: "I look the television tonight.", fix: "I will *watch* TV." },
-                { q: "He work hard every single day.", fix: "He *works* hard." },
-                { q: "I need to buy some milks.", fix: "Some *milk*." },
-                { q: "She called me by phone.", fix: "She *phoned* me / called me." },
-                { q: "The weather is very nice today.", fix: "Nice weather." },
-                { q: "I forgot my umbrella at home.", fix: "Left my umbrella." },
-                { q: "Can you lend me ten euro?", fix: "Ten *euros*." },
-                { q: "She is married with a doctor.", fix: "Married *to* a doctor." },
-                { q: "I have too much things to do.", fix: "Too *many* things." },
-                { q: "He speaks English very good.", fix: "Very *well*." },
-                { q: "Where you live now?", fix: "Where *do* you live?" },
-                { q: "I am looking for a work.", fix: "Looking for *work* / a job." },
-                { q: "The bus arrived in time.", fix: "Arrived *on* time." },
-                { q: "I must to finish this task.", fix: "I *must* finish." },
-                { q: "See you at tomorrow morning.", fix: "See you *tomorrow morning*." }
+                { q: "Choose the correct contraction for daily conversation:", options: ["Your going to be late.", "You're going to be late.", "Yor going to be late.", "Youre going to be late."], correct: 1, roast: "*'You're'* is short for you are. 'Your' shows possession. Elementary mistake!" },
+                { q: "Identify the correct frequency phrase:", options: ["I wake up early every days.", "I wake up early every day.", "I wake up early everyday.", "I wake up early all days."], correct: 1, roast: "'Every day' is two words when used as an adverbial phrase of time. Daily routine: broken." },
+                { q: "Select the correct phrasal verb for turning on lights:", options: ["Open the light in the kitchen.", "Turn on the light in the kitchen.", "Switch the light in the kitchen.", "Make on the light in the kitchen."], correct: 1, roast: "You *'turn on'* lights, you don't 'open' them like a window. Total cognitive short circuit." },
+                { q: "Choose the correct agreement expression:", options: ["I am agree with you.", "I agree with you.", "I am agreeing with you.", "I do agree with you."], correct: 1, roast: "'Agree' is a verb, not an adjective! Never say 'I am agree'. Agree with reality: your grammar is bad." },
+                { q: "Identify the correct way to state age:", options: ["She has twenty years.", "She is twenty years old.", "She has twenty years old.", "She makes twenty years."], correct: 1, roast: "In English, you *'are'* an age, you don't 'have' years like a collectible item." },
+                { q: "Select the correct verb for watching television:", options: ["I look the television tonight.", "I watch TV tonight.", "I see television tonight.", "I look at TV tonight."], correct: 1, roast: "We *'watch'* screens and shows, we don't 'look' the television. Screen time wasted." },
+                { q: "Choose the correct third-person singular present simple verb:", options: ["He work hard every single day.", "He works hard every single day.", "He working hard every single day.", "He worked hard every single day."], correct: 1, roast: "He *works*! Add that 's' or prepare for unemployment." },
+                { q: "Identify the correct uncountable noun form for milk:", options: ["I need to buy some milks.", "I need to buy some milk.", "I need to buy a milk.", "I need to buy milks."], correct: 1, roast: "Milk is uncountable. You can't buy 'milks' unless you're buying different species." },
+                { q: "Select the correct phone collocation:", options: ["She called me by phone.", "She phoned me.", "Both A and B are natural.", "She called me with phone."], correct: 2, roast: "Both work, though 'phoned me' is punchier. Ring ring, your English teacher is calling." },
+                { q: "Choose the correct weather expression:", options: ["The weather is very nice today.", "The weather are very nice today.", "The weather is very nicely today.", "Weather is nice today very."], correct: 0, roast: "Weather is singular and takes an adjective ('nice'). Sunny skies outside, stormy grammar inside." },
+                { q: "Identify the correct verb for leaving an umbrella behind:", options: ["I forgot my umbrella at home.", "I left my umbrella at home.", "Both A and B are common in speech.", "I lost my umbrella at home."], correct: 2, roast: "Technically you *left* it there, but native speakers say 'forgot' all the time. You survived!" },
+                { q: "Select the correct plural currency form:", options: ["Can you lend me ten euro?", "Can you lend me ten euros.", "Can you lend me ten euros?", "Can you lend me ten eura?"], correct: 2, roast: "Regular plural in English takes an 's': *'euros'*. Pay up your grammar debt!" },
+                { q: "Choose the correct preposition for marital status:", options: ["She is married with a doctor.", "She is married to a doctor.", "She is married by a doctor.", "She is married for a doctor."], correct: 1, roast: "You are married *to* someone. Getting married to good grammar should be your next goal." },
+                { q: "Identify the correct quantifier for countable things:", options: ["I have too much things to do.", "I have too many things to do.", "I have too much thing to do.", "I have a lot many things to do."], correct: 1, roast: "Things are countable, so use *'too many'*. Too much confusion in your head." },
+                { q: "Choose the correct adverb for speaking skills:", options: ["He speaks English very good.", "He speaks English very well.", "He speaks English very goodly.", "He speaks English super good."], correct: 1, roast: "Speaks *'very well'*. You speak very poorly. Case closed." },
+                { q: "Select the correct word order for a question:", options: ["Where you live now?", "Where do you live now?", "Where are you live now?", "Where you living now?"], correct: 1, roast: "Present simple questions need the auxiliary *'do'*: *'Where do you live?'*." },
+                { q: "Identify the correct noun phrase for employment:", options: ["I am looking for a work.", "I am looking for work.", "I am looking for a job of work.", "I am looking for works."], correct: 1, roast: "'Work' as an uncountable noun doesn't take 'a'! Look for a job or look for work." },
+                { q: "Choose the correct preposition for punctuality:", options: ["The bus arrived in time.", "The bus arrived on time.", "The bus arrived at time.", "The bus arrived with time."], correct: 1, roast: "Punctual means arriving *'on time'*. 'In time' means early enough. Pay attention!" },
+                { q: "Select the correct modal verb structure:", options: ["I must to finish this task.", "I must finish this task.", "I must finishing this task.", "I must have finish this task."], correct: 1, roast: "Modal verbs like 'must' take the bare infinitive without 'to'! Must do better." },
+                { q: "Choose the correct morning greeting phrase:", options: ["See you at tomorrow morning.", "See you tomorrow morning.", "See you on tomorrow morning.", "See you in tomorrow morning."], correct: 1, roast: "No preposition needed before 'tomorrow morning'! Time expressions simplified, unlike your code." }
             ]
         };
 
         let currentTopic = 'food';
+        let currentIndex = 0;
+        let currentQuestions = [];
 
         const pills = document.querySelectorAll('.topic-pill');
         const drillSectionTitle = document.getElementById('drillSectionTitle');
-        const questionsListContainer = document.getElementById('questionsListContainer');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const questionBox = document.getElementById('questionBox');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const roastFeedback = document.getElementById('roastFeedback');
+        const nextQuestionBtn = document.getElementById('nextQuestionBtn');
 
         const userSentence = document.getElementById('userSentence');
         const roastBtn = document.getElementById('roastBtn');
         const customResultOutput = document.getElementById('customResultOutput');
 
-        function renderTopicQuestions(topicKey) {
+        function initTopic(topicKey) {
             currentTopic = topicKey;
-            drillSectionTitle.innerText = `Fixed Drills for: ${topicKey.charAt(0).toUpperCase() + topicKey.slice(1)} (20 Questions)`;
-            
-            questionsListContainer.innerHTML = '';
-            const items = topicData[topicKey];
+            currentIndex = 0;
+            currentQuestions = topicData[topicKey];
+            drillSectionTitle.innerText = `${topicKey.charAt(0).toUpperCase() + topicKey.slice(1)} Drill`;
+            loadQuestion();
+        }
 
-            items.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                div.innerHTML = `
-                    <span class="error-text">${index + 1}. ${item.q}</span>
-                    <span class="fix-text">Fix: ${item.fix}</span>
-                `;
-                questionsListContainer.appendChild(div);
+        function loadQuestion() {
+            const item = currentQuestions[currentIndex];
+            progressIndicator.innerText = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
+            questionBox.innerText = item.q;
+            roastFeedback.style.display = 'none';
+            nextQuestionBtn.style.display = 'none';
+            
+            optionsGrid.innerHTML = '';
+            
+            item.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+                btn.addEventListener('click', () => handleAnswer(idx, item.correct, item.roast));
+                optionsGrid.appendChild(btn);
             });
         }
+
+        function handleAnswer(selectedIdx, correctIdx, roastText) {
+            const buttons = optionsGrid.querySelectorAll('.option-btn');
+            
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === correctIdx) {
+                    btn.classList.add('correct');
+                } else if (idx === selectedIdx && selectedIdx !== correctIdx) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            roastFeedback.style.display = 'block';
+            if (selectedIdx === correctIdx) {
+                roastFeedback.innerHTML = `<strong>🎉 Nailed it!</strong> You actually got this one right. Don't get used to it.`;
+                roastFeedback.style.backgroundColor = '#ECFDF3';
+                roastFeedback.style.borderColor = '#12B76A';
+                roastFeedback.style.color = '#027A48';
+            } else {
+                roastFeedback.innerHTML = `<strong>🔥 AI Roast:</strong> ${roastText}`;
+                roastFeedback.style.backgroundColor = '#FDF3F2';
+                roastFeedback.style.borderColor = '#FECDCA';
+                roastFeedback.style.color = '#B42318';
+            }
+
+            nextQuestionBtn.style.display = 'block';
+        }
+
+        nextQuestionBtn.addEventListener('click', () => {
+            currentIndex++;
+            if (currentIndex >= currentQuestions.length) {
+                currentIndex = 0; // Riparte dal primo o ricicla
+            }
+            loadQuestion();
+        });
 
         // Cambio topic tramite pillole
         pills.forEach(pill => {
             pill.addEventListener('click', () => {
                 pills.forEach(p => p.classList.remove('active'));
                 pill.classList.add('active');
-                renderTopicQuestions(pill.getAttribute('data-topic'));
+                initTopic(pill.getAttribute('data-topic'));
             });
         });
 
-        // Render iniziale del primo topic
-        renderTopicQuestions('food');
+        // Avvio iniziale sul topic food
+        initTopic('food');
 
-        // Sezione input libero a parte per il roast personalizzato
+        // Sezione input libero a parte in fondo per il roast personalizzato
         roastBtn.addEventListener('click', () => {
             const val = userSentence.value.trim();
             if(!val) {
