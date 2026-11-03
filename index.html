@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RoastED</title>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F172A"><link rel="apple-touch-icon" href="images/icon-192.png">
+<meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://aderoasted.github.io/roasted-app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
+<button class="mini" id="muteBtn" style="position:fixed;top:10px;right:10px;z-index:9">🔊</button>
 <div class="container">
   <img class="banner" src="images/banner.webp" alt="RoastED">
   <div class="selector-container">
@@ -29,7 +32,10 @@
     <div class="question-box" id="qbox"></div>
     <div class="options-grid" id="opts"></div>
     <div class="roast-feedback" id="fb"></div>
+    <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button>
     <button class="next-question-btn" id="nextBtn"></button>
+    <button class="next-question-btn" id="retryBtn"></button>
+    <button class="next-question-btn" id="shareBtn"></button>
   </section>
   <section class="custom-roast-section">
     <h3 class="section-title" id="fixT"></h3>

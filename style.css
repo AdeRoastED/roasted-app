@@ -398,3 +398,5 @@
         }
     
 .bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:italic}.banner{width:100%;border-radius:16px;display:block}
+
+.mini{display:none;margin:8px 8px 0 0;padding:6px 12px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;font-size:14px}#muteBtn{display:block!important;opacity:.85}#retryBtn,#shareBtn{display:none}
