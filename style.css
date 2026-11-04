@@ -400,3 +400,9 @@
 .bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:italic}.banner{width:100%;border-radius:16px;display:block}
 
 .mini{display:none;margin:8px 8px 0 0;padding:6px 12px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;font-size:14px}#muteBtn{display:block!important;opacity:.85}#retryBtn,#shareBtn{display:none}
+#voiceBtn{display:block!important;opacity:.85}
+
+button.topic-pill{font-family:inherit;font-size:inherit;color:inherit;line-height:inherit}
+button:focus-visible,.topic-pill:focus-visible{outline:3px solid #2563EB;outline-offset:2px}
+
+.levels{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}.lvl{padding:8px 14px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;font:inherit;cursor:pointer}.lvl.active{background:#0F172A;color:#fff}.lvl:disabled{opacity:.5;cursor:not-allowed}.lvl-hint{text-align:center;font-size:13px;opacity:.7;margin:0}.custom-roast-section textarea{font-size:16px}

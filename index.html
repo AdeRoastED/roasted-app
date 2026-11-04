@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RoastED</title>
+<meta name="description" content="RoastED: learn languages and get politely roasted by your tutor.">
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F172A"><link rel="apple-touch-icon" href="images/icon-192.png">
 <meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://aderoasted.github.io/roasted-app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<button class="mini" id="muteBtn" style="position:fixed;top:10px;right:10px;z-index:9">🔊</button>
+<div id="streakBadge" style="position:fixed;top:10px;left:10px;z-index:9;background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:4px 10px;font-weight:700;display:none"></div>
+<button class="mini" id="voiceBtn" aria-label="Voice" style="position:fixed;top:10px;right:56px;z-index:9">🗣️</button>
+<button class="mini" id="muteBtn" aria-label="Sound" style="position:fixed;top:10px;right:10px;z-index:9">🔊</button>
 <div class="container">
   <img class="banner" src="images/banner.webp" alt="RoastED">
   <div class="selector-container">
@@ -26,12 +29,13 @@
     <h1 class="headline" id="headline"></h1>
     <p class="subtitle" id="sub"></p>
     <div class="topics-container" id="topics"></div>
+    <div class="levels" id="levels"></div><p class="lvl-hint" id="lvlHint"></p>
   </section>
   <section class="drill-section">
     <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
-    <div class="question-box" id="qbox"></div>
+    <div class="question-box" id="qbox" aria-live="polite"></div>
     <div class="options-grid" id="opts"></div>
-    <div class="roast-feedback" id="fb"></div>
+    <div class="roast-feedback" id="fb" aria-live="polite"></div>
     <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button>
     <button class="next-question-btn" id="nextBtn"></button>
     <button class="next-question-btn" id="retryBtn"></button>
@@ -43,14 +47,11 @@
     <div class="question-box bq" id="bq"></div>
     <textarea id="fixIn"></textarea>
     <button class="btn-roasted" id="fixBtn"></button>
-    <div class="custom-result-output" id="fixOut"></div>
+    <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
     <button class="btn-roasted again" id="newBtn"></button>
   </section>
 </div>
-<script src="data/it.js"></script>
-<script src="data/en.js"></script>
-<script src="data/fr.js"></script>
-<script src="data/de.js"></script>
+<div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>
 <script src="app.js"></script>
 </body>
 </html>
