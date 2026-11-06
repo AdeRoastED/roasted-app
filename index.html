@@ -11,46 +11,51 @@
 </head>
 <body>
 <div id="streakBadge" style="position:fixed;top:10px;left:10px;z-index:9;background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:4px 10px;font-weight:700;display:none"></div>
-<button class="mini" id="voiceBtn" aria-label="Voice" style="position:fixed;top:10px;right:56px;z-index:9">🗣️</button>
-<button class="mini" id="muteBtn" aria-label="Sound" style="position:fixed;top:10px;right:10px;z-index:9">🔊</button>
+<button class="mini" id="voiceBtn" aria-label="Roast voice" style="position:fixed;top:10px;right:56px;z-index:9">🗣️</button>
+<button class="mini" id="muteBtn" aria-label="Sound effects" style="position:fixed;top:10px;right:10px;z-index:9">🎵</button>
 <div class="container">
-  <img class="banner" src="images/banner.webp" alt="RoastED">
-  <div class="selector-container">
-    <div class="selector-row"><span class="selector-label" id="natLbl"></span><div class="selector-options" id="natOpts"></div></div>
-    <div class="selector-row"><span class="selector-label" id="tgtLbl"></span><div class="selector-options" id="tgtOpts"></div></div>
-  </div>
-  <section class="illustration-section">
-    <div class="image-card" id="imageCard">
-      <div class="image-wrapper"><img id="charImg" alt="Tutor"></div>
-      <div class="character-caption" id="caption"></div>
-    </div>
+  <section id="scrWelcome" class="screen" style="display:none">
+    <img class="banner" src="images/banner.webp" alt="RoastED">
+    <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
+    <div id="natOpts" class="selector-options"></div>
+    <button class="back" id="backW" style="display:none"></button>
+    <button class="back" id="resetBtn" aria-label="Reset progress"></button>
   </section>
-  <section class="hero-section">
-    <h1 class="headline" id="headline"></h1>
-    <p class="subtitle" id="sub"></p>
-    <div class="topics-container" id="topics"></div>
-    <div class="levels" id="levels"></div><p class="lvl-hint" id="lvlHint"></p>
+  <section id="scrHome" class="screen" style="display:none">
+    <div class="illustration-section"><div class="image-card" id="imageCard"><div class="image-wrapper"><img id="charImg" alt="Tutor"></div><div class="character-caption" id="caption"></div></div></div>
+    <h1 class="headline" id="headline"></h1><p class="subtitle" id="sub"></p>
+    <p class="subtitle" id="offTag"></p>
+    <span class="selector-label" id="tgtLbl"></span><div id="tgtOpts" class="selector-options"></div>
+    <button class="card" id="goLearn"></button><button class="card" id="goBench"></button><button class="card" id="goSet"></button>
+    <button class="card" id="goInstall" style="display:none"></button><p class="subtitle" id="iosHint" style="display:none"></p>
+  </section>
+  <section id="scrLevels" class="screen" style="display:none"><button class="back" id="backL"></button><div id="lvCards"></div></section>
+  <section id="scrTopics" class="screen" style="display:none"><button class="back" id="backT"></button><p class="crumb" id="crumbT"></p><div id="tpCards"></div></section>
+  <section id="scrQuiz" class="screen" style="display:none">
+    <button class="back" id="backQ"></button><p class="crumb" id="crumbQ"></p>
+    <div class="image-card mini" id="miniCard"><div class="image-wrapper"><img id="charImg2" alt=""></div></div>
     <div class="words" id="wordList"></div>
+    <section class="drill-section" id="drillSec">
+      <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
+      <div class="question-box" id="qbox" aria-live="polite"></div>
+      <div class="options-grid" id="opts"></div>
+      <div class="roast-feedback" id="fb" aria-live="polite"></div>
+      <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button>
+      <button class="next-question-btn" id="nextBtn"></button>
+      <button class="next-question-btn" id="retryBtn"></button>
+      <button class="next-question-btn" id="shareBtn"></button>
+    </section>
+    <section class="custom-roast-section" id="benchSec">
+      <h3 class="section-title" id="fixT"></h3>
+      <p class="custom-desc" id="fixD"></p>
+      <div class="question-box bq" id="bq"></div>
+      <textarea id="fixIn"></textarea>
+      <button class="btn-roasted" id="fixBtn"></button>
+      <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
+      <button class="btn-roasted again" id="newBtn"></button>
+    </section>
   </section>
-  <section class="drill-section">
-    <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
-    <div class="question-box" id="qbox" aria-live="polite"></div>
-    <div class="options-grid" id="opts"></div>
-    <div class="roast-feedback" id="fb" aria-live="polite"></div>
-    <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button>
-    <button class="next-question-btn" id="nextBtn"></button>
-    <button class="next-question-btn" id="retryBtn"></button>
-    <button class="next-question-btn" id="shareBtn"></button>
-  </section>
-  <section class="custom-roast-section" id="benchSec">
-    <h3 class="section-title" id="fixT"></h3>
-    <p class="custom-desc" id="fixD"></p>
-    <div class="question-box bq" id="bq"></div>
-    <textarea id="fixIn"></textarea>
-    <button class="btn-roasted" id="fixBtn"></button>
-    <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
-    <button class="btn-roasted again" id="newBtn"></button>
-  </section>
+  <div id="legacy" style="display:none"><span id="natLbl"></span><div id="topics"></div><div id="levels"></div><p id="lvlHint"></p></div>
 </div>
 <div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>
 <script src="app.js"></script>
