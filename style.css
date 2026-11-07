@@ -420,3 +420,19 @@ button.card:disabled{opacity:.5;cursor:not-allowed}button.card small{opacity:.75
 
 .image-card.mini{max-width:200px;margin:0 auto 10px}.image-card.mini .image-wrapper img{max-height:140px;width:100%;object-fit:cover}.image-card.mini .character-caption{display:none}
 #streakBadge.pulse{animation:streakpulse 1s ease 3}@keyframes streakpulse{50%{transform:scale(1.3)}}
+
+/* ---- typography & alignment ---- */
+:root{--ff-body:'Nunito','Noto Sans Thai','Leelawadee UI',Tahoma,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--ff-head:'Fredoka','Noto Sans Thai','Leelawadee UI',system-ui,-apple-system,'Segoe UI',sans-serif}
+html{-webkit-text-size-adjust:100%}
+body,button,textarea,input{font-family:var(--ff-body)}
+body{font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,.headline,.section-title,.wtitle,button.card>span:first-child{font-family:var(--ff-head);font-weight:600;letter-spacing:.2px}
+:lang(th) body,:lang(th) button,:lang(th) textarea{line-height:1.8}:lang(th) h1,:lang(th) h2,:lang(th) h3,:lang(th) .headline{line-height:1.5}
+.container{max-width:560px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
+.headline,.subtitle,.wtitle,.character-caption,.section-title,.question-box{text-align:center}
+.crumb{text-align:left}
+.option-btn{display:flex;align-items:flex-start;gap:10px;text-align:left;min-height:52px;padding:12px 14px;line-height:1.4}
+.roast-feedback,.custom-result-output{text-align:left;line-height:1.55}
+button.card>span:first-child{flex:1;text-align:left}button.card small{text-align:right}
+.wrow span{flex:1;text-align:left}.wrow b{flex:1;text-align:right}
+textarea{width:100%;box-sizing:border-box;line-height:1.5}
