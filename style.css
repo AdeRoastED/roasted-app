@@ -10,7 +10,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
@@ -146,7 +146,7 @@
             font-weight: 700;
             color: var(--text-dark);
             text-align: center;
-            font-style: italic;
+            font-style: normal;
         }
 
         .hero-section {
@@ -166,9 +166,9 @@
         }
 
         .headline .highlight {
-            font-family: "Georgia", serif;
+            
             color: var(--accent-red);
-            font-style: italic;
+            font-style: normal;
             font-weight: 400;
         }
 
@@ -343,7 +343,7 @@
             background-color: #0F172A;
             border: 1px solid #334155;
             border-radius: 12px;
-            font-family: inherit;
+            
             font-size: 15px;
             color: white;
             resize: none;
@@ -397,12 +397,12 @@
             font-weight: 600;
         }
     
-.bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:italic}.banner{width:100%;border-radius:16px;display:block}
+.bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:normal}.banner{width:100%;border-radius:16px;display:block}
 
 .mini{display:none;margin:8px 8px 0 0;padding:6px 12px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;font-size:14px}#muteBtn{display:block!important;opacity:.85}#retryBtn,#shareBtn{display:none}
 #voiceBtn{display:block!important;opacity:.85}
 
-button.topic-pill{font-family:inherit;font-size:inherit;color:inherit;line-height:inherit}
+button.topic-pill{font-size:inherit;color:inherit;line-height:inherit}
 button:focus-visible,.topic-pill:focus-visible{outline:3px solid #2563EB;outline-offset:2px}
 
 .levels{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}.lvl{padding:8px 14px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;font:inherit;cursor:pointer}.lvl.active{background:#0F172A;color:#fff}.lvl:disabled{opacity:.5;cursor:not-allowed}.lvl-hint{text-align:center;font-size:13px;opacity:.7;margin:0}.custom-roast-section textarea{font-size:16px}
@@ -418,21 +418,36 @@ button.card:disabled{opacity:.5;cursor:not-allowed}button.card small{opacity:.75
 .back{background:none;border:0;font:inherit;font-size:16px;padding:10px 4px;cursor:pointer;color:inherit}.crumb{opacity:.7;font-size:14px;margin:0 0 6px}
 .roast-feedback,.question-box,.custom-result-output{overflow-wrap:anywhere;word-break:break-word}.roast-feedback small{display:block;margin-top:6px;opacity:.8}
 
-.image-card.mini{max-width:200px;margin:0 auto 10px}.image-card.mini .image-wrapper img{max-height:140px;width:100%;object-fit:cover}.image-card.mini .character-caption{display:none}
+
 #streakBadge.pulse{animation:streakpulse 1s ease 3}@keyframes streakpulse{50%{transform:scale(1.3)}}
 
-/* ---- typography & alignment ---- */
-:root{--ff-body:'Nunito','Noto Sans Thai','Leelawadee UI',Tahoma,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--ff-head:'Fredoka','Noto Sans Thai','Leelawadee UI',system-ui,-apple-system,'Segoe UI',sans-serif}
+
+/* ---- typography & alignment: ONE font (Prompt: Latin + Thai) ---- */
+:root{--ff:'Prompt','Leelawadee UI',Tahoma,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 html{-webkit-text-size-adjust:100%}
-body,button,textarea,input{font-family:var(--ff-body)}
-body{font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-h1,h2,h3,.headline,.section-title,.wtitle,button.card>span:first-child{font-family:var(--ff-head);font-weight:600;letter-spacing:.2px}
-:lang(th) body,:lang(th) button,:lang(th) textarea{line-height:1.8}:lang(th) h1,:lang(th) h2,:lang(th) h3,:lang(th) .headline{line-height:1.5}
+*,*::before,*::after{font-family:var(--ff)!important}
+body{font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:lang(th) body{line-height:1.7}
+h1,h2,h3,.headline,.section-title,.wtitle{font-weight:600;line-height:1.3;letter-spacing:0}
+.headline{font-size:clamp(26px,7vw,34px);font-weight:700;text-transform:none}
 .container{max-width:560px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
-.headline,.subtitle,.wtitle,.character-caption,.section-title,.question-box{text-align:center}
+.headline,.subtitle,.selector-label,.wtitle,.character-caption,.question-box,.section-title{text-align:center;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+.subtitle{max-width:100%;margin-top:6px;margin-bottom:6px}
+.selector-label{display:block;text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;margin:14px 0 6px}
+.character-caption{font-style:normal;font-weight:500;font-size:15px}
 .crumb{text-align:left}
 .option-btn{display:flex;align-items:flex-start;gap:10px;text-align:left;min-height:52px;padding:12px 14px;line-height:1.4}
 .roast-feedback,.custom-result-output{text-align:left;line-height:1.55}
 button.card>span:first-child{flex:1;text-align:left}button.card small{text-align:right}
 .wrow span{flex:1;text-align:left}.wrow b{flex:1;text-align:right}
 textarea{width:100%;box-sizing:border-box;line-height:1.5}
+#miniCard{display:none}
+
+/* top bar (no more overlap with the back buttons) and flag images */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;margin:0 0 6px}
+.topbar .ctrl{display:flex;gap:8px;margin-left:auto}
+#streakBadge{position:static!important;background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:4px 10px;font-weight:700}
+#voiceBtn,#muteBtn{position:static!important;margin:0;padding:8px 12px;border-radius:12px;font-size:18px}
+.lang-choice-btn{display:inline-flex;align-items:center;gap:8px}
+.flag{width:26px;height:18px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.18);object-fit:cover;flex:none}
+#natOpts .lang-choice-btn{justify-content:flex-start}#natOpts .flag{width:36px;height:24px}

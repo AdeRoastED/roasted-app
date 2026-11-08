@@ -6,16 +6,14 @@
 <title>RoastED</title>
 <meta name="description" content="RoastED: learn languages and get politely roasted by your tutor.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F172A"><link rel="apple-touch-icon" href="images/icon-192.png">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F172A"><link rel="apple-touch-icon" href="images/icon-180.png"><link rel="icon" type="image/png" href="images/icon-192.png">
 <meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://aderoasted.github.io/roasted-app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-<div id="streakBadge" style="position:fixed;top:10px;left:10px;z-index:9;background:#fff;border:1px solid #CBD5E1;border-radius:12px;padding:4px 10px;font-weight:700;display:none"></div>
-<button class="mini" id="voiceBtn" aria-label="Roast voice" style="position:fixed;top:10px;right:56px;z-index:9">🗣️</button>
-<button class="mini" id="muteBtn" aria-label="Sound effects" style="position:fixed;top:10px;right:10px;z-index:9">🎵</button>
 <div class="container">
+  <div class="topbar"><div id="streakBadge" style="display:none"></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
   <section id="scrWelcome" class="screen" style="display:none">
     <img class="banner" src="images/banner.webp" alt="RoastED">
     <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
@@ -35,7 +33,6 @@
   <section id="scrTopics" class="screen" style="display:none"><button class="back" id="backT"></button><p class="crumb" id="crumbT"></p><div id="tpCards"></div></section>
   <section id="scrQuiz" class="screen" style="display:none">
     <button class="back" id="backQ"></button><p class="crumb" id="crumbQ"></p>
-    <div class="image-card mini" id="miniCard"><div class="image-wrapper"><img id="charImg2" alt=""></div></div>
     <div class="words" id="wordList"></div>
     <section class="drill-section" id="drillSec">
       <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
