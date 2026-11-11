@@ -17,9 +17,9 @@ setTimeout(()=>location.reload(),300)}
 window.addEventListener('error',_showCrash);
 window.addEventListener('unhandledrejection',_showCrash);
 const $=id=>document.getElementById(id),pick=a=>a[Math.floor(Math.random()*a.length)];
-const TOP=['food','travel','sports','culture','dailylife','greet','adj','basic','num','col','time'],SENT=TOP.slice(0,5),VOC=TOP.slice(5),FLAG={it:'Italiano',en:'English',fr:'Français',de:'Deutsch',th:'ไทย',af:'Afrikaans'};
+const TOP=['food','travel','sports','culture','dailylife','greet','adj','basic','num','col','time','thalpha'],SENT=TOP.slice(0,5),VOC=TOP.slice(5),FLAG={it:'Italiano',en:'English',fr:'Français',de:'Deutsch',th:'ไทย',af:'Afrikaans'};
 const DISPLAY_ORDER=['num','col','greet','basic','time','adj','food','travel','sports','culture','dailylife'];
-const DISPLAY_ORDER_TH=['greet','basic','adj','num','col','time','food','travel','sports','culture','dailylife'];
+const DISPLAY_ORDER_TH=['thalpha','greet','basic','adj','num','col','time','food','travel','sports','culture','dailylife'];
 function curOrder(){return S.t==='th'?DISPLAY_ORDER_TH:DISPLAY_ORDER}
 const FL={"it": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 3 2\"><rect width=\"1\" height=\"2\" fill=\"#009246\"/><rect x=\"1\" width=\"1\" height=\"2\" fill=\"#fff\"/><rect x=\"2\" width=\"1\" height=\"2\" fill=\"#ce2b37\"/></svg>", "fr": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 3 2\"><rect width=\"1\" height=\"2\" fill=\"#0055a4\"/><rect x=\"1\" width=\"1\" height=\"2\" fill=\"#fff\"/><rect x=\"2\" width=\"1\" height=\"2\" fill=\"#ef4135\"/></svg>", "de": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 5 3\"><rect width=\"5\" height=\"1\" fill=\"#000\"/><rect y=\"1\" width=\"5\" height=\"1\" fill=\"#dd0000\"/><rect y=\"2\" width=\"5\" height=\"1\" fill=\"#ffce00\"/></svg>", "th": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 6 4\"><rect width=\"6\" height=\"4\" fill=\"#a51931\"/><rect y=\"1\" width=\"6\" height=\"2\" fill=\"#fff\"/><rect y=\"1.5\" width=\"6\" height=\"1\" fill=\"#2d2a4a\"/><rect y=\"1\" width=\"6\" height=\".5\" fill=\"#fff\"/><rect y=\"2.5\" width=\"6\" height=\".5\" fill=\"#fff\"/></svg>", "en": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 60 30\"><rect width=\"60\" height=\"30\" fill=\"#012169\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#fff\" stroke-width=\"6\"/><path d=\"M0 0L60 30M60 0L0 30\" stroke=\"#c8102e\" stroke-width=\"2\"/><path d=\"M30 0V30M0 15H60\" stroke=\"#fff\" stroke-width=\"10\"/><path d=\"M30 0V30M0 15H60\" stroke=\"#c8102e\" stroke-width=\"6\"/></svg>", "af": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 9 6\"><rect width=\"9\" height=\"3\" fill=\"#de3831\"/><rect y=\"3\" width=\"9\" height=\"3\" fill=\"#002395\"/><path d=\"M0 0L3.6 3 0 6M3.6 3H9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\"/><path d=\"M0 0L3.6 3 0 6M3.6 3H9\" fill=\"none\" stroke=\"#007a4d\" stroke-width=\"1.2\"/><path d=\"M0 .7L2.3 3 0 5.3z\" fill=\"#000\" stroke=\"#ffb612\" stroke-width=\".5\"/></svg>"};
 const S={n:'it',t:'en',topic:'food',i:0,sc:0,qs:[],bq:null,mute:0,wrong:[],say:'',retry:0,res:'',lvl:1,boss:0,pool:[]};
@@ -251,8 +251,8 @@ r.onend=()=>{$('readMicBtn').classList.remove('listening');$('readMicBtn').textC
 r.start()}catch(e){$('readMicBtn').classList.remove('listening');$('readMicBtn').textContent='🎤'}};
 
 /* --- what's new (shown once per version, returning users only) --- */
-const APP_VERSION='1.4';
-const WHATS_NEW=['⬅️ One back button, top bar','📖 Reading practice replaces the per-topic Torture Bench','🔢 Numbers split into 10 groups (0–10, 10–20…)','🇹🇭 Vocabulary before numbers for Thai learners','📱 Android back button now navigates instead of closing the app'];
+const APP_VERSION='1.5';
+const WHATS_NEW=['🔤 New Thai Alphabet topic, right at the top for Thai learners','⬅️ One back button, top bar','📖 Reading practice replaces the per-topic Torture Bench','🔢 Numbers split into 10 groups (0–10, 10–20…)','📱 Android back button now navigates instead of closing the app'];
 function showWhatsNew(){let sv=null;try{sv=localStorage.getItem('roasted_native')}catch(e){}
 let seenver=null;try{seenver=localStorage.getItem('roasted_ver')}catch(e){}
 if(!sv||seenver===APP_VERSION||!$('whatsNewOverlay')){try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}return}
