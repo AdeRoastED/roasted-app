@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>RoastED</title>
 <meta name="description" content="RoastED: learn languages and get politely roasted by your tutor.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="container">
-  <div class="topbar"><div id="streakBadge" style="display:none"></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
   <section id="scrWelcome" class="screen" style="display:none">
     <img class="banner" src="images/banner.webp" alt="RoastED">
     <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
@@ -26,8 +26,22 @@
     <h1 class="headline" id="headline"></h1><p class="subtitle" id="sub"></p>
     <p class="subtitle" id="offTag"></p>
     <span class="selector-label" id="tgtLbl"></span><div id="tgtOpts" class="selector-options"></div>
-    <button class="card" id="goLearn"></button><button class="card" id="goBench"></button><button class="card" id="goSet"></button>
+    <button class="card" id="goLearn"></button><button class="card" id="goBench"></button>
+    <button class="card" id="goReview">🎯 Review my mistakes</button>
+    <button class="card" id="goDuel">⚔️ Challenge a friend</button>
+    <button class="card" id="goStory">📖 Story mode</button>
+    <button class="card" id="goTrophies">🏆 Trophy room</button>
+    <button class="card" id="goSet"></button>
     <button class="card" id="goInstall" style="display:none"></button><p class="subtitle" id="iosHint" style="display:none"></p>
+  </section>
+  <section id="scrStory" class="screen" style="display:none"><button class="back" id="backSt"></button><p class="crumb" id="storyCrumb">📖 Story mode</p><div id="storyCards"></div></section>
+  <section id="scrTrophies" class="screen" style="display:none">
+    <button class="back" id="backTr"></button>
+    <h3 class="section-title">🏆 Trophy room</h3>
+    <p class="tier-label" id="tierLabel"></p>
+    <div id="trophyGrid" class="trophy-grid"></div>
+    <h3 class="section-title">📅 Practice calendar</h3>
+    <div id="heatmap" class="heatmap"></div>
   </section>
   <section id="scrLevels" class="screen" style="display:none"><button class="back" id="backL"></button><div id="lvCards"></div></section>
   <section id="scrTopics" class="screen" style="display:none"><button class="back" id="backT"></button><p class="crumb" id="crumbT"></p><div id="tpCards"></div></section>
@@ -36,10 +50,12 @@
     <div class="words" id="wordList"></div>
     <section class="drill-section" id="drillSec">
       <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
+      <div class="progress-bar"><div id="progFill" class="progress-fill"></div></div>
       <div class="question-box" id="qbox" aria-live="polite"></div>
       <div class="options-grid" id="opts"></div>
       <div class="roast-feedback" id="fb" aria-live="polite"></div>
-      <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button>
+      <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button><button class="mini" id="scoreBtn">🎙️ Score my pronunciation</button>
+      <button class="next-question-btn" id="undoBtn" style="display:none">↩️ Undo (free retry)</button>
       <button class="next-question-btn" id="nextBtn"></button>
       <button class="next-question-btn" id="retryBtn"></button>
       <button class="next-question-btn" id="shareBtn"></button>
@@ -48,7 +64,7 @@
       <h3 class="section-title" id="fixT"></h3>
       <p class="custom-desc" id="fixD"></p>
       <div class="question-box bq" id="bq"></div>
-      <textarea id="fixIn"></textarea>
+      <div class="bench-input-row"><textarea id="fixIn"></textarea><button class="mini mic-btn" id="micBtn" type="button" aria-label="Speak your answer">🎤</button></div>
       <button class="btn-roasted" id="fixBtn"></button>
       <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
       <button class="btn-roasted again" id="newBtn"></button>
@@ -56,6 +72,23 @@
   </section>
   <div id="legacy" style="display:none"><span id="natLbl"></span><div id="topics"></div><div id="levels"></div><p id="lvlHint"></p></div>
 </div>
+<div id="onbOverlay" class="onb-overlay" style="display:none">
+  <div class="onb-card">
+    <div id="onbStep1" class="onb-step"><div class="onb-emoji">🌍</div><h3>Pick two languages</h3><p>The one you speak, and the one you're learning.</p></div>
+    <div id="onbStep2" class="onb-step" style="display:none"><div class="onb-emoji">✍️</div><h3>Answer or type</h3><p>Multiple choice, or type the translation yourself — your call.</p></div>
+    <div id="onbStep3" class="onb-step" style="display:none"><div class="onb-emoji">🔥</div><h3>Get roasted (politely)</h3><p>Every mistake gets a grammar explanation, and a little sass.</p></div>
+    <div class="onb-dots"><span class="onb-dot active" data-s="1"></span><span class="onb-dot" data-s="2"></span><span class="onb-dot" data-s="3"></span></div>
+    <div class="onb-nav"><button class="back" id="onbSkip">Skip</button><button class="btn-roasted" id="onbNext">Next</button></div>
+  </div>
+</div>
+<div id="whatsNewOverlay" class="onb-overlay" style="display:none">
+  <div class="onb-card">
+    <div class="onb-emoji">✨</div><h3>What's new</h3>
+    <div id="whatsNewBody" style="text-align:left;font-size:14px;color:var(--text-muted);line-height:1.6"></div>
+    <div class="onb-nav" style="margin-top:14px"><button class="btn-roasted" id="whatsNewOk" style="width:100%;justify-content:center">Got it</button></div>
+  </div>
+</div>
+<div id="confettiBox" aria-hidden="true"></div>
 <div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>
 <script src="app.js"></script>
 </body>
