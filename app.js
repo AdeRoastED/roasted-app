@@ -232,8 +232,8 @@ r.onend=()=>{$('readMicBtn').classList.remove('listening');$('readMicBtn').textC
 r.start()}catch(e){$('readMicBtn').classList.remove('listening');$('readMicBtn').textContent='🎤'}};
 
 /* --- what's new (shown once per version, returning users only) --- */
-const APP_VERSION='1.2';
-const WHATS_NEW=['🇿🇦 New Afrikaans tutor avatar','🔢 Full 0–100 numbers added to the vocabulary set','📖 New Story mode — walk through a little scene topic by topic','🎙️ Score your pronunciation with your voice','🏆 New trophy room with a practice calendar','↩️ One free "undo" per quiz','📳 Haptic feedback + screen stays awake during quizzes'];
+const APP_VERSION='1.3';
+const WHATS_NEW=['⬅️ One back button, top bar','📖 Reading practice replaces the per-topic Torture Bench','🔢 Numbers split into 10 groups (0–10, 10–20…)','🇹🇭 Vocabulary before numbers for Thai learners','📱 Android back button now navigates instead of closing the app'];
 function showWhatsNew(){let sv=null;try{sv=localStorage.getItem('roasted_native')}catch(e){}
 let seenver=null;try{seenver=localStorage.getItem('roasted_ver')}catch(e){}
 if(!sv||seenver===APP_VERSION||!$('whatsNewOverlay')){try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}return}
