@@ -245,7 +245,8 @@ $('goStory').onclick=()=>nav('Story');
 $('backSt').onclick=()=>nav('Menu');
 
 /* --- one-time onboarding --- */
-function showOnboarding(cb){let seen=null;try{seen=localStorage.getItem('roasted_onb')}catch(e){}
+function showOnboarding(cb){cb();return;
+let seen=null;try{seen=localStorage.getItem('roasted_onb')}catch(e){}
 if(seen||!$('onbOverlay')){cb();return}
 const ov=$('onbOverlay');ov.style.display='flex';let step=1;
 function render(){[1,2,3].forEach(i=>{$('onbStep'+i).style.display=i===step?'':'none'});
