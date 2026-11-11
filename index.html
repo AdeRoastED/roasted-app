@@ -13,12 +13,11 @@
 </head>
 <body>
 <div class="container">
-  <div class="topbar"><div class="topbar-left"><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
+  <div class="topbar"><div class="topbar-left"><button type="button" id="backBtn" class="mini back-top" aria-label="Back" style="display:none">←</button><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
   <section id="scrWelcome" class="screen" style="display:none">
     <img class="banner" src="images/banner.webp" alt="RoastED">
     <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
     <div id="natOpts" class="selector-options"></div>
-    <button class="back" id="backW" style="display:none"></button>
     <button class="back" id="resetBtn" aria-label="Reset progress"></button>
   </section>
   <section id="scrHome" class="screen" style="display:none">
@@ -28,39 +27,47 @@
     <span class="selector-label" id="tgtLbl"></span><div id="tgtOpts" class="selector-options"></div>
   </section>
   <section id="scrMenu" class="screen" style="display:none">
-    <button class="back" id="backM"></button>
     <button class="card" id="goLearn"></button>
+    <button class="card" id="goStory">📖 Story mode</button>
     <div class="home-grid">
       <button class="card tile" id="goBench"></button>
       <button class="card tile" id="goReview">🎯 Review my mistakes</button>
       <button class="card tile" id="goDuel">⚔️ Challenge a friend</button>
-      <button class="card tile" id="goStory">📖 Story mode</button>
+      <button class="card tile" id="goNumbers">🔢 Numbers</button>
       <button class="card tile" id="goTrophies">🏆 Trophy room</button>
       <button class="card tile" id="goSet"></button>
     </div>
     <button class="card" id="goInstall" style="display:none"></button><p class="subtitle" id="iosHint" style="display:none"></p>
   </section>
-  <section id="scrStory" class="screen" style="display:none"><button class="back" id="backSt"></button><p class="crumb" id="storyCrumb">📖 Story mode</p><div id="storyCards"></div></section>
+  <section id="scrStory" class="screen" style="display:none"><p class="crumb" id="storyCrumb">📖 Story mode</p><div id="storyCards"></div></section>
+  <section id="scrNumSets" class="screen" style="display:none"><p class="crumb">🔢 Numbers</p><div id="numSetCards"></div></section>
   <section id="scrTrophies" class="screen" style="display:none">
-    <button class="back" id="backTr"></button>
     <h3 class="section-title">🏆 Trophy room</h3>
     <p class="tier-label" id="tierLabel"></p>
     <div id="trophyGrid" class="trophy-grid"></div>
     <h3 class="section-title">📅 Practice calendar</h3>
     <div id="heatmap" class="heatmap"></div>
   </section>
-  <section id="scrLevels" class="screen" style="display:none"><button class="back" id="backL"></button><div id="lvCards"></div></section>
-  <section id="scrTopics" class="screen" style="display:none"><button class="back" id="backT"></button><p class="crumb" id="crumbT"></p><div id="tpCards"></div></section>
+  <section id="scrLevels" class="screen" style="display:none"><div id="lvCards"></div></section>
+  <section id="scrTopics" class="screen" style="display:none"><p class="crumb" id="crumbT"></p><div id="tpCards"></div></section>
   <section id="scrQuiz" class="screen" style="display:none">
-    <button class="back" id="backQ"></button><p class="crumb" id="crumbQ"></p>
+    <p class="crumb" id="crumbQ"></p>
     <div class="words" id="wordList"></div>
     <section class="drill-section" id="drillSec">
       <div class="drill-header"><h3 class="section-title" id="drillT"></h3><span class="progress-indicator" id="prog"></span></div>
       <div class="progress-bar"><div id="progFill" class="progress-fill"></div></div>
       <div class="question-box" id="qbox" aria-live="polite"></div>
       <div class="options-grid" id="opts"></div>
-      <div class="roast-feedback" id="fb" aria-live="polite"></div>
-      <button class="mini" id="sayBtn"></button><button class="mini" id="repBtn"></button><button class="mini" id="scoreBtn">🎙️ Score my pronunciation</button>
+      <div class="fb-wrap">
+        <div class="roast-feedback" id="fb" aria-live="polite"></div>
+        <button class="mini fb-icon" id="sayBtn"></button><button class="mini fb-icon" id="repBtn"></button>
+      </div>
+      <section class="read-practice" id="readSec" style="display:none">
+        <h4 class="section-title" id="readTitle">📖 Reading practice</h4>
+        <div class="question-box bq" id="readTarget"></div>
+        <button type="button" class="mini mic-btn" id="readMicBtn">🎤</button>
+        <div class="read-result" id="readOut"></div>
+      </section>
       <button class="next-question-btn" id="undoBtn" style="display:none">↩️ Undo (free retry)</button>
       <button class="next-question-btn" id="nextBtn"></button>
       <button class="next-question-btn" id="retryBtn"></button>

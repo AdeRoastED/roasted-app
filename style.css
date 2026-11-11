@@ -396,6 +396,8 @@
             color: #6EE7B7;
             font-weight: 600;
         }
+.custom-result-output.ok{background-color:#0B2E22;border-color:#12B76A;color:#6EE7B7;box-shadow:none}
+.custom-result-output.ok .custom-correction{border-top-color:#12B76A}
     
 .bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:normal}.banner{width:100%;border-radius:16px;display:block}
 
@@ -415,6 +417,9 @@ button:focus-visible,.topic-pill:focus-visible{outline:3px solid #2563EB;outline
 #tgtOpts .lang-choice-btn{padding:10px 14px;font-size:16px}
 button.card{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:60px;padding:16px;margin:10px 0;border-radius:16px;border:1px solid #CBD5E1;background:#fff;font:inherit;font-size:18px;text-align:left;cursor:pointer}
 button.card:disabled{opacity:.5;cursor:not-allowed}button.card small{opacity:.75;font-size:14px;white-space:nowrap}
+.tier-1{border-left:6px solid rgba(217,48,37,.3)}
+.tier-2{border-left:6px solid rgba(217,48,37,.65)}
+.tier-3{border-left:6px solid rgba(217,48,37,1)}
 .back{background:none;border:0;font:inherit;font-size:16px;padding:10px 4px;cursor:pointer;color:inherit}.crumb{opacity:.7;font-size:14px;margin:0 0 6px}
 .roast-feedback,.question-box,.custom-result-output{overflow-wrap:anywhere;word-break:break-word}.roast-feedback small{display:block;margin-top:6px;opacity:.8}
 
@@ -430,8 +435,9 @@ body{font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 :lang(th) body{line-height:1.7}
 h1,h2,h3,.headline,.section-title,.wtitle{font-weight:600;line-height:1.3;letter-spacing:0}
 .headline{font-size:clamp(26px,7vw,34px);font-weight:700;text-transform:none}
-.container{max-width:560px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
-.headline,.subtitle,.selector-label,.wtitle,.character-caption,.question-box,.section-title{text-align:center;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+.container{max-width:720px;width:100%;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
+.headline,.subtitle,.selector-label,.wtitle,.character-caption,.section-title{text-align:center;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+.question-box{text-align:left;width:100%;box-sizing:border-box}
 .subtitle{max-width:100%;margin-top:6px;margin-bottom:6px}
 .selector-label{display:block;text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;margin:14px 0 6px}
 .character-caption{font-style:normal;font-weight:500;font-size:15px}
@@ -518,3 +524,57 @@ button.card:hover:not(:disabled){box-shadow:0 6px 18px rgba(16,24,40,.1);border-
 #scrHome .headline{font-size:clamp(22px,6vw,28px);margin:4px 0}
 #scrHome .subtitle{font-size:14px;margin:2px 0}
 #scoreBtn.listening{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}
+
+/* ---- fixed header + per-screen contained area: "one page, no scroll" layout ---- */
+html,body{height:100%;overflow:hidden}
+body{display:flex;justify-content:center}
+.container{height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;display:flex;flex-direction:column;padding-top:calc(10px + env(safe-area-inset-top));padding-bottom:calc(10px + env(safe-area-inset-bottom));gap:8px;overflow:hidden}
+.topbar{flex:none}
+.screen{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;flex-direction:column}
+#scrWelcome,#scrHome{justify-content:center}
+
+/* unified back button, top-left, same row as the sound toggles */
+.back-top{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:#fff;border:1px solid #CBD5E1;font-size:18px;padding:0}
+
+/* listen/report sit right at the corner of the roast feedback box */
+.fb-wrap{position:relative}
+.fb-wrap .roast-feedback{padding-right:46px}
+.fb-wrap .fb-icon{position:absolute;top:8px;right:8px;display:block;margin:0 0 6px 0;padding:6px 8px;font-size:14px;border-radius:10px}
+.fb-wrap .fb-icon#repBtn{top:44px}
+
+/* reading practice (replaces the per-topic torture bench) */
+.read-practice{display:flex;flex-direction:column;gap:8px;background:#F8F5EE;border:1px solid var(--card-border);border-radius:14px;padding:12px;margin-top:4px}
+.read-practice .section-title{font-size:15px;margin:0}
+#readTarget{font-size:16px;padding:10px 12px;margin:0}
+#readMicBtn{align-self:flex-start;display:inline-flex!important;width:44px;height:44px;font-size:18px;margin:0}
+.read-result{font-size:14px;color:var(--text-muted);min-height:1.2em;line-height:1.6}
+.read-result.ok{color:#027A48;font-weight:600}
+.read-result.bad{color:#B42318}
+.w-ok{color:#027A48;font-weight:600}
+.w-bad{color:#B42318;text-decoration:underline;text-decoration-style:wavy}
+
+/* story mode prompt: distinct from the usual quiz black text */
+.story-mode .question-box{background:transparent;border:none;color:var(--text-muted);font-style:italic;font-weight:500;padding:4px 0;text-align:center}
+
+/* story mode button, full width + centered like "start learning", not squeezed in the grid */
+#goStory{background:#fff}
+
+/* compact the welcome/settings screen so it fits one page */
+#scrWelcome .banner{max-height:22vh;object-fit:cover}
+#scrWelcome #natOpts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+#scrWelcome #natOpts .lang-choice-btn{width:auto;min-height:48px;font-size:16px;padding:10px;justify-content:center}
+#scrWelcome #natOpts .flag{width:28px;height:19px}
+#scrWelcome .wtitle{font-size:16px;margin:8px 0}
+
+/* compact the torture-bench full screen so it fits one page */
+.custom-roast-section{padding:16px;gap:10px}
+.custom-roast-section textarea{height:64px}
+.custom-result-output{padding:12px;font-size:14px}
+
+@media (max-height:700px){
+  .image-card{padding:8px}
+  .illustration-section .image-card{max-width:220px}
+  #scrHome .headline{font-size:20px;margin:2px 0}
+  #scrHome .subtitle{font-size:13px;margin:1px 0}
+  .custom-roast-section textarea{height:52px}
+}
