@@ -503,4 +503,9 @@ button.card:hover:not(:disabled){box-shadow:0 6px 18px rgba(16,24,40,.1);border-
 @keyframes confettiFall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
 
 #undoBtn{background:#334155;box-shadow:none}
+
+.whatsnew-banner{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));max-width:420px;margin:0 auto;background:#fff;border:1px solid var(--card-border);border-radius:16px;box-shadow:0 10px 30px rgba(16,24,40,.18);z-index:55;padding:12px 14px;animation:screenIn .25s ease}
+.whatsnew-head{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:14px;margin-bottom:6px}
+.whatsnew-head button{border:0;background:none;font-size:16px;cursor:pointer;color:var(--text-muted);padding:2px 6px}
+#whatsNewBody{font-size:13px;color:var(--text-muted);line-height:1.5;max-height:40vh;overflow:auto}
 #scoreBtn.listening{background:var(--accent-red);color:#fff;border-color:var(--accent-red)}

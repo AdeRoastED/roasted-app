@@ -81,12 +81,9 @@
     <div class="onb-nav"><button class="back" id="onbSkip">Skip</button><button class="btn-roasted" id="onbNext">Next</button></div>
   </div>
 </div>
-<div id="whatsNewOverlay" class="onb-overlay" style="display:none">
-  <div class="onb-card">
-    <div class="onb-emoji">✨</div><h3>What's new</h3>
-    <div id="whatsNewBody" style="text-align:left;font-size:14px;color:var(--text-muted);line-height:1.6"></div>
-    <div class="onb-nav" style="margin-top:14px"><button class="btn-roasted" id="whatsNewOk" style="width:100%;justify-content:center">Got it</button></div>
-  </div>
+<div id="whatsNewOverlay" class="whatsnew-banner" style="display:none">
+  <div class="whatsnew-head"><span>✨ What's new</span><button type="button" id="whatsNewOk" aria-label="Close">✕</button></div>
+  <div id="whatsNewBody"></div>
 </div>
 <div id="confettiBox" aria-hidden="true"></div>
 <div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>

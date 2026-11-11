@@ -58,7 +58,7 @@ $('shareBtn').onclick=()=>{if(navigator.share)navigator.share({text:S.res}).then
 $('retryBtn').onclick=()=>{S.qs=S.wrong.slice();S.wrong=[];S.i=0;S.sc=0;S.retry=1;mood();show()};
 $('muteBtn').onclick=()=>{S.mute=S.mute?0:1;$('muteBtn').textContent=S.mute?'🔇':'🎵'};
 const L2={en:{review:'🎯 Review my mistakes',duel:'⚔️ Challenge a friend'},it:{review:'🎯 Rivedi i miei errori',duel:'⚔️ Sfida un amico'},fr:{review:'🎯 Revoir mes erreurs',duel:'⚔️ Défier un ami'},de:{review:'🎯 Meine Fehler wiederholen',duel:'⚔️ Freund herausfordern'},th:{review:'🎯 ทบทวนที่ผิด',duel:'⚔️ ท้าเพื่อน'},af:{review:'🎯 Gaan my foute weer deur',duel:"⚔️ Daag 'n vriend uit"}};
-function labels(){const x=X[S.n];const l2=L2[S.n]||L2.en;if($('goReview'))$('goReview').textContent=l2.review;if($('goDuel'))$('goDuel').textContent=l2.duel;$('offTag').textContent=x.offline;$('goInstall').textContent='📲 '+x.install;$('iosHint').textContent=x.ios;$('goLearn').textContent='▶ '+x.learn;$('goBench').textContent='💀 '+u().fixT.replace(/^\S+\s/,'');$('goSet').textContent='⚙️ '+x.set;['backL','backT','backQ','backW'].forEach(i=>{$(i).textContent='← '+x.back});$('resetBtn').textContent='🗑️';$('sayBtn').textContent=x.listen;$('repBtn').textContent=x.report;$('shareBtn').textContent=x.share;$('retryBtn').textContent=x.retry}
+function labels(){const x=X[S.n];const l2=L2[S.n]||L2.en;if($('goReview'))$('goReview').textContent=l2.review;if($('goDuel'))$('goDuel').textContent=l2.duel;$('offTag').textContent=x.offline;$('goInstall').textContent='📲 '+x.install;$('iosHint').textContent=x.ios;$('goLearn').textContent='▶ '+x.learn;$('goBench').textContent='💀 '+u().fixT.replace(/^\S+\s/,'');$('goSet').textContent='⚙️ '+x.set;['backL','backT','backQ','backW','backSt','backTr'].forEach(i=>{$(i).textContent='← '+x.back});$('resetBtn').textContent='🗑️';$('sayBtn').textContent=x.listen;$('repBtn').textContent=x.report;$('shareBtn').textContent=x.share;$('retryBtn').textContent=x.retry}
 const _t=texts;texts=function(){_t();labels()};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 S.voice=1;const TUNE={};
@@ -199,8 +199,10 @@ function showWhatsNew(){let sv=null;try{sv=localStorage.getItem('roasted_native'
 let seenver=null;try{seenver=localStorage.getItem('roasted_ver')}catch(e){}
 if(!sv||seenver===APP_VERSION||!$('whatsNewOverlay')){try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}return}
 $('whatsNewBody').innerHTML=WHATS_NEW.map(x=>'<div style="margin-bottom:6px">• '+x+'</div>').join('');
-$('whatsNewOverlay').style.display='flex';
-$('whatsNewOk').onclick=()=>{try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}$('whatsNewOverlay').style.display='none'}}
+$('whatsNewOverlay').style.display='block';
+const closeWN=()=>{try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}$('whatsNewOverlay').style.display='none'};
+$('whatsNewOk').onclick=closeWN;
+setTimeout(closeWN,9000)}
 
 /* --- app icon badge (where supported) --- */
 function updateAppBadge(n){try{if(navigator.setAppBadge)n?navigator.setAppBadge(n).catch(()=>{}):navigator.clearAppBadge&&navigator.clearAppBadge().catch(()=>{})}catch(e){}}
