@@ -1,3 +1,21 @@
+/* --- crash safety net: never leave a blank/white page, offer a real fix --- */
+let _crashed=0;
+function _showCrash(){if(_crashed)return;_crashed=1;
+try{document.body.innerHTML='<div style="padding:60px 24px;text-align:center;font-family:system-ui,sans-serif;max-width:420px;margin:0 auto">'
++'<div style="font-size:40px;margin-bottom:10px">🫠</div>'
++'<h2 style="margin:0 0 8px">Something glitched</h2>'
++'<p style="color:#666;margin:0 0 20px">This usually means an old cached copy got stuck. Tap below to force a clean reload.</p>'
++'<button id="_hardReload" style="padding:14px 28px;border-radius:30px;background:#D93025;color:#fff;border:0;font-size:16px;cursor:pointer">🔄 Force fresh reload</button>'
++'</div>';
+const b=document.getElementById('_hardReload');
+if(b)b.onclick=()=>{try{
+if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));
+if(window.caches)caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k))));
+}catch(e){}
+setTimeout(()=>location.reload(),300)}
+}catch(e){}}
+window.addEventListener('error',_showCrash);
+window.addEventListener('unhandledrejection',_showCrash);
 const $=id=>document.getElementById(id),pick=a=>a[Math.floor(Math.random()*a.length)];
 const TOP=['food','travel','sports','culture','dailylife','greet','adj','basic','num','col','time'],SENT=TOP.slice(0,5),VOC=TOP.slice(5),FLAG={it:'Italiano',en:'English',fr:'Français',de:'Deutsch',th:'ไทย',af:'Afrikaans'};
 const DISPLAY_ORDER=['num','col','greet','basic','time','adj','food','travel','sports','culture','dailylife'];
@@ -28,7 +46,7 @@ function answer(oi,g,ord){const t=u(),q=S.qs[S.i],ok=oi===q.c,fb=$('fb');beep(ok
 [...g.children].forEach((b,k)=>{b.disabled=true;if(ord[k]===q.c)b.classList.add('correct');else if(ord[k]===oi)b.classList.add('incorrect')});
 fb.style.display='block';fb.style.cssText+=ok?';background:#ECFDF3;border-color:#12B76A;color:#027A48':';background:#FDF3F2;border-color:#FECDCA;color:#B42318';
 const trap=!ok&&q.literal_trap&&q.o[oi]===q.literal_trap&&q.roast_if_wrong;S.wr=ok?0:(S.wr||0)+1;const pity=!ok&&S.wr>=3;if(pity)S.wr=0;const msg=ok?pick(t.right):pity?X[S.n].pity:(trap?q.roast_if_wrong:(q.r?(Math.random()<.7?pick(OPEN[S.n]):'')+q.r:pick(t.wrong)));fb.innerHTML=ok?'<strong>🎉 '+t.ok+'</strong> '+msg:'<strong>'+(trap?'🪤 ':'🎩 ')+t.wh+'</strong> '+msg+'<br><em>'+t.cor+' '+(q.natural_version||q.f)+'</em>'+(q.native_context&&!ok?'<br><small>'+q.native_context+'</small>':'');talk(msg);
-S.say=q.f;$('sayBtn').style.display=$('repBtn').style.display='inline-block';$('nextBtn').textContent=t.next;$('nextBtn').style.display='block';$('nextBtn').onclick=()=>{stopTalk();S.i++;S.i>=S.qs.length?finish():show()};
+S.say=q.f;$('sayBtn').style.display=$('repBtn').style.display='flex';$('nextBtn').textContent=t.next;$('nextBtn').style.display='block';$('nextBtn').onclick=()=>{stopTalk();S.i++;S.i>=S.qs.length?finish():show()};
 if(!ok&&!S.undoUsed&&!S.boss){$('undoBtn').style.display='block';$('undoBtn').onclick=()=>{S.undoUsed=1;show()}}
 showReadPractice(q)}
 function finish(){stopTalk();if(S.story)return finishStory();if(S.numset)return finishNumSet();const t=u(),x=X[S.n],n=S.qs.length,p=Math.round(S.sc/n*100),ti=t.tiers[p<40?0:p<70?1:p<90?2:3],st=p>=100?3:p>=80?2:p>=60?1:0,k=S.boss?S.n+S.t+'boss':S.n+S.t+S.topic+S.lvl,d=load(),td=day(0),yd=day(1);
@@ -76,7 +94,7 @@ $('shareBtn').onclick=()=>{if(navigator.share)navigator.share({text:S.res}).then
 $('retryBtn').onclick=()=>{S.qs=S.wrong.slice();S.wrong=[];S.i=0;S.sc=0;S.retry=1;mood();show()};
 $('muteBtn').onclick=()=>{S.mute=S.mute?0:1;$('muteBtn').textContent=S.mute?'🔇':'🎵'};
 const L2={en:{review:'🎯 Review my mistakes',duel:'⚔️ Challenge a friend'},it:{review:'🎯 Rivedi i miei errori',duel:'⚔️ Sfida un amico'},fr:{review:'🎯 Revoir mes erreurs',duel:'⚔️ Défier un ami'},de:{review:'🎯 Meine Fehler wiederholen',duel:'⚔️ Freund herausfordern'},th:{review:'🎯 ทบทวนที่ผิด',duel:'⚔️ ท้าเพื่อน'},af:{review:'🎯 Gaan my foute weer deur',duel:"⚔️ Daag 'n vriend uit"}};
-function labels(){const x=X[S.n];const l2=L2[S.n]||L2.en;if($('goReview'))$('goReview').textContent=l2.review;if($('goDuel'))$('goDuel').textContent=l2.duel;$('offTag').textContent=x.offline;$('goInstall').textContent='📲 '+x.install;$('iosHint').textContent=x.ios;$('goLearn').textContent='▶ '+x.learn;$('goBench').textContent='💀 '+u().fixT.replace(/^\S+\s/,'');$('goSet').textContent='⚙️ '+x.set;$('backBtn').setAttribute('aria-label',x.back);$('resetBtn').textContent='🗑️';$('sayBtn').textContent=x.listen;$('repBtn').textContent=x.report;$('shareBtn').textContent=x.share;$('retryBtn').textContent=x.retry;$('readTitle').textContent='📖 '+(x.readT||'Reading practice')}
+function labels(){const x=X[S.n];const l2=L2[S.n]||L2.en;if($('goReview'))$('goReview').textContent=l2.review;if($('goDuel'))$('goDuel').textContent=l2.duel;$('offTag').textContent=x.offline;$('goInstall').textContent='📲 '+x.install;$('iosHint').textContent=x.ios;$('goLearn').textContent='▶ '+x.learn;$('goBench').textContent='💀 '+u().fixT.replace(/^\S+\s/,'');$('goSet').textContent='⚙️ '+x.set;$('backBtn').setAttribute('aria-label',x.back);$('resetBtn').textContent='🗑️';$('sayBtn').textContent='🔊';$('sayBtn').setAttribute('aria-label',x.listen);$('repBtn').textContent='⚠️';$('repBtn').setAttribute('aria-label',x.report);$('shareBtn').textContent=x.share;$('retryBtn').textContent=x.retry;$('readTitle').textContent='📖 '+(x.readT||'Reading practice')}
 const _t=texts;texts=function(){_t();labels()};
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 S.voice=1;const TUNE={};
@@ -126,12 +144,13 @@ $('scrQuiz').classList.toggle('story-mode',!!S.story);
 if(n==='Home')S.home=1;
 $('backBtn').style.display=atRoot(n)?'none':'';
 if(typeof scrollTo==='function')scrollTo(0,0)}
-function atRoot(n){return n==='Home'||(n==='Welcome'&&!S.home)}
+function atRoot(n){return n==='Welcome'&&!S.home}
 function backTarget(){const n=S.screen;
 if(n==='Bench'){S.benchAll=0;return'Menu'}
 if(n==='Quiz')return S.story?'Story':(S.numset?'NumSets':(S.boss?'Levels':'Topics'));
 if(n==='Topics')return'Levels';if(n==='Levels')return'Menu';if(n==='Menu')return'Home';if(n==='Welcome')return'Home';
 if(n==='Trophies'||n==='Story'||n==='NumSets')return'Menu';
+if(n==='Home')return'Welcome';
 return'Home'}
 function goBack(){if(atRoot(S.screen))return;nav(backTarget())}
 $('backBtn').onclick=goBack;
@@ -232,7 +251,7 @@ r.onend=()=>{$('readMicBtn').classList.remove('listening');$('readMicBtn').textC
 r.start()}catch(e){$('readMicBtn').classList.remove('listening');$('readMicBtn').textContent='🎤'}};
 
 /* --- what's new (shown once per version, returning users only) --- */
-const APP_VERSION='1.3';
+const APP_VERSION='1.4';
 const WHATS_NEW=['⬅️ One back button, top bar','📖 Reading practice replaces the per-topic Torture Bench','🔢 Numbers split into 10 groups (0–10, 10–20…)','🇹🇭 Vocabulary before numbers for Thai learners','📱 Android back button now navigates instead of closing the app'];
 function showWhatsNew(){let sv=null;try{sv=localStorage.getItem('roasted_native')}catch(e){}
 let seenver=null;try{seenver=localStorage.getItem('roasted_ver')}catch(e){}

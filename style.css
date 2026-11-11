@@ -538,9 +538,9 @@ body{display:flex;justify-content:center}
 
 /* listen/report sit right at the corner of the roast feedback box */
 .fb-wrap{position:relative}
-.fb-wrap .roast-feedback{padding-right:46px}
-.fb-wrap .fb-icon{position:absolute;top:8px;right:8px;display:block;margin:0 0 6px 0;padding:6px 8px;font-size:14px;border-radius:10px}
-.fb-wrap .fb-icon#repBtn{top:44px}
+.fb-wrap .roast-feedback{padding-right:58px}
+.fb-wrap .fb-icon{position:absolute;top:8px;right:8px;display:flex;align-items:center;justify-content:center;width:40px;height:40px;margin:0;padding:0;font-size:22px;line-height:1;border-radius:50%}
+.fb-wrap .fb-icon#repBtn{top:54px}
 
 /* reading practice (replaces the per-topic torture bench) */
 .read-practice{display:flex;flex-direction:column;gap:8px;background:#F8F5EE;border:1px solid var(--card-border);border-radius:14px;padding:12px;margin-top:4px}
