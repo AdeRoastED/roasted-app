@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="container">
-  <div class="topbar"><div class="topbar-left"><button type="button" id="backBtn" class="mini back-top" aria-label="Back" style="display:none">←</button><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice">🗣️</button><button class="mini" id="muteBtn" aria-label="Sound effects">🎵</button></div></div>
+  <div class="topbar"><div class="topbar-left"><button type="button" id="backBtn" class="mini back-top" aria-label="Back" style="display:none"><img src="images/icons/back.png" class="btn-icon" alt=""></button><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice"><img src="images/icons/voice.png" class="btn-icon" alt=""></button><button class="mini" id="muteBtn" aria-label="Sound effects"><img src="images/icons/sound.png" class="btn-icon" alt=""></button></div></div>
   <section id="scrWelcome" class="screen" style="display:none">
     <img class="banner" src="images/banner.webp" alt="RoastED">
     <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
@@ -33,7 +33,6 @@
       <button class="card tile" id="goBench"></button>
       <button class="card tile" id="goReview">🎯 Review my mistakes</button>
       <button class="card tile" id="goDuel">⚔️ Challenge a friend</button>
-      <button class="card tile" id="goNumbers">🔢 Numbers</button>
       <button class="card tile" id="goTrophies">🏆 Trophy room</button>
       <button class="card tile" id="goSet"></button>
     </div>
@@ -60,12 +59,15 @@
       <div class="options-grid" id="opts"></div>
       <div class="fb-wrap">
         <div class="roast-feedback" id="fb" aria-live="polite"></div>
-        <button class="mini fb-icon" id="sayBtn"></button><button class="mini fb-icon" id="repBtn"></button>
+        <button class="mini fb-icon" id="repBtn"></button>
       </div>
       <section class="read-practice" id="readSec" style="display:none">
         <h4 class="section-title" id="readTitle">📖 Reading practice</h4>
         <div class="question-box bq" id="readTarget"></div>
-        <button type="button" class="mini mic-btn" id="readMicBtn">🎤</button>
+        <div class="read-controls">
+          <button class="mini fb-icon" id="sayBtn"></button>
+          <button type="button" class="mini mic-btn" id="readMicBtn"><img src="images/icons/mic.png" class="btn-icon" alt=""></button>
+        </div>
         <div class="read-result" id="readOut"></div>
       </section>
       <button class="next-question-btn" id="undoBtn" style="display:none">↩️ Undo (free retry)</button>
@@ -77,7 +79,7 @@
       <h3 class="section-title" id="fixT"></h3>
       <p class="custom-desc" id="fixD"></p>
       <div class="question-box bq" id="bq"></div>
-      <div class="bench-input-row"><textarea id="fixIn"></textarea><button class="mini mic-btn" id="micBtn" type="button" aria-label="Speak your answer">🎤</button></div>
+      <div class="bench-input-row"><textarea id="fixIn"></textarea><button class="mini mic-btn" id="micBtn" type="button" aria-label="Speak your answer"><img src="images/icons/mic.png" class="btn-icon" alt=""></button></div>
       <button class="btn-roasted" id="fixBtn"></button>
       <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
       <button class="btn-roasted again" id="newBtn"></button>

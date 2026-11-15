@@ -401,8 +401,13 @@
     
 .bq{background:#0F172A;color:#fff;border-color:#334155}.again{margin-top:8px}.tier{display:block;margin-top:10px;font-weight:500;font-style:normal}.banner{width:100%;border-radius:16px;display:block}
 
-.mini{display:none;margin:8px 8px 0 0;padding:6px 12px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;font-size:14px}#muteBtn{display:block!important;opacity:.85}#retryBtn,#shareBtn{display:none}
-#voiceBtn{display:block!important;opacity:.85}
+.mini{display:none;margin:8px 8px 0 0;padding:6px 12px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;font-size:14px}#muteBtn{display:flex!important;align-items:center;justify-content:center;opacity:.85}#retryBtn,#shareBtn{display:none}
+#voiceBtn{display:flex!important;align-items:center;justify-content:center;opacity:.85}
+.btn-icon{width:18px;height:18px;display:block;pointer-events:none}
+.back-top .btn-icon{width:20px;height:20px}
+.fb-icon .btn-icon{width:20px;height:20px}
+.mic-btn .btn-icon{width:20px;height:20px}
+.card .btn-icon,button .btn-icon{vertical-align:middle}
 
 button.topic-pill{font-size:inherit;color:inherit;line-height:inherit}
 button:focus-visible,.topic-pill:focus-visible{outline:3px solid #2563EB;outline-offset:2px}
@@ -421,7 +426,8 @@ button.card:disabled{opacity:.5;cursor:not-allowed}button.card small{opacity:.75
 .tier-2{border-left:6px solid rgba(217,48,37,.65)}
 .tier-3{border-left:6px solid rgba(217,48,37,1)}
 .back{background:none;border:0;font:inherit;font-size:16px;padding:10px 4px;cursor:pointer;color:inherit}.crumb{opacity:.7;font-size:14px;margin:0 0 6px}
-.roast-feedback,.question-box,.custom-result-output{overflow-wrap:anywhere;word-break:break-word}.roast-feedback small{display:block;margin-top:6px;opacity:.8}
+.roast-feedback,.question-box,.custom-result-output{overflow-wrap:anywhere;word-break:break-word}
+.roast-feedback,.custom-result-output{overflow:auto}.roast-feedback small{display:block;margin-top:6px;opacity:.8}
 
 
 #streakBadge.pulse{animation:streakpulse 1s ease 3}@keyframes streakpulse{50%{transform:scale(1.3)}}
@@ -464,7 +470,7 @@ textarea{width:100%;box-sizing:border-box;line-height:1.5}
 .badge{font-size:15px;background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:2px 6px;cursor:default}
 .bench-input-row{display:flex;gap:8px;align-items:flex-start}
 .bench-input-row textarea{flex:1}
-.mic-btn{display:block!important;margin:0;font-size:18px;min-width:44px;min-height:44px;flex:none;align-self:stretch}
+.mic-btn{display:flex!important;align-items:center;justify-content:center;margin:0;font-size:18px;min-width:44px;min-height:44px;flex:none;align-self:stretch}
 .mic-btn.listening{background:var(--accent-red);color:#fff;border-color:var(--accent-red);animation:shake .4s ease-in-out infinite}
 #goReview,#goDuel{background:#fff}
 .onb-overlay{position:fixed;inset:0;background:rgba(15,23,42,.72);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px;box-sizing:border-box}
@@ -538,9 +544,13 @@ body{display:flex;justify-content:center}
 
 /* listen/report sit right at the corner of the roast feedback box */
 .fb-wrap{position:relative}
-.fb-wrap .roast-feedback{padding-right:58px}
-.fb-wrap .fb-icon{position:absolute;top:8px;right:8px;display:flex;align-items:center;justify-content:center;width:40px;height:40px;margin:0;padding:0;font-size:22px;line-height:1;border-radius:50%}
-.fb-wrap .fb-icon#repBtn{top:54px}
+.fb-wrap .roast-feedback{padding-right:50px}
+.fb-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;float:left;margin:0 10px 6px 0;background:#fff;border:1px solid #FECDCA}
+.rom{display:inline-block;opacity:.65;font-style:italic;font-weight:400;font-size:.85em;margin-top:2px}
+.custom-result-output .fb-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;float:left;margin:0 10px 6px 0;background:#fff}
+.fb-icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;margin:0;padding:0;font-size:22px;line-height:1;border-radius:50%}
+.fb-wrap .fb-icon{position:absolute;top:8px;right:8px}
+.read-controls{display:flex;align-items:center;justify-content:space-between;gap:12px}
 
 /* reading practice (replaces the per-topic torture bench) */
 .read-practice{display:flex;flex-direction:column;gap:8px;background:#F8F5EE;border:1px solid var(--card-border);border-radius:14px;padding:12px;margin-top:4px}
