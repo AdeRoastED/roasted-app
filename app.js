@@ -139,13 +139,13 @@ const bo=cleared()>=4;card(box,(bo?'👑 ':'🔒 ')+x.boss,'⭐ '+stars(S.n+S.t+
 function renderTopicsMenu(){const x=X[S.n],t=u(),box=$('tpCards');box.innerHTML='';$('crumbT').textContent=x.lvl+' '+S.lvl+' · '+[x.ln1,x.ln2,x.ln3][S.lvl-1];
 curOrder().forEach(tp=>{const i=TOP.indexOf(tp),op=tp==='num'?true:tOpen(tp,S.lvl),n=lstars(tp,S.lvl);card(box,(op?'':'🔒 ')+t.topics[i],'⭐'.repeat(n)+'☆'.repeat(3-n),!op,()=>{S.topic=tp;S.boss=0;S.benchAll=0;if(tp==='num'){nav('NumSets')}else{start();nav('Quiz')}})})}
 function nav(n){stopTalk();S.screen=n;const sc=n==='Bench'?'Quiz':n;SCRS.forEach(k=>{$('scr'+k).style.display=k===sc?'flex':'none'});
-$('drillSec').style.display=n==='Bench'?'none':'flex';if(n==='Bench')$('wordList').style.display='none';
+$('drillSec').style.display=n==='Bench'?'none':'flex';$('benchSec').style.display=n==='Bench'?'flex':'none';if(n==='Bench')$('wordList').style.display='none';
 if(n==='Levels')renderLevelsMenu();if(n==='Topics')renderTopicsMenu();if(n==='Trophies')renderTrophies();if(n==='Story')renderStoryMenu();if(n==='NumSets')renderNumSets();
 if(n==='Quiz')acquireWake();else releaseWake();
 if(n==='Quiz'||n==='Bench'){const x=X[S.n];$('crumbQ').textContent=n==='Bench'?'💀':(S.story?'📖':(S.numset?'🔢 '+S.nsLabel:(S.boss?x.boss:x.lvl+' '+S.lvl+' · '+u().topics[TOP.indexOf(S.topic)])))}
 $('scrQuiz').classList.toggle('story-mode',!!S.story);
 if(n==='Home')S.home=1;
-$('backBtn').style.display=atRoot(n)?'none':'';
+$('backBtn').style.display=atRoot(n)?'none':'';$('homeBtn').style.display=(n==='Home'||atRoot(n))?'none':'';
 if(typeof scrollTo==='function')scrollTo(0,0)}
 function atRoot(n){return n==='Welcome'&&!S.home}
 function backTarget(){const n=S.screen;
@@ -158,6 +158,7 @@ if(n==='Home')return'Welcome';
 return'Home'}
 function goBack(){if(atRoot(S.screen))return;nav(backTarget())}
 $('backBtn').onclick=goBack;
+$('homeBtn').onclick=()=>{S.benchAll=0;nav('Home')};
 $('goLearn').onclick=()=>nav('Levels');
 $('goTrophies').onclick=()=>nav('Trophies');
 $('badgeRow').onclick=()=>nav('Trophies');
@@ -258,7 +259,7 @@ r.start()}catch(e){$('readMicBtn').classList.remove('listening');$('readMicBtn')
 
 /* --- what's new (shown once per version, returning users only) --- */
 const APP_VERSION='1.6';
-const WHATS_NEW=['📐 5 new grammar topics (present/past/future tense, negation, questions) before full sentences','🔤 Phonetic reading help under every Thai word and phrase (not long sentences)','🧑 A small avatar now shows on every roast popup','🎨 New icon set for the small buttons','🔢 Numbers moved into Topics, split into 5 groups of ~20','🔇 No more auto-read roasts — tap Listen if you want to hear it','🌐 Pick your native language fresh each time you set up a new target language'];
+const WHATS_NEW=['🏠 New Home button, next to Back, from anywhere in the app','💀 Fixed: Torture Bench showing up empty','📐 5 new grammar topics (present/past/future tense, negation, questions) before full sentences','🔤 Phonetic reading help under every Thai word and phrase (not long sentences)','🧑 A small avatar now shows on every roast popup','🎨 New icon set for the small buttons','🔢 Numbers moved into Topics, split into 5 groups of ~20','🔇 No more auto-read roasts — tap Listen if you want to hear it','🌐 Pick your native language fresh each time you set up a new target language'];
 function showWhatsNew(){let sv=null;try{sv=localStorage.getItem('roasted_native')}catch(e){}
 let seenver=null;try{seenver=localStorage.getItem('roasted_ver')}catch(e){}
 if(!sv||seenver===APP_VERSION||!$('whatsNewOverlay')){try{localStorage.setItem('roasted_ver',APP_VERSION)}catch(e){}return}
