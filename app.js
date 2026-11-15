@@ -66,7 +66,8 @@ const nb=$('nextBtn');nb.style.display='block';if(hasNext){nb.textContent=x.next
 const norm=s=>s.toLowerCase().replace(/[’‘]/g,"'").replace(/[.,!?;:«»"“”„]/g,'').replace(/\s+/g,' ').trim().replace(S.t==='th'?/\s+/g:/(?!)/g,'');
 function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function benchPool(){if(S.benchAll){let a=[];for(const tp of SENT)a=a.concat(RE[S.n][tp].filter(e=>e.t[S.t]).map(mapq));return a}return S.pool}
-function bench(){const bp=benchPool(),pl=bp.filter(x=>!x.ns),q=pick(pl.length?pl:bp),v=VOC.includes(S.topic)&&!S.benchAll;S.bi=v?{p:'“'+q.s+'” → ?',a:q.f}:{p:pick(q.o.filter((_,i)=>i!==q.c)),a:q.f};
+function bench(){const bp=benchPool();if(!bp||!bp.length){S.bi=null;$('bq').textContent=(u().soon)||'Nothing here yet.';$('fixD').textContent='';$('fixIn').value='';$('fixOut').style.display='none';return}
+const pl=bp.filter(x=>!x.ns),q=pick(pl.length?pl:bp),v=VOC.includes(S.topic)&&!S.benchAll;S.bi=v?{p:'“'+q.s+'” → ?',a:q.f}:{p:pick(q.o.filter((_,i)=>i!==q.c)),a:q.f};
 $('bq').textContent=S.bi.p;$('fixD').textContent=v?X[S.n].benchW:u().fixD;$('fixIn').value='';$('fixOut').style.display='none';$('fixOut').classList.remove('ok')}
 /* --- spoken/typed digits -> number words, so "21" matches "ventuno" etc --- */
 function numWord(lang,n){
