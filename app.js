@@ -394,7 +394,7 @@ let sv=null;try{sv=localStorage.getItem('roasted_native')}catch(e){}
 let svt=null;try{svt=localStorage.getItem('roasted_target')}catch(e){}
 showOnboarding(()=>{
 if(sv&&FLAG[sv]){S.n=sv;
-if(svt&&FLAG[svt]&&svt!==sv){S.t=svt;loadData(S.n).then(()=>{texts();start();nav('Home');showWhatsNew()}).catch(()=>{})}
-else{S.t=null;loadData(S.n).then(()=>{texts();nav('Home');showWhatsNew()}).catch(()=>{})}
+if(svt&&FLAG[svt]&&svt!==sv){S.t=svt;loadData(S.n).then(()=>{texts();start();nav('Welcome');showWhatsNew()}).catch(()=>{})}
+else{S.t=null;loadData(S.n).then(()=>{texts();nav('Welcome');showWhatsNew()}).catch(()=>{})}
 }else{menus();nav('Welcome');showWhatsNew()}
 })}
