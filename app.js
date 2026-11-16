@@ -89,7 +89,7 @@ beep(ok?660:200);vibrate(ok?30:[20,40,20]);mood(ok?'happy':'angry');o.style.disp
 const av2='<img src="images/'+t.img+'.webp" class="fb-avatar" alt="">';o.innerHTML=av2+(ok?'<strong>🎉 '+t.ok+'</strong> '+msg:'<strong>'+(typo?'🔤 ':same?'🪞 ':'🔥 ')+t.wh+'</strong> '+msg+'<div class="custom-correction">✨ '+t.cor+' '+S.bi.a+'</div>')};
 $('newBtn').onclick=bench;
 const load=()=>{try{const d=JSON.parse(localStorage.getItem('roasted')||'{}');return{best:d.best||{},st:d.st||{},lv:d.lv||{},mis:d.mis||{}}}catch(e){return{best:{},st:{},lv:{},mis:{}}}};
-const save=d=>{try{localStorage.setItem('roasted',JSON.stringify(d))}catch(e){}};
+const save=d=>{try{localStorage.setItem('roasted',JSON.stringify(d));return true}catch(e){if(!S.saveWarned){S.saveWarned=1;try{toast('⚠️ Could not save your progress (storage may be full or blocked)',6000)}catch(_){}}return false}};
 const X={};
 const VOICE={af:'af-ZA',th:'th-TH',en:'en-GB',fr:'fr-FR',de:'de-DE',it:'it-IT'};
 $('sayBtn').onclick=()=>{if(!S.say)return;if(!window.speechSynthesis){note('novoice');return}speakLine(S.say,VOICE[S.t],[1,.88],'f')};
@@ -166,6 +166,38 @@ $('badgeRow').onclick=()=>nav('Trophies');
 $('goBench').onclick=()=>{S.benchAll=1;S.boss=0;bench();nav('Bench')};
 $('goSet').onclick=()=>nav('Welcome');
 $('resetBtn').onclick=()=>{if(confirm('Reset progress? · Réinitialiser ? · Zurücksetzen?')){try{localStorage.removeItem('roasted')}catch(e){}showStreak();nav('Home')}};
+$('exportBtn').onclick=()=>{let raw=null;try{raw=localStorage.getItem('roasted')}catch(e){}
+if(!raw){toast('Nothing to export yet — play a bit first.');return}
+try{const blob=new Blob([raw],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+a.href=url;a.download='roasted-progress-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);toast('✅ Progress exported')}catch(e){toast('⚠️ Could not export progress')}};
+function validateBackupShape(parsed){
+if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return'root';
+for(const k of['best','st','lv']){if(k in parsed){const v=parsed[k];if(!v||typeof v!=='object'||Array.isArray(v))return k;
+for(const kk in v){if(typeof v[kk]!=='number')return k}}}
+if('mis' in parsed){const v=parsed.mis;if(!v||typeof v!=='object'||Array.isArray(v))return'mis';
+for(const kk in v){if(!Array.isArray(v[kk])||!v[kk].every(x=>typeof x==='string'))return'mis'}}
+if(!['best','st','lv','mis'].some(k=>k in parsed))return'empty';
+return null}
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=e=>{const file=e.target.files&&e.target.files[0];$('importFile').value='';if(!file)return;
+const reader=new FileReader();
+reader.onload=()=>{let parsed;
+try{parsed=JSON.parse(reader.result)}catch(err){toast('⚠️ That file is not valid — could not read it');return}
+const badField=validateBackupShape(parsed);
+if(badField){toast(badField==='empty'?"⚠️ That doesn't look like a RoastED backup file":'⚠️ Backup file has an invalid "'+badField+'" section — not imported');return}
+if(!confirm('This will replace your current progress with this backup. This cannot be undone. Continue?'))return;
+let priorRaw=null;try{priorRaw=localStorage.getItem('roasted')}catch(err){}
+if(priorRaw!==null){try{localStorage.setItem('roasted_backup_before_import',priorRaw)}catch(err){
+if(!confirm('Could not back up your current progress before importing (storage may be full). Import anyway?'))return}}
+const serialized=JSON.stringify(parsed);
+try{localStorage.setItem('roasted',serialized)}catch(err){toast('⚠️ Could not write the backup (storage may be full or blocked) — your old progress was not touched');return}
+let check=null;try{check=localStorage.getItem('roasted')}catch(err){}
+if(check!==serialized){if(priorRaw!==null){try{localStorage.setItem('roasted',priorRaw)}catch(err){}}
+toast('⚠️ Import did not verify — restored your previous progress');return}
+toast('✅ Progress restored — reloading');setTimeout(()=>location.reload(),900)};
+reader.onerror=()=>toast('⚠️ Could not read that file');
+reader.readAsText(file)};
 function trackMis(q,ok){try{const d=load(),k=S.n+S.t,l=d.mis[k]||[];if(ok){if(l.includes(q.s)){d.mis[k]=l.filter(x=>x!==q.s);save(d)}}else{d.mis[k]=l.filter(x=>x!==q.s).concat(q.s).slice(-60);save(d)}}catch(e){}}
 function note(k){if(S.noted)return;S.noted=1;const n=$('voiceNote');n.textContent=X[S.n][k];n.style.display='block';setTimeout(()=>{n.style.display='none'},5000)}
 function loadScript(src){return new Promise((ok,no)=>{const e=document.createElement('script');e.src=src;e.onload=ok;e.onerror=()=>{toast(((X[S.n]||X[Object.keys(X)[0]]||{}).loaderr)||'⚠️ Connection error');no()};document.head.appendChild(e)})}
@@ -251,7 +283,7 @@ if(!S.readTarget)return;
 $('readMicBtn').classList.add('listening');$('readMicBtn').textContent='🔴';
 try{const r=new SR();r.lang=VOICE[S.t]||'en-US';r.interimResults=false;r.maxAlternatives=1;
 r.onresult=e=>{const heard=e.results[0][0].transcript,{pct,html}=scoreReading(heard),out=$('readOut');
-out.innerHTML=html+'<br>🎙️ "'+heard+'" — '+pct+'%';
+out.innerHTML=html;const heardLine=document.createElement('div');heardLine.textContent='🎙️ "'+heard+'" — '+pct+'%';out.appendChild(heardLine);
 out.className='read-result '+(pct>=85?'ok':pct>=50?'':'bad');
 vibrate(pct>=85?30:[20,40,20])};
 r.onerror=()=>{$('readOut').textContent='Could not hear that, try again';$('readOut').className='read-result bad'};
