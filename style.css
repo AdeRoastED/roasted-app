@@ -570,7 +570,7 @@ body{display:flex;justify-content:center}
 #goStory{background:#fff}
 
 /* compact the welcome/settings screen so it fits one page */
-#scrWelcome .banner{max-height:22vh;object-fit:cover}
+#scrWelcome .banner{max-height:28vh;object-fit:contain}
 #scrWelcome #natOpts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 #scrWelcome #natOpts .lang-choice-btn{width:auto;min-height:48px;font-size:16px;padding:10px;justify-content:center}
 #scrWelcome #natOpts .flag{width:28px;height:19px}
