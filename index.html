@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0F172A"><link rel="apple-touch-icon" href="images/icon-180.png"><link rel="icon" type="image/png" href="images/icon-192.png">
-<meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://aderoasted.github.io/roasted-app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://roastedapp.netlify.app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 <div class="container">
@@ -18,9 +18,7 @@
     <img class="banner" src="images/banner.webp" alt="RoastED">
     <h2 class="wtitle">🌍 I speak · Parlo · Je parle · Ich spreche · ฉันพูด · Ek praat</h2>
     <div id="natOpts" class="selector-options"></div>
-    <button class="back" id="resetBtn" aria-label="Reset progress"></button>
-    <button class="back" id="exportBtn" aria-label="Export progress">💾</button>
-    <button class="back" id="importBtn" aria-label="Import progress">📂</button>
+    <div class="welcome-tools"><button type="button" class="tool-btn" id="exportBtn" aria-label="Save progress">💾<small id="wSaveL">Save</small></button><button type="button" class="tool-btn" id="wInstallBtn" aria-label="Install app">📲<small id="wInstL">Install</small></button><button type="button" class="tool-btn" id="importBtn" aria-label="Import progress">📂<small id="wImpL">Import</small></button></div>
     <input type="file" id="importFile" accept="application/json" style="display:none">
   </section>
   <section id="scrHome" class="screen" style="display:none">
@@ -40,6 +38,18 @@
       <button class="card tile" id="goSet"></button>
     </div>
     <button class="card" id="goInstall" style="display:none"></button><p class="subtitle" id="iosHint" style="display:none"></p>
+    <button class="card lessons-card" id="goLessons"><span id="lesT"></span><small id="lesD"></small></button>
+  </section>
+  <section id="scrSettings" class="screen" style="display:none">
+    <h3 class="section-title" id="setTitle">⚙️</h3>
+    <button class="card" id="sLang"></button>
+    <div class="home-grid">
+      <button class="card tile" id="sSave"></button>
+      <button class="card tile" id="sImport"></button>
+      <button class="card tile" id="sInstall"></button>
+      <button class="card tile" id="sLessons"></button>
+    </div>
+    <button class="card danger-card" id="resetBtn" aria-label="Delete progress"></button>
   </section>
   <section id="scrStory" class="screen" style="display:none"><p class="crumb" id="storyCrumb">📖 Story mode</p><div id="storyCards"></div></section>
   <section id="scrNumSets" class="screen" style="display:none"><p class="crumb">🔢 Numbers</p><div id="numSetCards"></div></section>
@@ -77,11 +87,16 @@
       <button class="next-question-btn" id="nextBtn"></button>
       <button class="next-question-btn" id="retryBtn"></button>
       <button class="next-question-btn" id="shareBtn"></button>
+      <div class="end-nav" id="endNav" style="display:none"><button class="next-question-btn" id="nextTopicBtn"></button><button class="next-question-btn alt" id="toTopicsBtn"></button></div>
+      <button type="button" class="lessons-link" id="lessonsLink" style="display:none"></button>
     </section>
     <section class="custom-roast-section" id="benchSec">
       <h3 class="section-title" id="fixT"></h3>
+      <details class="bench-help" id="benchHelp"><summary id="bhSum">❓</summary><ol id="bhList"></ol></details>
       <p class="custom-desc" id="fixD"></p>
       <div class="question-box bq" id="bq"></div>
+      <p class="bq-mean" id="bqMean" style="display:none"></p>
+      <button type="button" class="hint-btn" id="hintBtn" style="display:none"></button>
       <div class="bench-input-row"><textarea id="fixIn"></textarea><button class="mini mic-btn" id="micBtn" type="button" aria-label="Speak your answer"><img src="images/icons/mic.png" class="btn-icon" alt=""></button></div>
       <button class="btn-roasted" id="fixBtn"></button>
       <div class="custom-result-output" id="fixOut" aria-live="polite"></div>
@@ -103,6 +118,9 @@
   <div class="whatsnew-head"><span>✨ What's new</span><button type="button" id="whatsNewOk" aria-label="Close">✕</button></div>
   <div id="whatsNewBody"></div>
 </div>
+<div id="fbSheet" class="fb-sheet" aria-live="polite"><button type="button" class="sheet-handle" id="sheetHandle" aria-label="Minimise">▾</button><div class="sheet-body" id="sheetBody"></div></div>
+<div id="tipPop" class="tip-pop" style="display:none"><p id="tipText"></p><div class="tip-btns"><button type="button" class="back" id="tipNo"></button><button type="button" class="btn-roasted" id="tipYes"></button></div></div>
+<div id="closeDlg" class="tip-pop close-dlg" style="display:none"><p id="closeText"></p><div class="tip-btns"><button type="button" class="back" id="closeNo"></button><button type="button" class="btn-roasted" id="closeYes"></button></div></div>
 <div id="confettiBox" aria-hidden="true"></div>
 <div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>
 <script src="app.js"></script>

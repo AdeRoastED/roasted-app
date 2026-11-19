@@ -588,3 +588,28 @@ body{display:flex;justify-content:center}
   #scrHome .subtitle{font-size:13px;margin:1px 0}
   .custom-roast-section textarea{height:52px}
 }
+/* ===== v1.7 ===== */
+.welcome-tools{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.tool-btn{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:76px;padding:8px 10px;border-radius:14px;border:1px solid var(--card-border,#e5e7eb);background:#fff;font-size:22px;cursor:pointer}
+.tool-btn small{font-size:12px;color:#475467}
+.lessons-card{text-align:left}.lessons-card small{display:block;opacity:.8}
+.danger-card{color:#B42318;border-color:#FECDCA}
+.end-nav{display:flex;gap:8px;flex-wrap:wrap}.end-nav .next-question-btn{flex:1 1 140px}.next-question-btn.alt{background:#fff;color:#0F172A;border:1px solid #CBD5E1}
+.lessons-link{margin-top:6px;background:none;border:0;color:#2563EB;text-decoration:underline;font-size:14px;cursor:pointer}
+.rom-in{display:inline;margin-left:4px}
+.fb-sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -8px 30px rgba(16,24,40,.22);padding:6px 14px calc(12px + env(safe-area-inset-bottom));max-height:72vh;overflow:auto;transform:translateY(105%);transition:transform .22s ease;max-width:560px;margin:0 auto}
+.fb-sheet.open{transform:none}
+.fb-sheet .sheet-body{display:flex;flex-direction:column;gap:8px}
+.sheet-handle{display:block;margin:0 auto 4px;border:0;background:#E2E8F0;border-radius:10px;width:56px;height:22px;font-size:14px;line-height:22px;cursor:pointer}
+.fb-sheet.min .fb-wrap,.fb-sheet.min .read-practice,.fb-sheet.min #undoBtn{display:none!important}
+body.sheet-open .container{padding-bottom:62vh}
+html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margin-top:8px}
+.tip-pop{position:fixed;z-index:80;background:#0F172A;color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:14px}
+.tip-pop p{margin:0 0 10px}.tip-btns{display:flex;gap:8px;justify-content:flex-end}.tip-btns .back{color:#fff;border-color:#475467;background:transparent}
+.close-dlg{left:50%;top:40%;transform:translate(-50%,-50%);width:min(320px,90vw);text-align:center}.close-dlg .tip-btns{justify-content:center}
+.bench-help{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:8px 12px;font-size:14px}.bench-help summary{cursor:pointer;font-weight:600}.bench-help ol{margin:8px 0 0;padding-left:20px}
+.bq-mean{margin:4px 0 0;font-size:14px;color:#475467}
+.hint-btn{align-self:flex-start;border:1px dashed #F59E0B;background:#FFFBEB;color:#92400E;border-radius:20px;padding:6px 14px;cursor:pointer;font-size:14px}.hint-btn:disabled{opacity:.6}
+.hint-u{text-decoration:underline wavy #D93025;text-decoration-thickness:2px;text-underline-offset:4px}
+#benchSec .bench-help{color:#0F172A}#benchSec .bench-help li,#benchSec .bench-help summary{color:#0F172A}
+#benchSec .bq-mean{color:#E2E8F0;font-size:15px}
