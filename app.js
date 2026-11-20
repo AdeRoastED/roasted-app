@@ -10,11 +10,11 @@ try{document.body.innerHTML='<div style="padding:60px 24px;text-align:center;fon
 +'<button id="_hardReload" style="padding:14px 28px;border-radius:30px;background:#D93025;color:#fff;border:0;font-size:16px;cursor:pointer">🔄 Force fresh reload</button>'
 +'</div>';
 const b=document.getElementById('_hardReload');
-if(b)b.onclick=()=>{try{
-if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));
-if(window.caches)caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k))));
+if(b)b.onclick=()=>{b.disabled=true;let done=0;const go=()=>{if(!done){done=1;location.reload()}};const jobs=[];try{
+if('serviceWorker' in navigator)jobs.push(navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))));
+if(window.caches)jobs.push(caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))));
 }catch(e){}
-setTimeout(()=>location.reload(),300)}
+Promise.all(jobs.map(j=>j.catch(()=>{}))).then(go);setTimeout(go,5000)}
 }catch(e){}}
 window.addEventListener('error',_showCrash);
 window.addEventListener('unhandledrejection',_showCrash);
@@ -93,7 +93,7 @@ $('fixBtn').onclick=()=>{const t=u(),x=X[S.n],raw=$('fixIn').value.trim(),v=numi
 (ok?beep(660):sfxWrong());vibrate(ok?30:[20,40,20]);mood(ok?'happy':'angry');o.style.display='block';o.classList.toggle('ok',ok);const msg=ok?pick(t.right):typo?x.typo:same?x.same:pick(t.wrong);
 const av2='<img src="images/'+t.img+'.webp" class="fb-avatar" alt="">';o.innerHTML=av2+(ok?'<strong>🎉 '+t.ok+'</strong> '+msg:'<strong>'+(typo?'🔤 ':same?'🪞 ':'🔥 ')+t.wh+'</strong> '+msg+'<div class="custom-correction">✨ '+t.cor+' '+S.bi.a+'</div>')};
 $('newBtn').onclick=bench;
-const load=()=>{try{const d=JSON.parse(localStorage.getItem('roasted')||'{}');return{best:d.best||{},st:d.st||{},lv:d.lv||{},mis:d.mis||{}}}catch(e){return{best:{},st:{},lv:{},mis:{}}}};
+const load=()=>{try{const d=JSON.parse(localStorage.getItem('roasted')||'{}');const o=(d&&typeof d==='object'&&!Array.isArray(d))?d:{};return Object.assign({},o,{best:o.best||{},st:o.st||{},lv:o.lv||{},mis:o.mis||{}})}catch(e){return{best:{},st:{},lv:{},mis:{}}}};
 const save=d=>{try{localStorage.setItem('roasted',JSON.stringify(d));return true}catch(e){if(!S.saveWarned){S.saveWarned=1;try{toast('⚠️ Could not save your progress (storage may be full or blocked)',6000)}catch(_){}}return false}};
 const X={};
 const VOICE={af:'af-ZA',th:'th-TH',en:'en-GB',fr:'fr-FR',de:'de-DE',it:'it-IT'};
@@ -181,7 +181,10 @@ setTimeout(()=>URL.revokeObjectURL(url),1000);toast('✅ Progress exported')}cat
 function validateBackupShape(parsed){
 if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return'root';
 for(const k of['best','st','lv']){if(k in parsed){const v=parsed[k];if(!v||typeof v!=='object'||Array.isArray(v))return k;
-for(const kk in v){if(typeof v[kk]!=='number')return k}}}
+for(const kk in v){if(k==='st'&&kk==='last'){if(typeof v[kk]!=='string')return k;continue}if(typeof v[kk]!=='number')return k}}}
+if('badges' in parsed&&!(Array.isArray(parsed.badges)&&parsed.badges.every(x=>typeof x==='string')))return'badges';
+if('log' in parsed&&!(Array.isArray(parsed.log)&&parsed.log.every(x=>typeof x==='string')))return'log';
+if('totalRuns' in parsed&&typeof parsed.totalRuns!=='number')return'totalRuns';
 if('mis' in parsed){const v=parsed.mis;if(!v||typeof v!=='object'||Array.isArray(v))return'mis';
 for(const kk in v){if(!Array.isArray(v[kk])||!v[kk].every(x=>typeof x==='string'))return'mis'}}
 if(!['best','st','lv','mis'].some(k=>k in parsed))return'empty';
