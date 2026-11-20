@@ -613,3 +613,7 @@ html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margi
 .hint-u{text-decoration:underline wavy #D93025;text-decoration-thickness:2px;text-underline-offset:4px}
 #benchSec .bench-help{color:#0F172A}#benchSec .bench-help li,#benchSec .bench-help summary{color:#0F172A}
 #benchSec .bq-mean{color:#E2E8F0;font-size:15px}
+/* v1.8 compact private-lessons link */
+#goLessons.lessons-card{flex-direction:row;justify-content:center;align-items:center;gap:10px;min-height:0;padding:8px 14px;margin-top:12px;font-size:15px;font-weight:600}
+#goLessons .les-ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#FFF4E5;font-size:20px;flex:none}
+#goLessons small{display:none}
