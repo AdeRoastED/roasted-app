@@ -64,7 +64,7 @@ if(!S.retry&&!S.review){const hn=!S.boss&&st>0&&S.lvl<3;if(hn)confetti()}
 if($('progFill'))$('progFill').style.width='100%';
 $('opts').innerHTML='';$('fb').style.display='none';$('sayBtn').style.display=$('repBtn').style.display=$('undoBtn').style.display='none';if($('readSec'))$('readSec').style.display='none';
 const hasNext=!S.boss&&!S.retry&&!S.review&&st>0&&S.lvl<3;
-$('qbox').innerHTML=S.retry?'<strong>🔁 '+x.retryL+': '+S.sc+' / '+n+'</strong><span class="tier">'+ti+'</span>':'<strong>📊 '+t.sc+': '+S.sc+' / '+n+' ('+p+'%) '+'⭐'.repeat(st)+'☆'.repeat(3-st)+'</strong><span class="tier">'+ti+'</span><span class="tier">'+(st>0?(hasNext?'🔓 '+x.unlocked:'🎉'):(!S.boss&&S.lvl<3?'🔒 '+x.lvlHint:''))+'</span>';
+$('qbox').innerHTML=S.retry?'<strong>🔁 '+x.retryL+': '+S.sc+' / '+n+'</strong><span class="tier">'+ti+'</span>':'<strong>📊 '+t.sc+': '+S.sc+' / '+n+' ('+p+'%) '+'⭐'.repeat(st)+'☆'.repeat(3-st)+'</strong><span class="tier">'+ti+'</span><span class="tier">'+(st>0?(hasNext?'🔓 '+x.unlocked:'🎉'):(LOCK_LEVELS&&!S.boss&&S.lvl<3?'🔒 '+x.lvlHint:''))+'</span>';
 mood(p>=60?'happy':'angry');S.res=x.shareT.replace('{p}',p).replace('{r}',ti)+' '+location.href.split('#')[0];
 $('shareBtn').style.display=S.retry?'none':'block';$('retryBtn').style.display=S.wrong.length?'block':'none';
 const nb=$('nextBtn');nb.style.display='block';if(hasNext){nb.textContent=x.nextlvl;nb.onclick=()=>{S.lvl++;start()}}else{nb.textContent=t.again;nb.onclick=start}if(!S.review)renderLevels();showStreak();checkBadges();endNav()}
@@ -128,8 +128,8 @@ function renderBadges(){const box=$('badgeRow');if(!box)return;const d=load();bo
 const stars=k=>load().lv[k]||0,lk=l=>S.n+S.t+S.topic+l;
 function cleared(){const d=load().lv;return Object.keys(d).filter(k=>k.indexOf(S.n+S.t)===0&&k.indexOf('boss')<0&&d[k]>0).length}
 function renderLevels(){const x=X[S.n],box=$('levels');box.innerHTML='';const n=BEGIN_ONLY.includes(S.topic)?1:TENSE.includes(S.topic)?Math.max(1,...RE[S.n][S.topic].filter(e=>e.t[S.t]).map(e=>e.lv||1)):Math.max(1,Math.ceil(RE[S.n][S.topic].filter(e=>e.t[S.t]).length/10));
-for(let l=1;l<=n;l++){const open=l===1||stars(lk(l-1))>0,b=document.createElement('button');b.type='button';b.className='lvl'+(!S.boss&&S.lvl===l?' active':'');b.disabled=!open;b.textContent=(open?'':'🔒 ')+x.lvl+' '+l+' '+'⭐'.repeat(stars(lk(l)));b.onclick=()=>{stopTalk();S.boss=0;S.lvl=l;start()};box.appendChild(b)}
-const bo=cleared()>=4,bb=document.createElement('button');bb.type='button';bb.className='lvl'+(S.boss?' active':'');bb.disabled=!bo;bb.textContent=(bo?'👑 ':'🔒 ')+x.boss+' '+'⭐'.repeat(stars(S.n+S.t+'boss'));bb.onclick=()=>{stopTalk();S.boss=1;start()};box.appendChild(bb);$('lvlHint').textContent=x.lvlHint}
+for(let l=1;l<=n;l++){const open=!LOCK_LEVELS||l===1||stars(lk(l-1))>0,b=document.createElement('button');b.type='button';b.className='lvl'+(!S.boss&&S.lvl===l?' active':'');b.disabled=!open;b.textContent=(open?'':'🔒 ')+x.lvl+' '+l+' '+'⭐'.repeat(stars(lk(l)));b.onclick=()=>{stopTalk();S.boss=0;S.lvl=l;start()};box.appendChild(b)}
+const bo=!LOCK_LEVELS||cleared()>=4,bb=document.createElement('button');bb.type='button';bb.className='lvl'+(S.boss?' active':'');bb.disabled=!bo;bb.textContent=(bo?'👑 ':'🔒 ')+x.boss+' '+'⭐'.repeat(stars(S.n+S.t+'boss'));bb.onclick=()=>{stopTalk();S.boss=1;start()};box.appendChild(bb);$('lvlHint').textContent=LOCK_LEVELS?x.lvlHint:''}
 
 
 function sentWords(box){const items=RE[S.n][S.topic]||[],en=S.qs.map(q=>S.n==='en'?q.s:(((items.find(e=>e.s===q.s)||{t:{}}).t.en)||{}).f||''),ws=WORDS[S.topic].filter(w=>{const re=new RegExp(w.m,'i');return en.some(s=>re.test(s))});if(!ws.length){box.style.display='none';return}box.style.display='grid';const h=document.createElement('h4');h.textContent='📖 '+X[S.n].studyW;box.appendChild(h);
@@ -143,9 +143,9 @@ const lstars=(tp,l)=>load().lv[S.n+S.t+tp+l]||0,tOpen=(tp,l)=>l===1||lstars(tp,l
 function card(box,txt,sub,dis,fn,extraClass){const b=document.createElement('button');b.type='button';b.className='card'+(extraClass?' '+extraClass:'');b.disabled=!!dis;const a=document.createElement('span');a.textContent=txt;const c=document.createElement('small');c.textContent=sub;b.appendChild(a);b.appendChild(c);b.onclick=fn;box.appendChild(b)}
 function renderLevelsMenu(){const x=X[S.n],box=$('lvCards'),nm=[x.ln1,x.ln2,x.ln3];box.innerHTML='';
 for(let l=1;l<=3;l++){let st=0,op=l===1;TOP.forEach(tp=>{st+=lstars(tp,l);if(tOpen(tp,l))op=true});card(box,x.lvl+' '+l+' · '+nm[l-1],'⭐ '+st+'/'+TOP.length*3,false,()=>{S.lvl=l;nav('Topics')},'tier-'+l)}
-const bo=cleared()>=4;card(box,(bo?'👑 ':'🔒 ')+x.boss,'⭐ '+stars(S.n+S.t+'boss')+'/3',!bo,()=>{S.boss=1;S.benchAll=0;start();nav('Quiz')})}
+const bo=!LOCK_LEVELS||cleared()>=4;card(box,(bo?'👑 ':'🔒 ')+x.boss,'⭐ '+stars(S.n+S.t+'boss')+'/3',!bo,()=>{S.boss=1;S.benchAll=0;start();nav('Quiz')})}
 function renderTopicsMenu(){const x=X[S.n],t=u(),box=$('tpCards');box.innerHTML='';$('crumbT').textContent=x.lvl+' '+S.lvl+' · '+[x.ln1,x.ln2,x.ln3][S.lvl-1];
-curOrder().forEach(tp=>{const i=TOP.indexOf(tp),n=lstars(tp,S.lvl),fu=firstUndone(tp);card(box,t.topics[i],'⭐'.repeat(n)+'☆'.repeat(3-n)+(tp!=='num'&&fu<S.lvl?' · ▶ '+x.lvl+' '+fu:''),false,()=>openTopic(tp))})}
+curOrder().forEach(tp=>{const i=TOP.indexOf(tp),n=lstars(tp,S.lvl),fu=firstUndone(tp);card(box,t.topics[i],'⭐'.repeat(n)+'☆'.repeat(3-n)+(LOCK_LEVELS&&tp!=='num'&&fu<S.lvl?' · ▶ '+x.lvl+' '+fu:''),false,()=>openTopic(tp))})}
 function nav(n){stopTalk();closeSheet();S.screen=n;const sc=n==='Bench'?'Quiz':n;SCRS.forEach(k=>{$('scr'+k).style.display=k===sc?'flex':'none'});
 $('drillSec').style.display=n==='Bench'?'none':'flex';$('benchSec').style.display=n==='Bench'?'flex':'none';if(n==='Bench')$('wordList').style.display='none';
 if(n==='Levels')renderLevelsMenu();if(n==='Topics')renderTopicsMenu();if(n==='Trophies')renderTrophies();if(n==='Story')renderStoryMenu();if(n==='NumSets')renderNumSets();if(n==='Settings')labels2();
@@ -465,9 +465,11 @@ $('sheetHandle').onclick=()=>{const sh=$('fbSheet');sh.classList.toggle('min');$
 function snapQuiz(){if(S.screen!=='Quiz')return;const wl=$('wordList');if(!wl||wl.style.display==='none'||S.i===0)return;try{$('drillSec').scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}}
 
 /* --- topics: always open; a topic whose earlier level isn't done starts there --- */
+/* LOCK_LEVELS: false = every level of every topic opens freely (testing); true = finish a level (60%) to open the next */
+const LOCK_LEVELS=false;
 function firstUndone(tp){for(let l=1;l<=3;l++){if(!(lstars(tp,l)>0))return l}return 3}
 function openTopic(tp){stopTalk();S.topic=tp;S.boss=0;S.benchAll=0;if(tp==='num'){nav('NumSets');return}
-const fu=firstUndone(tp);if(fu<S.lvl){S.lvl=fu;toast(nt().startLvl.replace('{n}',fu),3500)}start();nav('Quiz')}
+const fu=firstUndone(tp);if(LOCK_LEVELS&&fu<S.lvl){S.lvl=fu;toast(nt().startLvl.replace('{n}',fu),3500)}start();nav('Quiz')}
 
 /* --- end of a round: next topic / back to topics --- */
 function endNav(){const box=$('endNav'),a=$('nextTopicBtn'),b=$('toTopicsBtn'),N=nt();if(S.boss||S.review){box.style.display='none'}else{
@@ -556,4 +558,6 @@ it:{pick:['«{wrong}» vuol dire «{means}», tesoro. Non è la stessa cosa, eh!
  row:['Tre di fila! Siediti, ti preparo un caffè e ricominciamo.','Madonna santa… respira, tesoro, e riprova.','Una serie così non la vedevo dalla finale del ’94.']}};
 function personalRoast(q,oi,again){const p=PR[S.n];if(!p)return '';if(again)return pick(p.again).replace('{right}',q.f);
 const w=q.o[oi],m=((RE[S.n]||{})[S.topic]||[]).find(e=>e.t[S.t]&&e.t[S.t].f===w&&e.s!==q.s);return m?pick(p.pick).replace('{wrong}',w).replace('{means}',m.s):''}
+/* build number shown at the bottom of Settings — bump together with the sw.js cache name */
+const BUILD='v26';try{$('buildV').textContent='RoastED · build '+BUILD}catch(e){}
 window.__booted=1;
