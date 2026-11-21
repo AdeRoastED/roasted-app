@@ -558,6 +558,77 @@ it:{pick:['«{wrong}» vuol dire «{means}», tesoro. Non è la stessa cosa, eh!
  row:['Tre di fila! Siediti, ti preparo un caffè e ricominciamo.','Madonna santa… respira, tesoro, e riprova.','Una serie così non la vedevo dalla finale del ’94.']}};
 function personalRoast(q,oi,again){const p=PR[S.n];if(!p)return '';if(again)return pick(p.again).replace('{right}',q.f);
 const w=q.o[oi],m=((RE[S.n]||{})[S.topic]||[]).find(e=>e.t[S.t]&&e.t[S.t].f===w&&e.s!==q.s);return m?pick(p.pick).replace('{wrong}',w).replace('{means}',m.s):''}
+/* ===== v1.8 Conversation scenes (replace the old Story mode in the menu; old story code kept above) ===== */
+const SCN_LI={it:'it',en:'en',fr:'fr',de:'de',af:'af',th:'th'};
+const SCN_T={
+it:{menu:'💬 Conversazioni',tip:'💬 Conversazioni: scene di vita reale. Scegli la risposta giusta e guarda cosa succede se sbagli.',tr:'🌐 Traduzione',better:'✅ Meglio così:',next:'Avanti ▶',end:'🏁 Fine',listen:'🔊 Ascolta tutta la conversazione',again:'🔁 Rigioca',back:'📚 Tutte le conversazioni',
+ endings:['Un disastro, tesoro. La nonna fa finta di non conoscerti.','Sei sopravvissuto, tesoro. Un po’ bruciacchiato, ma vivo.','Perfetto, tesoro! Ti invitano anche a Natale.'],
+ rude:['L’educazione, tesoro! Quello stava solo facendo il suo lavoro.','Che maleducato! La nonna si vergogna per te.','La scortesia non è una lingua straniera, tesoro.','Così ti cacciano fuori, altro che conversazione.','Ancora una risposta così e ti tolgo il dolce.']},
+en:{menu:'💬 Conversations',tip:'💬 Conversations: real-life scenes. Pick the right reply and see what happens if you don’t.',tr:'🌐 Translation',better:'✅ Better:',next:'Next ▶',end:'🏁 Finish',listen:'🔊 Listen to the whole conversation',again:'🔁 Play again',back:'📚 All conversations',
+ endings:['A diplomatic incident, old chap. We shall never speak of this again.','You survived, old chap. Slightly scorched, but alive.','Flawless, old chap. They’ll invite you back for Christmas.'],
+ rude:['Manners, old chap. The poor fellow was only being polite.','Charming. Truly. They’ll be telling this story for years.','Rudeness is not a language skill, old chap.','I’ve heard pirates speak more politely.','One more like that and they’ll call security.']},
+fr:{menu:'💬 Conversations',tip:'💬 Conversations : des scènes de la vie réelle. Choisis la bonne réponse et vois ce qui arrive si tu te trompes.',tr:'🌐 Traduction',better:'✅ Mieux :',next:'Suivant ▶',end:'🏁 Terminer',listen:'🔊 Écouter toute la conversation',again:'🔁 Rejouer',back:'📚 Toutes les conversations',
+ endings:['Un incident diplomatique, mon cher. N’en parlons plus jamais.','Vous avez survécu, mon cher. Un peu roussi, mais vivant.','Parfait, mon cher. On vous réinvitera à Noël.'],
+ rude:['La politesse, mon cher ! Il faisait simplement son travail.','Charmant. Vraiment. Ils en parleront pendant des années.','L’impolitesse n’est pas une langue étrangère, mon cher.','Même un pirate parle plus poliment.','Encore une comme ça et on appelle la sécurité.']},
+de:{menu:'💬 Gespräche',tip:'💬 Gespräche: Szenen aus dem echten Leben. Wähle die richtige Antwort und sieh, was passiert, wenn nicht.',tr:'🌐 Übersetzung',better:'✅ Besser:',next:'Weiter ▶',end:'🏁 Fertig',listen:'🔊 Ganzes Gespräch anhören',again:'🔁 Nochmal spielen',back:'📚 Alle Gespräche',
+ endings:['Ein diplomatischer Zwischenfall, mein Lieber. Darüber reden wir nie wieder.','Überlebt, mein Lieber. Etwas angekokelt, aber lebendig.','Tadellos, mein Lieber. Man lädt Sie zu Weihnachten wieder ein.'],
+ rude:['Benehmen, mein Lieber! Er hat nur seine Arbeit gemacht.','Reizend. Wirklich. Davon wird man noch jahrelang erzählen.','Unhöflichkeit ist keine Fremdsprache, mein Lieber.','Selbst ein Pirat spricht höflicher.','Noch so eine Antwort, und man ruft den Sicherheitsdienst.']},
+af:{menu:'💬 Gesprekke',tip:'💬 Gesprekke: tonele uit die regte lewe. Kies die regte antwoord en kyk wat gebeur as jy nie doen nie.',tr:'🌐 Vertaling',better:'✅ Beter:',next:'Volgende ▶',end:'🏁 Klaar',listen:'🔊 Luister na die hele gesprek',again:'🔁 Speel weer',back:'📚 Alle gesprekke',
+ endings:['Ag nee man, ’n ramp, my skat. Ons praat nooit weer hieroor nie.','Jy het oorleef, my skat. Effens verskroei, maar lewendig.','Perfek, my skat! Hulle nooi jou weer vir Kersfees.'],
+ rude:['Maniere, my skat! Die arme mens was net beleefd.','Ag nee man, so praat ’n mens nie!','Onbeskoftheid is nie ’n taal nie, my skat.','Selfs ’n seerower praat mooier as dit.','Nog een so, en hulle roep die sekuriteit.']},
+th:{menu:'💬 บทสนทนา',tip:'💬 บทสนทนา: สถานการณ์ในชีวิตจริง เลือกคำตอบที่ถูก แล้วดูว่าจะเกิดอะไรขึ้นถ้าตอบผิด',tr:'🌐 คำแปล',better:'✅ ควรตอบว่า:',next:'ต่อไป ▶',end:'🏁 จบ',listen:'🔊 ฟังบทสนทนาทั้งหมด',again:'🔁 เล่นอีกครั้ง',back:'📚 บทสนทนาทั้งหมด',
+ endings:['หายนะเลยหนู ป้าขอทำเป็นไม่รู้จักแล้วกัน','รอดมาได้นะหนู ไหม้นิดหน่อย แต่ยังไหว','สมบูรณ์แบบจ้ะหนู เขาต้องชวนมาอีกแน่'],
+ rude:['มารยาทหน่อยหนู เขาแค่ทำหน้าที่ของเขา','พูดแบบนี้ได้ยังไงหนู ป้าอายแทนเลย','ความหยาบคายไม่ใช่ภาษาต่างประเทศนะหนู','โจรสลัดยังพูดสุภาพกว่านี้','อีกครั้งเดียว เขาเรียกยามแน่']}};
+const sct=()=>SCN_T[S.n]||SCN_T.en;
+try{Object.keys(SCN_T).forEach(l=>{if(NT[l]&&NT[l].tips)NT[l].tips.story=SCN_T[l].tip})}catch(e){}
+SCRS.push('Scene');
+BADGE_ICON.scenes='🗣️';BADGE_META.scenes=['🗣️','All conversations done'];
+function sceneLabel(){try{$('goStory').textContent=sct().menu;$('storyCrumb').textContent=sct().menu}catch(e){}}
+const _labelsV18=labels;labels=function(){_labelsV18.apply(this,arguments);sceneLabel()};
+const _backV18=backTarget;backTarget=function(){if(S.screen==='Scene'){stopTalk();return'Story'}return _backV18()};
+function sceneStars(id){return load().lv[S.n+S.t+'scene_'+id]||0}
+function ensureScenes(){return window.SCENES?Promise.resolve():loadScript('data/scenes.js').catch(()=>{})}
+function renderStoryMenu(){sceneLabel();const box=$('storyCards');box.innerHTML='';
+ ensureScenes().then(()=>{box.innerHTML='';if(!window.SCENES)return;const x=X[S.n],nm=[x.ln1,x.ln2,x.ln3];
+  SCENES.map((s,i)=>[s,i]).sort((a,b)=>a[0].lv-b[0].lv).forEach(([s,i])=>{const st=sceneStars(s.id);
+   card(box,s.emoji+' '+(s.title[S.n]||s.title.en),nm[s.lv-1]+' · '+'⭐'.repeat(st)+'☆'.repeat(3-st),false,()=>startScene(i),'scene-card')})})}
+function scnBubble(cls,main,rom,extra){const c=$('sceneChat'),b=document.createElement('div');b.className='bub '+cls;
+ if(cls.indexOf('tut')>=0){const im=document.createElement('img');im.src='images/'+S.n+'.webp';im.alt='';im.className='bub-av';b.appendChild(im)}
+ const w=document.createElement('div');w.className='bub-txt';const m=document.createElement('div');m.textContent=main;w.appendChild(m);
+ if(rom){const r=document.createElement('small');r.className='rom';r.textContent='('+rom+')';w.appendChild(r)}
+ if(extra)extra(w);b.appendChild(w);c.appendChild(b);try{b.scrollIntoView({behavior:'smooth',block:'end'})}catch(e){}return b}
+function scnSpeakBtn(w,text){const k=document.createElement('button');k.type='button';k.className='bub-btn';k.textContent='🔊';k.setAttribute('aria-label','listen');
+ k.onclick=()=>{if(window.speechSynthesis)speakLine(text,VOICE[S.t],[1,.88],'f');else note('novoice')};w.appendChild(k)}
+function startScene(i){stopTalk();const s=SCENES[i];S.scene=s;S.sti=0;S.ssc=0;S.slog=[];nav('Scene');
+ $('sceneCrumb').textContent=s.emoji+' '+(s.title[S.n]||s.title.en);$('sceneChat').innerHTML='';$('sceneEnd').style.display='none';$('sceneEnd').innerHTML='';
+ scnBubble('nar',s.intro[S.n]||s.intro.en);sceneTurn()}
+function sceneTurn(){const s=S.scene,t=s.turns[S.sti],tg=S.t,say=t.say[tg];
+ scnBubble('tut',say,tg==='th'?t.sayR:'',w=>{scnSpeakBtn(w,say);const b=document.createElement('button');b.type='button';b.className='bub-btn';b.textContent=sct().tr;
+  const tr=document.createElement('div');tr.className='bub-tr';tr.textContent=t.say[S.n];tr.style.display='none';b.onclick=()=>{tr.style.display=tr.style.display==='none'?'block':'none'};w.appendChild(b);w.appendChild(tr)});
+ const box=$('sceneReplies');box.innerHTML='';
+ shuf([['ok',t.ok[tg],t.okR],['b1',t.b1[tg],t.b1R],['b2',t.b2[tg],t.b2R]]).forEach(([k,txt,rom])=>{const b=document.createElement('button');b.type='button';b.className='reply';
+  const m=document.createElement('span');m.textContent=txt;b.appendChild(m);if(tg==='th'&&rom){const r=document.createElement('small');r.className='rom';r.textContent='('+rom+')';b.appendChild(document.createElement('br'));b.appendChild(r)}
+  b.onclick=()=>scenePick(k,txt,rom);box.appendChild(b)})}
+function scenePick(k,txt,rom){const s=S.scene,t=s.turns[S.sti],tg=S.t,box=$('sceneReplies');box.innerHTML='';
+ scnBubble('me'+(k==='ok'?' good':' bad'),txt,tg==='th'?rom:'');
+ if(k==='ok'){S.ssc++;try{beep(660);vibrate(30)}catch(e){}scnBubble('tut ok',pick(u().right))}
+ else{try{sfxWrong();vibrate([20,40,20])}catch(e){}scnBubble('tut roast',k==='b1'?(t.re1[S.n]||t.re1.en):pick(sct().rude));
+  scnBubble('fix',sct().better+' '+t.ok[tg],tg==='th'?t.okR:'',w=>scnSpeakBtn(w,t.ok[tg]))}
+ S.slog.push(t.say[tg],t.ok[tg]);
+ const last=S.sti>=s.turns.length-1,nb=document.createElement('button');nb.type='button';nb.className='reply next';nb.textContent=last?sct().end:sct().next;
+ nb.onclick=()=>{stopTalk();if(last)sceneEnd();else{S.sti++;sceneTurn()}};box.appendChild(nb);try{nb.scrollIntoView({behavior:'smooth',block:'end'})}catch(e){}}
+function sceneEnd(){const s=S.scene,n=s.turns.length,st=S.ssc>=n?3:S.ssc>=n-2?2:S.ssc>=2?1:0;
+ try{const d=load(),k=S.n+S.t+'scene_'+s.id;d.lv[k]=Math.max(d.lv[k]||0,st);save(d)}catch(e){}
+ try{if(SCENES.every(x=>sceneStars(x.id)>0))earnBadge('scenes')}catch(e){}
+ if(st===3){try{confetti()}catch(e){}}
+ $('sceneReplies').innerHTML='';const e=$('sceneEnd');e.innerHTML='';e.style.display='flex';
+ const h=document.createElement('div');h.className='scene-score';h.textContent='⭐'.repeat(st)+'☆'.repeat(3-st)+'  '+S.ssc+' / '+n;e.appendChild(h);
+ const p=document.createElement('p');p.className='scene-ending';p.textContent=sct().endings[st===3?2:st>0?1:0];e.appendChild(p);
+ [[sct().listen,()=>{if(window.speechSynthesis)speakLine(S.slog.join(' '),VOICE[S.t],[1,.88],'f');else note('novoice')}],
+  [sct().again,()=>startScene(SCENES.indexOf(s))],[sct().back,()=>{stopTalk();nav('Story')}]].forEach(([l,f])=>{const b=document.createElement('button');b.type='button';b.className='reply';b.textContent=l;b.onclick=f;e.appendChild(b)});
+ try{e.scrollIntoView({behavior:'smooth',block:'end'})}catch(e2){}}
+sceneLabel();
+
 /* build number shown at the bottom of Settings — bump together with the sw.js cache name */
-const BUILD='v26';try{$('buildV').textContent='RoastED · build '+BUILD}catch(e){}
+const BUILD='v27';try{$('buildV').textContent='RoastED · build '+BUILD}catch(e){}
 window.__booted=1;

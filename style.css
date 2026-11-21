@@ -618,3 +618,25 @@ html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margi
 #goLessons .les-ico{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#FFF4E5;font-size:20px;flex:none}
 #goLessons small{display:none}
 .build-v{margin-top:18px;font-size:12px;opacity:.6;text-align:center}
+/* v1.8 conversation scenes */
+#scrScene{flex-direction:column;gap:10px}
+.chat{display:flex;flex-direction:column;gap:10px;padding:4px 0}
+.bub{display:flex;gap:8px;align-items:flex-end;max-width:92%}
+.bub-txt{padding:10px 12px;border-radius:16px;background:#fff;border:1px solid #E4E7EC;font-size:16px;line-height:1.35}
+.bub-txt .rom{display:block;opacity:.7;font-size:13px;margin-top:2px}
+.bub-av{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none;background:#FFF4E5}
+.bub.nar{align-self:center;max-width:100%}.bub.nar .bub-txt{background:transparent;border:none;font-style:italic;text-align:center;opacity:.8;font-size:14px}
+.bub.tut{align-self:flex-start}.bub.tut .bub-txt{border-bottom-left-radius:4px}
+.bub.tut.roast .bub-txt{background:#FDF3F2;border-color:#FECDCA}
+.bub.tut.ok .bub-txt{background:#ECFDF3;border-color:#ABEFC6}
+.bub.me{align-self:flex-end}.bub.me .bub-txt{background:#FFF4E5;border-color:#FEC84B;border-bottom-right-radius:4px}
+.bub.me.bad .bub-txt{text-decoration:line-through;text-decoration-color:#F04438;opacity:.85}
+.bub.fix{align-self:flex-end}.bub.fix .bub-txt{background:#ECFDF3;border-color:#12B76A}
+.bub-btn{margin:6px 6px 0 0;padding:4px 10px;border-radius:12px;border:1px solid #D0D5DD;background:#fff;font-size:13px;cursor:pointer}
+.bub-tr{margin-top:6px;font-size:14px;opacity:.75;font-style:italic}
+.replies,.scene-end{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.reply{padding:12px 14px;border-radius:14px;border:1.5px solid #D0D5DD;background:#fff;font-size:16px;text-align:left;cursor:pointer}
+.reply .rom{opacity:.7;font-size:13px}
+.reply.next{text-align:center;font-weight:700;background:#FF7A00;color:#fff;border-color:#FF7A00}
+.scene-score{font-size:22px;text-align:center;font-weight:700}
+.scene-ending{text-align:center;margin:4px 0 8px;font-size:16px}
