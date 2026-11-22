@@ -558,7 +558,16 @@ it:{pick:['«{wrong}» vuol dire «{means}», tesoro. Non è la stessa cosa, eh!
  row:['Tre di fila! Siediti, ti preparo un caffè e ricominciamo.','Madonna santa… respira, tesoro, e riprova.','Una serie così non la vedevo dalla finale del ’94.']},
 af:{pick:['“{wrong}” beteken “{means}”. My skat dis nie heeltemal dieselfde nie, nè?','“{wrong}” beteken “{means}”. Ag nee man. Tenminste het jy probeer.','“{wrong}” beteken “{means}”. Jyt gekies, maar dis soos om boerewors met bobotie te verwar.','“{wrong}” beteken “{means}”. My skat. Oë oop!'],
  again:['Weer my skat? Daai woord ken jou al op jou naam.','Twee keer dieselfde! Jy maak Oom se hart so seer.','Sê saam met Oom: “{right}”. Nou onthou jy dit, ja?'],
- row:['Drie in ‘n ry! Kom sit, ons steek eers die braai aan.','Eina, my skat. Asem in, asem uit, en probeer weer.','So ‘n reeks het ek laas by die Springbokke gesien.']}};
+ row:['Drie in ‘n ry! Kom sit, ons steek eers die braai aan.','Eina, my skat. Asem in, asem uit, en probeer weer.','So ‘n reeks het ek laas by die Springbokke gesien.']},
+fr:{pick:['« {wrong} » signifie « {means} », mon cher. Il y a une petite subtilité… qui pèse lourd.','Vous avez choisi « {wrong} », c’est-à-dire « {means} ». Audacieux. Faux, mais audacieux.','« {wrong} »? Mais cela veut dire « {means} », voyons.','Ah, « {wrong} »… soit « {means} ». Comme confondre un bordeaux et un jus de raisin.'],
+ again:['Encore « {right} », mon cher? Ce mot commence à se vexer.','Deux fois le même mot. Je note, avec une certaine tristesse.','Répétez après moi : « {right} ». Avec élégance, cette fois.'],
+ row:['Trois de suite. Une pause, peut-être? Un petit café?','Quelle série… Molière en pleurerait.','Respirez, mon cher. Même Napoléon a connu Waterloo.']},
+de:{pick:['„{wrong}“ bedeutet „{means}“, mein Lieber. Präzision, bitte.','Sie haben „{wrong}“ gewählt, also „{means}“. Das ist leider etwas völlig anderes.','„{wrong}“? Das heißt „{means}“. Notieren Sie das.','„{wrong}“ ist „{means}“. Knapp daneben ist auch vorbei.'],
+ again:['Schon wieder „{right}“, mein Lieber? Dieses Wort kennen Sie inzwischen.','Zweimal derselbe Fehler. Das ist kein Zufall mehr, das ist System.','Noch einmal, zum Mitschreiben: „{right}“.'],
+ row:['Drei Fehler in Folge. Eine kurze Pause, dann weiter. Ordnung muss sein.','Das ist eine Serie, mein Lieber, nur leider die falsche.','Tief durchatmen. Auch der Zug kommt manchmal zu spät.']},
+th:{pick:['“{wrong}” แปลว่า “{means}” จ้ะหนู คนละเรื่องเลยนะ','หนูเลือก “{wrong}” ซึ่งแปลว่า “{means}” ใกล้แล้ว แต่ยังไม่ใช่จ้ะ','“{wrong}” เหรอ นั่นมันแปลว่า “{means}” นะหนู','โธ่ “{wrong}” คือ “{means}” เหมือนเอาน้ำปลาไปใส่กาแฟเลยจ้ะ'],
+ again:['“{right}” อีกแล้วเหรอหนู คำนี้จำหน้าหนูได้แล้วนะ','ผิดคำเดิมสองรอบแล้วจ้ะ ป้าหยิบทัพพีแล้วนะ','พูดตามป้านะ “{right}” คราวนี้จำให้ขึ้นใจเลย'],
+ row:['ผิดสามข้อติดแล้วหนู พักกินข้าวก่อนไหม แล้วค่อยมาลุยใหม่','ใจเย็น ๆ หายใจลึก ๆ นะหนู ค่อย ๆ คิด','โอ๊ย ผิดติดกันขนาดนี้ ป้าต้องไปชงชาเย็นมาดื่มเพื่อตั้งสติแล้ว']}};
 function personalRoast(q,oi,again){const p=PR[S.n];if(!p)return '';if(again)return pick(p.again).replace('{right}',q.f);
 const w=q.o[oi],m=((RE[S.n]||{})[S.topic]||[]).find(e=>e.t[S.t]&&e.t[S.t].f===w&&e.s!==q.s);return m?pick(p.pick).replace('{wrong}',w).replace('{means}',m.s):''}
 /* ===== v1.8 Conversation scenes (replace the old Story mode in the menu; old story code kept above) ===== */
@@ -633,5 +642,5 @@ function sceneEnd(){const s=S.scene,n=s.turns.length,st=S.ssc>=n?3:S.ssc>=n-2?2:
 sceneLabel();
 
 /* build number shown at the bottom of Settings — bump together with the sw.js cache name */
-const BUILD='v28';try{$('buildV').textContent='RoastED · build '+BUILD}catch(e){}
+const BUILD='v29';try{$('buildV').textContent='RoastED · build '+BUILD}catch(e){}
 window.__booted=1;
