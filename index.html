@@ -12,6 +12,7 @@
 <meta property="og:title" content="RoastED"><meta property="og:description" content="Learn languages. Get politely roasted."><meta property="og:image" content="https://aderoasted.github.io/roasted-app/images/og.jpg"><meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
+<div id="splash" class="splash"><img src="images/banner.webp" alt="RoastED"></div><script>window.__t0=Date.now()</script>
 <div class="container">
   <div class="topbar"><div class="topbar-left"><button type="button" id="backBtn" class="mini back-top" aria-label="Back" style="display:none"><img src="images/icons/back.png" class="btn-icon" alt=""></button><button type="button" id="homeBtn" class="mini back-top" aria-label="Home" style="display:none">🏠</button><div id="streakBadge" style="display:none"></div><button type="button" id="badgeRow" class="badge-row" aria-label="Trophy room"></button></div><div class="ctrl"><button class="mini" id="voiceBtn" aria-label="Roast voice"><img src="images/icons/voice.png" class="btn-icon" alt=""></button><button class="mini" id="muteBtn" aria-label="Sound effects"><img src="images/icons/sound.png" class="btn-icon" alt=""></button></div></div>
   <section id="scrWelcome" class="screen" style="display:none">
@@ -59,7 +60,7 @@
     <h3 class="section-title" id="trTitle">🏆 Trophy room</h3>
     <div class="mot-row"><div id="roastCard" class="mot-card"></div><div id="goalCard" class="mot-card"></div></div>
     <div id="trophyGrid" class="trophy-grid"></div>
-    <h3 class="section-title" id="calTitle">📅 Practice calendar</h3>
+    <h3 class="section-title" id="calTitle">Practice calendar</h3>
     <div id="calBox" class="cal"></div>
   </section>
   <section id="scrLevels" class="screen" style="display:none"><div id="lvCards"></div></section>
@@ -122,6 +123,8 @@
 </div>
 <div id="fbSheet" class="fb-sheet" aria-live="polite"><button type="button" class="sheet-handle" id="sheetHandle" aria-label="Minimise">▾</button><div class="sheet-body" id="sheetBody"></div></div>
 <div id="tipPop" class="tip-pop" style="display:none"><p id="tipText"></p><div class="tip-btns"><button type="button" class="back" id="tipNo"></button><button type="button" class="btn-roasted" id="tipYes"></button></div></div>
+<div id="trPop" class="tip-pop close-dlg tr-pop" style="display:none"></div>
+<div id="duelPop" class="tip-pop close-dlg duel-pop" style="display:none"></div>
 <div id="closeDlg" class="tip-pop close-dlg" style="display:none"><p id="closeText"></p><div class="tip-btns"><button type="button" class="back" id="closeNo"></button><button type="button" class="btn-roasted" id="closeYes"></button></div></div>
 <div id="confettiBox" aria-hidden="true"></div>
 <div id="voiceNote" role="status" style="display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:8px 14px;border-radius:10px;font-size:14px;z-index:9"></div>
