@@ -603,6 +603,7 @@ body{display:flex;justify-content:center}
 .sheet-handle{display:block;margin:0 auto 4px;border:0;background:#E2E8F0;border-radius:10px;width:56px;height:22px;font-size:14px;line-height:22px;cursor:pointer}
 .fb-sheet.min .fb-wrap,.fb-sheet.min .read-practice,.fb-sheet.min #undoBtn{display:none!important}
 body.sheet-open .container{padding-bottom:62vh}
+body.sheet-open.sheet-min .container{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margin-top:8px}
 .tip-pop{position:fixed;z-index:80;background:#0F172A;color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:14px}
 .tip-pop p{margin:0 0 10px}.tip-btns{display:flex;gap:8px;justify-content:flex-end}.tip-btns .back{color:#fff;border-color:#475467;background:transparent}
@@ -640,3 +641,25 @@ html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margi
 .reply.next{text-align:center;font-weight:700;background:#FF7A00;color:#fff;border-color:#FF7A00}
 .scene-score{font-size:22px;text-align:center;font-weight:700}
 .scene-ending{text-align:center;margin:4px 0 8px;font-size:16px}
+
+/* v30 trophies: roast level, daily goal, calendar */
+.mot-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}
+.mot-card{background:#fff;border:1px solid var(--card-border,#E4E7EC);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:5px;font-size:13px}
+.mot-card small{color:var(--text-muted,#475467);line-height:1.35}
+.rl{display:flex;align-items:center;gap:6px;font-size:15px}.rl-ic{font-size:26px}
+.rl-bar{height:8px;border-radius:6px;background:#E4E7EC;overflow:hidden}.rl-bar i{display:block;height:100%;background:var(--accent-red,#D92D20);border-radius:6px}
+.rl-runs{opacity:.8}
+.ring{--p:0;width:64px;height:64px;border-radius:50%;margin:2px auto;background:conic-gradient(var(--accent-red,#D92D20) calc(var(--p)*1%),#E4E7EC 0);display:flex;align-items:center;justify-content:center}
+.ring span{width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.frz{font-size:12px}
+.trophy .t-prog{display:block;font-size:11px;opacity:.75;margin-top:2px}
+.cal{background:#fff;border:1px solid var(--card-border,#E4E7EC);border-radius:14px;padding:10px;margin-bottom:12px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.cal-nav{width:34px;height:34px;border-radius:10px;border:1px solid #CBD5E1;background:#fff;font-size:20px;line-height:1;cursor:pointer}.cal-nav:disabled{opacity:.35}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-wd{font-size:11px;font-weight:600;color:var(--text-muted,#475467)}
+.cal-d{position:relative;aspect-ratio:1;border-radius:8px;background:#F2F4F7;display:flex;align-items:center;justify-content:center;font-size:13px}
+.cal-d.on{background:var(--accent-red,#D92D20);color:#fff;font-weight:700}
+.cal-d.on i{position:absolute;top:-6px;right:-4px;font-style:normal;font-size:12px}
+.cal-d.today{box-shadow:0 0 0 2px #0F172A}
+.cal-sum{display:block;text-align:right;margin-top:6px;color:var(--text-muted,#475467)}
