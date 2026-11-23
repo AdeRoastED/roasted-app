@@ -694,3 +694,10 @@ html{scroll-snap-type:y proximity}#drillSec{scroll-snap-align:start;scroll-margi
 .duel-pop .btn-roasted{display:block;width:100%;margin-top:10px}
 .dp-x{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;border:1px solid #475467;background:transparent;color:#fff;cursor:pointer}
 .duel-btns{display:flex;flex-direction:column;gap:8px;margin-top:12px}.duel-v{font-size:18px;font-weight:700}
+/* v33: every top-bar button on one line, same size as Home (38x38) */
+.topbar,.topbar-left,.topbar .ctrl,#badgeRow{align-items:center}
+.topbar-left{gap:6px}.topbar .ctrl{gap:6px}#badgeRow{gap:6px;height:38px}
+.topbar #backBtn,.topbar #homeBtn,.topbar #streakBadge,.topbar #badgeRow .badge,.topbar #voiceBtn,.topbar #muteBtn{width:38px!important;height:38px!important;min-width:38px;margin:0!important;padding:0!important;box-sizing:border-box;border-radius:12px;border:1px solid #CBD5E1;background:#fff;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex:none}
+.topbar #backBtn[style*="none"],.topbar #homeBtn[style*="none"],.topbar #streakBadge[style*="none"]{display:none!important}
+.topbar #voiceBtn .btn-icon,.topbar #muteBtn .btn-icon,.topbar #backBtn .btn-icon{width:20px;height:20px}
+.topbar #homeBtn{font-size:18px}.topbar #badgeRow .badge{font-size:17px}.topbar #streakBadge{font-size:12px;flex-direction:column;line-height:1.05}

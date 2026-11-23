@@ -352,7 +352,7 @@ S.res=((X[S.n]&&X[S.n].shareT)||'').replace('{p}',p).replace('{r}','Story mode')
 $('shareBtn').style.display='block';$('retryBtn').style.display=S.wrong.length?'block':'none';
 const nb=$('nextBtn');nb.style.display='block';nb.textContent=t.again;nb.onclick=()=>nav('Menu');endNav();
 if($('progFill'))$('progFill').style.width='100%'}
-$('goStory').onclick=()=>nav('Story');
+$('goStory').onclick=()=>{S.scLv=0;nav('Story')};
 
 /* --- numbers, split into decade sets (0-10, 10-20, ... 90-100) --- */
 function renderNumSets(){if(S.lvl>=100)S.lvl=S.numLvl||1;const box=$('numSetCards');box.innerHTML='';const d=load(),L=Math.min(3,Math.max(1,S.lvl||1));
@@ -740,12 +740,15 @@ function trophyPop(id,icon,name,pr,got){const d=TRD[S.n]||TRD.en,x=X[S.n],ln=[x.
  const h=document.createElement('b');h.textContent=name;p.appendChild(h);const st=document.createElement('p');st.className='tp-st';st.textContent=got?d.got:d.not;p.appendChild(st);
  const t=document.createElement('p');t.textContent=how+(!got&&pr?' ('+Math.min(pr[0],pr[1]).toLocaleString(CAL_LOC[S.n]||'en-GB')+' / '+pr[1].toLocaleString(CAL_LOC[S.n]||'en-GB')+')':'');p.appendChild(t);
  const b=document.createElement('button');b.type='button';b.className='btn-roasted';b.textContent=d.ok;b.onclick=()=>{p.style.display='none'};p.appendChild(b);p.style.display='block'}
-/* conversations menu grouped by level */
+/* conversations: first pick a level (like Topics), then that level's conversations */
 function renderStoryMenu(){sceneLabel();const box=$('storyCards');box.innerHTML='';
- ensureScenes().then(()=>{box.innerHTML='';if(!window.SCENES)return;const x=X[S.n],nm=[x.ln1,x.ln2,x.ln3];let last=0;
-  SCENES.map((s,i)=>[s,i]).sort((a,b)=>a[0].lv-b[0].lv).forEach(([s,i])=>{const st=sceneStars(s.id);
-   if(s.lv!==last){last=s.lv;const h=document.createElement('h3');h.className='section-title scene-lv';h.textContent=nm[s.lv-1];box.appendChild(h)}
+ ensureScenes().then(()=>{box.innerHTML='';if(!window.SCENES)return;const x=X[S.n],nm=[x.ln1,x.ln2,x.ln3],L=S.scLv||0;
+  if(!L){for(let l=1;l<=3;l++){const sc=SCENES.filter(s=>s.lv===l),st=sc.reduce((t,s)=>t+sceneStars(s.id),0);
+    card(box,x.lvl+' '+l+' · '+nm[l-1],'⭐ '+st+'/'+sc.length*3,false,()=>{S.scLv=l;renderStoryMenu()},'tier-'+l)}return}
+  const h=document.createElement('h3');h.className='section-title scene-lv';h.textContent=x.lvl+' '+L+' · '+nm[L-1];box.appendChild(h);
+  SCENES.map((s,i)=>[s,i]).filter(([s])=>s.lv===L).forEach(([s,i])=>{const st=sceneStars(s.id);
    card(box,s.emoji+' '+(s.title[S.n]||s.title.en),'⭐'.repeat(st)+'☆'.repeat(3-st),false,()=>startScene(i),'scene-card')})})}
+const _backV33=backTarget;backTarget=function(){if(S.screen==='Story'&&S.scLv){S.scLv=0;return'Story'}return _backV33()};
 /* listen to the whole conversation: one line at a time, with a pause, highlighting the line being read */
 let SEQ_TOK=0;const _stopTalkV31=stopTalk;stopTalk=function(){SEQ_TOK++;document.querySelectorAll('.bub.reading').forEach(b=>b.classList.remove('reading'));_stopTalkV31()};
 function speakLineCb(x,lang,tune,g,cb){let done=false;const fin=()=>{if(!done){done=true;cb()}};
@@ -851,5 +854,5 @@ const _startDuelV32=startDuel;startDuel=function(p){if(!p||p.v!==2)return _start
  S.n=(sv&&FLAG[sv])?sv:p.n;S.t=(svt&&FLAG[svt]&&svt!==S.n)?svt:p.t;if(S.t===S.n)S.t=p.t!==S.n?p.t:(S.n==='en'?'it':'en');
  try{history.replaceState(null,'',location.href.split('#')[0])}catch(e){}
  Promise.all([loadData(S.n),loadData(S.t)]).then(()=>{try{texts()}catch(e){}try{labels()}catch(e){}nav('Menu');const ok=(p.idx||[]).filter(i=>(RE[S.n][p.tp]||[])[i]&&RE[S.n][p.tp][i].t[S.t]);p.idx=ok.length?ok:duelIdx(p.tp,p.lv);openDuelPicker(p)}).catch(()=>{})};
-const BUILD='v32';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
+const BUILD='v33';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
 window.__booted=1;
