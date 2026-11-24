@@ -105,7 +105,10 @@ $('muteBtn').onclick=()=>{S.mute=S.mute?0:1;$('muteBtn').innerHTML=S.mute?'🔇'
 const L2={en:{review:'🎯 Review my mistakes',duel:'⚔️ Challenge a friend'},it:{review:'🎯 Rivedi i miei errori',duel:'⚔️ Sfida un amico'},fr:{review:'🎯 Revoir mes erreurs',duel:'⚔️ Défier un ami'},de:{review:'🎯 Meine Fehler wiederholen',duel:'⚔️ Freund herausfordern'},th:{review:'🎯 ทบทวนที่ผิด',duel:'⚔️ ท้าเพื่อน'},af:{review:'🎯 Gaan my foute weer deur',duel:"⚔️ Daag 'n vriend uit"}};
 function labels(){const x=X[S.n];const l2=L2[S.n]||L2.en;if($('goReview'))$('goReview').textContent=l2.review;if($('goDuel'))$('goDuel').textContent=l2.duel;$('offTag').textContent=x.offline;$('goInstall').textContent='📲 '+x.install;$('iosHint').textContent=x.ios;$('goLearn').textContent='▶ '+x.learn;$('goBench').textContent='💀 '+u().fixT.replace(/^\S+\s/,'');$('goSet').textContent='⚙️ '+x.set;$('backBtn').setAttribute('aria-label',x.back);$('resetBtn').innerHTML='<img src="images/icons/reset.png" class="btn-icon" alt="">';$('sayBtn').innerHTML='<img src="images/icons/listen.png" class="btn-icon" alt="">';$('sayBtn').setAttribute('aria-label',x.listen);$('repBtn').innerHTML='<img src="images/icons/report.png" class="btn-icon" alt="">';$('repBtn').setAttribute('aria-label',x.report);$('shareBtn').textContent=x.share;$('retryBtn').textContent=x.retry;$('readTitle').textContent='📖 '+(x.readT||'Reading practice')}
 const _t=texts;texts=function(){_t();labels()};
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+/* updates: check for a new version on every open and when the app comes back to the screen; when it is ready, reload once */
+if('serviceWorker' in navigator){const hadSW=!!navigator.serviceWorker.controller;let reloaded=false;
+ navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{const chk=()=>{try{reg.update()}catch(e){}};chk();document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})}).catch(()=>{});
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadSW||reloaded)return;const go=()=>{if(reloaded)return;if(['Welcome','Home','Menu','Settings','Trophies','Levels'].includes(S.screen)){reloaded=true;location.reload()}};go();if(!reloaded){const t=setInterval(()=>{go();if(reloaded)clearInterval(t)},2000)}})}
 S.voice=1;const TUNE={};
 const VP={};let VOICES=[];
 if(window.speechSynthesis){const lv=()=>{VOICES=speechSynthesis.getVoices()};lv();speechSynthesis.onvoiceschanged=lv}
@@ -865,5 +868,5 @@ const _speakLineV35=speakLine;speakLine=function(){const args=arguments;ttsWake(
  if(IOS&&window.speechSynthesis&&(speechSynthesis.speaking||speechSynthesis.pending)){try{speechSynthesis.cancel()}catch(e){}setTimeout(()=>{ttsWake();_speakLineV35.apply(null,args)},120);return}
  return _speakLineV35.apply(this,args)};
 const _speakLineCbV35=speakLineCb;speakLineCb=function(){ttsWake();return _speakLineCbV35.apply(this,arguments)};
-const BUILD='v35';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
+const BUILD='v36';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
 window.__booted=1;
