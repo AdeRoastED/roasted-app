@@ -114,7 +114,7 @@ function pickVoice(lang,g){const b=lang.slice(0,2).toLowerCase();let best=null,b
 const fem=/\bfemale\b|woman|elsa|alice|amelie|amélie|marie|paola|federica|anna|petra|katja|hedda|susan|hazel|libby|sonia|jenny|aria|zira|samantha|karen|moira|tessa|emma|brigitte|denise|eloise|vivian|premwadee|kanya/.test(n),mal=/\bmale\b|\bman\b|diego|luca|cosimo|daniel|arthur|george|ryan|james|thomas|henri|claude|antoine|paul|guy|conrad|stefan|markus|hans|jonas|ralf|alex|fred|oliver|niwat/.test(n);
 if(g==='f'&&fem)sc+=4;if(g==='m'&&mal&&!fem)sc+=4;if(sc>bs){bs=sc;best=v}}return best}
 function speakLine(x,lang,tune,g){if(VFALL[lang]&&!pickVoice(lang,g)&&pickVoice(VFALL[lang],g))lang=VFALL[lang];const parts=x.replace(/[«»“”„]/g,'').replace(/[,，]/g,' ').match(/[^.!?…]+[.!?…]*/g)||[x],v=pickVoice(lang,g),nat=v&&NAT.test(v.name);if(!v&&VOICES.length&&!VOICES.some(z=>z.lang&&z.lang.slice(0,2).toLowerCase()===lang.slice(0,2).toLowerCase())){note('novoice');return}speechSynthesis.cancel();
-parts.forEach((p,i)=>{const m=new SpeechSynthesisUtterance(p.trim());m.lang=lang;if(v)m.voice=v;m.pitch=nat?1:tune[0]*(i%2?1.05:.97);m.rate=nat?1:Math.min(tune[1],.95);speechSynthesis.speak(m)})}
+parts.forEach((p,i)=>{const m=new SpeechSynthesisUtterance(p.trim());m.lang=lang;if(v)m.voice=v;m.pitch=nat?1:tune[0]*(i%2?1.05:.97);m.rate=nat?1:Math.min(tune[1],.95);(window.TTS_KEEP=window.TTS_KEEP||[]).push(m);if(TTS_KEEP.length>40)TTS_KEEP.shift();speechSynthesis.speak(m)})}
 function talk(x){if(!S.voice||!window.speechSynthesis)return;try{speakLine(x,VOICE[S.n],TUNE[S.n],VP[S.n])}catch(e){}}
 $('voiceBtn').onclick=()=>{S.voice=S.voice?0:1;$('voiceBtn').innerHTML=S.voice?'<img src="images/icons/voice.png" class="btn-icon" alt="">':'🤐';if(!S.voice&&window.speechSynthesis)speechSynthesis.cancel()};
 const day=o=>{const t=new Date(Date.now()-o*864e5);return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0')};
@@ -755,7 +755,7 @@ const _backV33=backTarget;backTarget=function(){if(S.screen==='Story'){S.lvMode=
 let SEQ_TOK=0;const _stopTalkV31=stopTalk;stopTalk=function(){SEQ_TOK++;document.querySelectorAll('.bub.reading').forEach(b=>b.classList.remove('reading'));_stopTalkV31()};
 function speakLineCb(x,lang,tune,g,cb){let done=false;const fin=()=>{if(!done){done=true;cb()}};
  try{if(VFALL[lang]&&!pickVoice(lang,g)&&pickVoice(VFALL[lang],g))lang=VFALL[lang];const parts=x.replace(/[«»“”„]/g,'').replace(/[,，]/g,' ').match(/[^.!?…]+[.!?…]*/g)||[x],v=pickVoice(lang,g),nat=v&&NAT.test(v.name);
-  parts.forEach((p,i)=>{const m=new SpeechSynthesisUtterance(p.trim());m.lang=lang;if(v)m.voice=v;m.pitch=nat?1:tune[0]*(i%2?1.05:.97);m.rate=nat?1:Math.min(tune[1],.95);if(i===parts.length-1){m.onend=fin;m.onerror=fin}speechSynthesis.speak(m)})}catch(e){fin()}
+  parts.forEach((p,i)=>{const m=new SpeechSynthesisUtterance(p.trim());m.lang=lang;if(v)m.voice=v;m.pitch=nat?1:tune[0]*(i%2?1.05:.97);m.rate=nat?1:Math.min(tune[1],.95);if(i===parts.length-1){m.onend=fin;m.onerror=fin}(window.TTS_KEEP=window.TTS_KEEP||[]).push(m);speechSynthesis.speak(m)})}catch(e){fin()}
  setTimeout(fin,2500+x.length*110)}
 function playScene(){if(!window.speechSynthesis){note('novoice');return}stopTalk();const tok=++SEQ_TOK,items=(S.sitems||[]).filter(it=>it&&it.t);let i=0;
  const step=()=>{if(tok!==SEQ_TOK)return;document.querySelectorAll('.bub.reading').forEach(b=>b.classList.remove('reading'));if(i>=items.length)return;
@@ -856,5 +856,14 @@ const _startDuelV32=startDuel;startDuel=function(p){if(!p||p.v!==2)return _start
  S.n=(sv&&FLAG[sv])?sv:p.n;S.t=(svt&&FLAG[svt]&&svt!==S.n)?svt:p.t;if(S.t===S.n)S.t=p.t!==S.n?p.t:(S.n==='en'?'it':'en');
  try{history.replaceState(null,'',location.href.split('#')[0])}catch(e){}
  Promise.all([loadData(S.n),loadData(S.t)]).then(()=>{try{texts()}catch(e){}try{labels()}catch(e){}nav('Menu');const ok=(p.idx||[]).filter(i=>(RE[S.n][p.tp]||[])[i]&&RE[S.n][p.tp][i].t[S.t]);p.idx=ok.length?ok:duelIdx(p.tp,p.lv);openDuelPicker(p)}).catch(()=>{})};
-const BUILD='v34';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
+/* ===== v35: iPhone/iPad speech fixes ===== */
+const IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function ttsWake(){if(!window.speechSynthesis)return;try{if(!VOICES.length)VOICES=speechSynthesis.getVoices()}catch(e){}try{speechSynthesis.resume()}catch(e){}}
+if(window.speechSynthesis&&IOS){const unlock=()=>{try{const z=new SpeechSynthesisUtterance(' ');z.volume=0;speechSynthesis.speak(z)}catch(e){}ttsWake();document.removeEventListener('touchend',unlock,true);document.removeEventListener('click',unlock,true)};
+ document.addEventListener('touchend',unlock,true);document.addEventListener('click',unlock,true);document.addEventListener('visibilitychange',()=>{if(!document.hidden)ttsWake()})}
+const _speakLineV35=speakLine;speakLine=function(){const args=arguments;ttsWake();
+ if(IOS&&window.speechSynthesis&&(speechSynthesis.speaking||speechSynthesis.pending)){try{speechSynthesis.cancel()}catch(e){}setTimeout(()=>{ttsWake();_speakLineV35.apply(null,args)},120);return}
+ return _speakLineV35.apply(this,args)};
+const _speakLineCbV35=speakLineCb;speakLineCb=function(){ttsWake();return _speakLineCbV35.apply(this,arguments)};
+const BUILD='v35';try{$('buildV').textContent='RoastED · build '+BUILD+' · © 2026 RoastED. All rights reserved.'}catch(e){}
 window.__booted=1;
